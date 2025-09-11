@@ -15,6 +15,7 @@ import {sanityFetch, SanityLive} from '@/sanity/lib/live'
 import {settingsQuery} from '@/sanity/lib/queries'
 import {resolveOpenGraphImage} from '@/sanity/lib/utils'
 import {handleError} from './client-utils'
+import AgeCheck from './components/AgeCheck'
 
 /**
  * Generate metadata for the page.
@@ -61,11 +62,13 @@ export default async function RootLayout({children}: {children: React.ReactNode}
   const {isEnabled: isDraftMode} = await draftMode()
 
   return (
+  
     <html lang="en" className={`${inter.variable} bg-white text-black`}>
       <body>
-        <section className="min-h-screen pt-24">
+      <AgeCheck>
+        <section className="min-h-screen">
           {/* The <Toaster> component is responsible for rendering toast notifications used in /app/client-utils.ts and /app/components/DraftModeToast.tsx */}
-          <Toaster />
+          {/* <Toaster /> */}
           {isDraftMode && (
             <>
               <DraftModeToast />
@@ -79,6 +82,7 @@ export default async function RootLayout({children}: {children: React.ReactNode}
           <main className="">{children}</main>
           <Footer />
         </section>
+        </AgeCheck>
         <SpeedInsights />
       </body>
     </html>
