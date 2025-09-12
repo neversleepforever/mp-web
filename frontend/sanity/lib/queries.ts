@@ -95,3 +95,62 @@ export const pagesSlugs = defineQuery(`
   *[_type == "page" && defined(slug.current)]
   {"slug": slug.current}
 `)
+
+export const folioPagesSlugs: string = defineQuery(`
+  *[_type == "folio" && defined(slug.current)]{
+    "slug": slug.current
+  }
+`)
+
+export const folioQuery: string = defineQuery(`
+  *[_type == "folio" && slug.current == $slug][0]{
+    _id,
+    title,
+    subtitle,
+    photographer,
+    date,
+    description,
+    "slug": slug.current,
+    images[]{
+      asset->{ url },
+      alt,
+      credit
+    }
+  }
+`)
+
+export const allFoliosQuery = defineQuery(`
+  *[_type == "folio" && defined(slug.current)] | order(date desc, _updatedAt desc) {
+    _id,
+    title,
+    subtitle,
+    photographer,
+    date,
+    "slug": slug.current,
+    images[]{
+      asset->{
+        url
+      },
+      credit
+    }
+  }
+`)
+
+export const servicesQuery = defineQuery(`
+  *[_type == "services"][0]{
+    _id,
+    content[]{
+      ...,
+      _type == "borderedImage" => {
+        _type,
+        caption,
+        image{
+          asset->{
+            url,
+            metadata { dimensions }
+          }
+        }
+      }
+    }
+  }
+`)

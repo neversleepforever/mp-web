@@ -1,0 +1,72 @@
+import {defineField, defineType} from 'sanity'
+import {DocumentIcon} from '@sanity/icons'
+
+export const folio = defineType({
+  name: 'folio',
+  title: 'Folio',
+  type: 'document',
+  icon: DocumentIcon,
+  fields: [
+    defineField({
+      name: 'photographer',
+      title: 'Photographer',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'title',
+      title: 'Title',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'subtitle',
+      title: 'Subtitle',
+      type: 'string',
+    }),
+    // 👇 Add this field
+    defineField({
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      validation: (Rule) => Rule.required(),
+      options: {
+        source: 'title', // auto-generate from title
+        maxLength: 96,
+      },
+    }),
+    defineField({
+      name: 'date',
+      title: 'Date',
+      type: 'date',
+      options: {
+        dateFormat: 'YYYY-MM-DD',
+      },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'description',
+      title: 'Description',
+      type: 'array',
+      of: [{type: 'block'}],
+    }),
+    defineField({
+      name: 'images',
+      title: 'Images',
+      type: 'array',
+      of: [
+        {
+          type: 'image',
+          options: {hotspot: true},
+          fields: [
+            defineField({
+              name: 'credit',
+              title: 'Credit',
+              type: 'string',
+            }),
+          ],
+        },
+      ],
+    }),
+  ],
+})

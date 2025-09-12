@@ -805,6 +805,18 @@ export type PostPagesSlugsResult = Array<{
 export type PagesSlugsResult = Array<{
   slug: string
 }>
+// Variable: folioPagesSlugs
+// Query: *[_type == "folio" && defined(slug.current)]{    "slug": slug.current  }
+export type FolioPagesSlugsResult = Array<never>
+// Variable: folioQuery
+// Query: *[_type == "folio" && slug.current == $slug][0]{    _id,    title,    subtitle,    photographer,    date,    description,    "slug": slug.current,    images[]{      asset->{ url },      alt,      credit    }  }
+export type FolioQueryResult = null
+// Variable: allFoliosQuery
+// Query: *[_type == "folio" && defined(slug.current)] | order(date desc, _updatedAt desc) {    _id,    title,    subtitle,    photographer,    date,    "slug": slug.current,    images[]{      asset->{        url      },      credit    }  }
+export type AllFoliosQueryResult = Array<never>
+// Variable: servicesQuery
+// Query: *[_type == "services"][0]{    _id,    content  }
+export type ServicesQueryResult = null
 
 // Query TypeMap
 import '@sanity/client'
@@ -818,5 +830,9 @@ declare module '@sanity/client' {
     '\n  *[_type == "post" && slug.current == $slug] [0] {\n    content[]{\n    ...,\n    markDefs[]{\n      ...,\n      \n  _type == "link" => {\n    "page": page->slug.current,\n    "post": post->slug.current\n  }\n\n    }\n  },\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{firstName, lastName, picture},\n\n  }\n': PostQueryResult
     '\n  *[_type == "post" && defined(slug.current)]\n  {"slug": slug.current}\n': PostPagesSlugsResult
     '\n  *[_type == "page" && defined(slug.current)]\n  {"slug": slug.current}\n': PagesSlugsResult
+    '\n  *[_type == "folio" && defined(slug.current)]{\n    "slug": slug.current\n  }\n': FolioPagesSlugsResult
+    '\n  *[_type == "folio" && slug.current == $slug][0]{\n    _id,\n    title,\n    subtitle,\n    photographer,\n    date,\n    description,\n    "slug": slug.current,\n    images[]{\n      asset->{ url },\n      alt,\n      credit\n    }\n  }\n': FolioQueryResult
+    '\n  *[_type == "folio" && defined(slug.current)] | order(date desc, _updatedAt desc) {\n    _id,\n    title,\n    subtitle,\n    photographer,\n    date,\n    "slug": slug.current,\n    images[]{\n      asset->{\n        url\n      },\n      credit\n    }\n  }\n': AllFoliosQueryResult
+    '\n  *[_type == "services"][0]{\n    _id,\n    content\n  }\n': ServicesQueryResult
   }
 }
