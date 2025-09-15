@@ -8,7 +8,7 @@ export default async function Header() {
   })
 
   return (
-    <header className="fixed z-40 inset-0 h-4 py-4">
+    <header className="fixed z-40 inset-0 h-4 py-4 dark:text-white">
       <div>
         <div className="flex w-full">
           <nav className='w-full'>

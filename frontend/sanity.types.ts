@@ -815,8 +815,11 @@ export type FolioQueryResult = null
 // Query: *[_type == "folio" && defined(slug.current)] | order(date desc, _updatedAt desc) {    _id,    title,    subtitle,    photographer,    date,    "slug": slug.current,    images[]{      asset->{        url      },      credit    }  }
 export type AllFoliosQueryResult = Array<never>
 // Variable: servicesQuery
-// Query: *[_type == "services"][0]{    _id,    content  }
+// Query: *[_type == "services"][0]{    _id,    content[]{      ...,      _type == "borderedImage" => {        _type,        caption,        image{          asset->{            url,            metadata { dimensions }          }        }      }    }  }
 export type ServicesQueryResult = null
+// Variable: aboutQuery
+// Query: *[_type == "about"][0]{    _id,    content[]{      ...,      _type == "image" => {        asset->{          url,          metadata { dimensions }        },        alt      }    }  }
+export type AboutQueryResult = null
 
 // Query TypeMap
 import '@sanity/client'
@@ -833,6 +836,7 @@ declare module '@sanity/client' {
     '\n  *[_type == "folio" && defined(slug.current)]{\n    "slug": slug.current\n  }\n': FolioPagesSlugsResult
     '\n  *[_type == "folio" && slug.current == $slug][0]{\n    _id,\n    title,\n    subtitle,\n    photographer,\n    date,\n    description,\n    "slug": slug.current,\n    images[]{\n      asset->{ url },\n      alt,\n      credit\n    }\n  }\n': FolioQueryResult
     '\n  *[_type == "folio" && defined(slug.current)] | order(date desc, _updatedAt desc) {\n    _id,\n    title,\n    subtitle,\n    photographer,\n    date,\n    "slug": slug.current,\n    images[]{\n      asset->{\n        url\n      },\n      credit\n    }\n  }\n': AllFoliosQueryResult
-    '\n  *[_type == "services"][0]{\n    _id,\n    content\n  }\n': ServicesQueryResult
+    '\n  *[_type == "services"][0]{\n    _id,\n    content[]{\n      ...,\n      _type == "borderedImage" => {\n        _type,\n        caption,\n        image{\n          asset->{\n            url,\n            metadata { dimensions }\n          }\n        }\n      }\n    }\n  }\n': ServicesQueryResult
+    '\n  *[_type == "about"][0]{\n    _id,\n    content[]{\n      ...,\n      _type == "image" => {\n        asset->{\n          url,\n          metadata { dimensions }\n        },\n        alt\n      }\n    }\n  }\n': AboutQueryResult
   }
 }

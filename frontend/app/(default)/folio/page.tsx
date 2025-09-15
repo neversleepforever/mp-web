@@ -28,8 +28,8 @@ export default async function FolioIndexPage() {
   }
 
   return (
-    <div className="container mx-auto py-12">
-      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+    <div className="container p-6 pt-14 pb-14">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {folios.map((folio) => (
           <Link
             key={folio._id}
@@ -47,13 +47,17 @@ export default async function FolioIndexPage() {
                 />
               </div>
             )}
-            <h2 className="text-xl font-semibold">{folio.title ?? "Untitled"}</h2>
-            {folio.subtitle && (
+            <h2 className="">{folio.title ?? "Untitled"}</h2>
+            {/* {folio.subtitle && (
               <p className="text-gray-600 text-sm">{folio.subtitle}</p>
-            )}
-            <p className="text-sm text-gray-500 mt-1">
-              {folio.photographer ?? "Unknown"}{" "}
-              {folio.date && <>· {folio.date}</>}
+            )} */}
+            <p className="">
+              {/* {folio.photographer ?? "Unknown"}{" "} */}
+              {folio.date && new Date(folio.date).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+                })}
             </p>
           </Link>
         ))}

@@ -154,3 +154,19 @@ export const servicesQuery = defineQuery(`
     }
   }
 `)
+
+export const aboutQuery = defineQuery(`
+  *[_type == "about"][0]{
+    _id,
+    content[]{
+      ...,
+      _type == "image" => {
+        asset->{
+          url,
+          metadata { dimensions }
+        },
+        alt
+      }
+    }
+  }
+`)
