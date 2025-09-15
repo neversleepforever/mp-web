@@ -35,7 +35,7 @@ export default async function BaseLayout({
       lang="en"
       className={`${inter.variable}`}
     >
-      <body className={theme === "dark" ? "dark" : ""}>
+      <body className={`${theme === "dark" ? "dark" : "" } + dark:bg-black` }>
         <AgeCheck>
           <section className="min-h-screen">
             {/* <Toaster /> */}

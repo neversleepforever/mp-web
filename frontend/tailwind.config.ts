@@ -5,11 +5,16 @@ export default {
   content: ['./app/**/*.{ts,tsx}', './sanity/**/*.{ts,tsx}'],
   darkMode: "class",
   theme: {
+
     container: {
       center: true,
       padding: '2rem',
     },
     extend: {
+      fontFamily: {
+        sans: ["Univers LT Std", "sans-serif"], // default
+        display: ["Futura Std", "sans-serif"], // headings
+      },
       boxShadow: {
         layer: '0 35px 60px -15px rgba(0, 0, 0, 0.3)',
       },
@@ -94,9 +99,6 @@ export default {
           900: '#183122',
           950: '#14211a',
         },
-      },
-      fontFamily: {
-        sans: ['var(--font-inter)'],
       },
     },
   },

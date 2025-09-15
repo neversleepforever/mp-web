@@ -11,24 +11,28 @@ export default async function AboutPage() {
   }
 
   return (
-    <div className="container my-12 lg:my-24 dark:text-white">
+    <div className="p-6 m-6 my-12 border-1 lg:my-24 dark:text-white dark:bg-black">
       {data.content?.length ? (
         <PortableText
           value={data.content}
           components={{
+            block: {
+              h1: ({ children }) => <h1 className="font-display heading-1">{children}</h1>,
+              normal: ({ children }) => <p className="mt-6">{children}</p>
+            },
             types: {
               image: ({ value }) => {
                 const url = value.asset?.url
                 const dims = value.asset?.metadata?.dimensions
                 if (!url || !dims) return null
                 return (
-                  <div className="my-6">
+                  <div className="mt-6 grayscale">
                     <Image
                       src={url}
                       alt={value.alt || ""}
                       width={dims.width}
                       height={dims.height}
-                      className="rounded-lg shadow"
+                      className="border-white border-1"
                     />
                   </div>
                 )
