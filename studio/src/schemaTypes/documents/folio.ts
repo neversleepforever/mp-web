@@ -8,12 +8,6 @@ export const folio = defineType({
   icon: DocumentIcon,
   fields: [
     defineField({
-      name: 'photographer',
-      title: 'Photographer',
-      type: 'string',
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
       name: 'title',
       title: 'Title',
       type: 'string',
@@ -24,7 +18,11 @@ export const folio = defineType({
       title: 'Subtitle',
       type: 'string',
     }),
-    // 👇 Add this field
+    defineField({
+      name: 'photographer',
+      title: 'Photographer',
+      type: 'string',
+    }),
     defineField({
       name: 'slug',
       title: 'Slug',

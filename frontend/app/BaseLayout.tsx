@@ -39,12 +39,12 @@ export default async function BaseLayout({
         <AgeCheck>
           <section className="min-h-screen">
             {/* <Toaster /> */}
-            {isDraftMode && (
+            {/* {isDraftMode && (
               <>
                 <DraftModeToast />
                 <VisualEditing />
               </>
-            )}
+            )} */}
             <SanityLive onError={handleError} />
             <Header />
             <main>{children}</main>

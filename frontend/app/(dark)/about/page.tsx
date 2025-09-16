@@ -26,7 +26,7 @@ export default async function AboutPage() {
                 const dims = value.asset?.metadata?.dimensions
                 if (!url || !dims) return null
                 return (
-                  <div className="mt-6 grayscale">
+                  <div className="mt-6 grayscale mix-blend-difference">
                     <Image
                       src={url}
                       alt={value.alt || ""}

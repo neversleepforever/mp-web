@@ -16,8 +16,8 @@ export default function Gallery({ images, title }: { images: GalleryImage[]; tit
   const selected = images[selectedIndex]
 
   return (
-    <div className="w-full h-screen flex flex-col">
-      <div className="flex-1 flex justify-center items-end overflow-hidden">
+    <div className="w-full h-[85vh] flex flex-col">
+      <div className="flex-1 flex justify-center mb-6 items-end overflow-hidden">
         {selected?.asset?.url && (
           <figure className="relative w-full h-full max-w-6xl flex flex-col justify-end">
             <div className="relative w-full h-full flex items-end">
@@ -38,29 +38,30 @@ export default function Gallery({ images, title }: { images: GalleryImage[]; tit
         )}
       </div>
 
-      <div className="h-24 overflow-x-scroll border-t border-gray-200">
-        <div className="flex gap-0 items-center h-full">
-          {images.map((img, i) =>
+    <div className="-mx-6"> {/* pulls it outside the parent padding */}
+        <div className="flex gap-0 overflow-x-auto px-6 pb-2 scrollbar-hide">
+            {images.map((img, i) =>
             img?.asset?.url ? (
-              <button
+                <button
                 key={i}
                 onClick={() => setSelectedIndex(i)}
-                className={`relative w-24 h-24 flex-shrink-0 overflow-hidden ${
-                  i === selectedIndex ? "border-blue-500" : "border-transparent"
+                className={`relative h-24 flex-shrink-0 overflow-hidden ${
+                    i === selectedIndex ? "border-blue-500" : "border-transparent"
                 }`}
-                aria-label={`Select image ${i + 1}`}
-              >
+                >
                 <Image
-                  src={img.asset.url}
-                  alt={img.alt || title || ""}
-                  fill
-                  className="object-cover"
+                    src={img.asset.url}
+                    alt={img.alt || title || ""}
+                    height={96}
+                    width={2000} 
+                    className="h-full w-auto object-contain"
                 />
-              </button>
+                </button>
             ) : null
-          )}
+            )}
         </div>
-      </div>
+        </div>
+
     </div>
   )
 }

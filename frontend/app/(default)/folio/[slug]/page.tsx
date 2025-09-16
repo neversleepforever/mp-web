@@ -6,6 +6,7 @@ import { sanityFetch } from "@/sanity/lib/live"
 import { folioPagesSlugs, folioQuery } from "@/sanity/lib/queries"
 import { resolveOpenGraphImage } from "@/sanity/lib/utils"
 import Gallery from "./Gallery"
+import Link from 'next/link'
 
 export interface Folio {
     _id: string
@@ -85,29 +86,34 @@ export default async function FolioPage({ params }: Props) {
 
   return (
     <div className="my-12 lg:my-24 p-6">
-      <header className="border-b border-gray-200 pb-6">
-        <h1 className="text-4xl font-bold tracking-tight text-gray-900">
+      <header className="pb-6">
+        <h1 className="text-[38px] font-bold tracking-tight text-gray-900">
           {folio.title ?? "Untitled"}
         </h1>
         {folio.subtitle && (
           <p className="text-lg text-gray-600 mt-2">{folio.subtitle}</p>
         )}
-        <div className="mt-4 text-sm text-gray-500">
-          <span>{folio.photographer ?? "Unknown photographer"}</span>
-          {folio.date && <> · <span>{folio.date}</span></>}
+        <div className="mt-8 text-[18px]">
+          {folio.photographer ? <div className="uppercase">Shot By {folio.photographer}</div> : <></>}
+          {folio.date ? <div>{folio.date}</div> : <></>}
         </div>
       </header>
-
-      {folio.description?.length ? (
+      <div className="text-[22px]">
+       {folio.description?.length ? (
         <PortableText
-          // className="prose prose-lg max-w-2xl"
+          
           value={folio.description}
         />
       ) : null}
-
+      </div>
       {folio.images?.length ? (
         <Gallery images={folio.images} title={folio.title} />
       ) : null}
+      <nav className="fixed bottom-7 uppercase mix-blend-difference z-90">
+        <Link href="/folio" className="hover:underline text-[14px] z-90">
+          Folio
+        </Link>
+      </nav>
     </div>
   )
 }
