@@ -12,7 +12,7 @@
 @font-face {
   font-family: "Univers LT Std";
   src: 
-       url("/frontend/public/fonts/universltstd.woff") format("woff");
+       url("/fonts/universltstd.woff") format("woff");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -22,7 +22,7 @@
 @font-face {
   font-family: "Univers LT Std";
   src: 
-       url("/frontend/public/fonts/universltstd-bold.woff") format("woff");
+       url("/fonts/universltstd-bold.woff") format("woff");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -32,7 +32,7 @@
 @font-face {
   font-family: "Univers LT Std";
   src: 
-       url("/frontend/public/fonts/universltstd-boldex.woff") format("woff");
+       url("/fonts/universltstd-boldex.woff") format("woff");
   font-weight: 800;
   font-style: normal;
   font-display: swap;
@@ -40,15 +40,15 @@
 
 @font-face {
   font-family: "Futura Std";
-  src: url("/frontend/public/fonts/futurastd-extrabold.woff") format("woff");
-  font-weight: 800;
+  src: url("/fonts/futurastd-extrabold.woff") format("woff");
+  font-weight: 750;
   font-style: normal;
   font-display: swap;
 }
 
 @layer base {
   body {
-    font-family: "Univers LT Std", sans-serif;
+    font-family: "Univers LT Std";
   }
 }
 
@@ -73,8 +73,8 @@
   --color-gray-900: #1b1d27;
   --color-gray-950: #13141b;
 
-  --font-display: 'Inter', 'sans-serif';
-  --font-sans: 'Inter', 'sans-serif';
+  --font-display: 'Futura Std', 'sans-serif';
+  --font-sans: 'Univers Lt Std', 'sans-serif';
 
   --default-transition-duration: 250ms;
 }
@@ -82,5 +82,8 @@
 @layer components {
   .heading-1 {
     @apply text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl;
+  }
+  .heading-2 {
+    @apply text-[20px] font-display uppercase;
   }
 }

@@ -1,7 +1,37 @@
+import PixelateOverlay from "@/app/components/PixelateOverlay"
 import { sanityFetch } from "@/sanity/lib/live"
 import { servicesQuery } from "@/sanity/lib/queries"
-import { PortableText } from "next-sanity"
+import { PortableText, type PortableTextComponents } from "next-sanity"
 import Image from "next/image"
+
+const portableTextComponents: PortableTextComponents = {
+  block: {
+    h1: ({ children }) => <h1 className="heading-1">{children}</h1>,
+    h2: ({ children }) => <h2 className="heading-2">{children}</h2>,
+    h3: ({ children }) => <h3 className="heading-3">{children}</h3>,
+    normal: ({ children }) => <p className="mt-6 font-sans">{children}</p>,
+  },
+  types: {
+    image: ({ value }) =>
+      value?.asset?.url ? (
+        <figure className="my-6">
+          <Image
+            src={value.asset.url}
+            alt={value.caption || ""}
+            width={800}
+            height={600}
+            className="w-full h-auto object-contain"
+          />
+          {value.caption && (
+            <figcaption className="text-sm text-center mt-2">
+              {value.caption}
+            </figcaption>
+          )}
+        </figure>
+      ) : null,
+  },
+}
+
 
 export default async function ServicesPage() {
   const { data } = await sanityFetch({
@@ -13,43 +43,75 @@ export default async function ServicesPage() {
     return <p>No Services content found. Add it in Sanity Studio.</p>
   }
 
-  console.log(data, "data in services");
-
   return (
-    <div className="container my-12 lg:my-24">
-      <h1 className="text-4xl font-bold mb-8">Services</h1>
+    <div className="container my-12 lg:my-24 dark:text-white dark:bg-black">
       {data.content?.length ? (
         <PortableText
           value={data.content}
           components={{
+            ...portableTextComponents,
             types: {
+              ...portableTextComponents.types,
               servicesSection: ({ value }) => (
-                <div className="border p-4 my-6">
-                  <h2 className="text-xl font-bold mb-2">{value.title}</h2>
-                  <PortableText value={value.body} />
+                <div className="border p-4 my-4">
+                  <h1 className="heading-1 mb-6">{value.title}</h1>
+                  <div className="[&_p]:text-justify text-[20px]">
+                    <PortableText
+                      value={value.body}
+                      components={portableTextComponents}
+                    />
+                  </div>
                 </div>
               ),
               ratesSection: ({ value }) => (
-                <div className="border p-4 my-6 bg-gray-50">
-                  <h2 className="text-xl font-bold mb-2">{value.title}</h2>
-                  <PortableText value={value.rates} />
+                <div className="border">
+                  <h2 className="text-xl font-bold mb-2 p-4 my-4">
+                    {value.title}
+                  </h2>
+                  <h3 className="font-display bg-white text-black text-[12px] py-[10px] px-16 text-center">
+                    {value.banner}
+                  </h3>
+                  <div className="p-4 text-center [&_ul]:mt-6 text-[20px]">
+                    <PortableText
+                      value={value.rates}
+                      components={portableTextComponents}
+                    />
+                  </div>
                 </div>
               ),
-              borderedImage: ({ value }) => (
-                <figure className="border p-2 my-6">
-                  {value.image?.asset?.url && (
+              outcallSection: ({ value }) => (
+                <div className="border p-4 my-4">
+                  <div className="text-center text-[20px]">
+                    <PortableText
+                      value={value.body}
+                      components={portableTextComponents}
+                    />
+                  </div>
+                </div>
+              ),
+              virtualSection: ({ value }) => (
+                <div className="border p-4 my-4">
+                  <div className="text-center text-[20px]">
+                    <PortableText
+                      value={value.body}
+                      components={portableTextComponents}
+                    />
+                  </div>
+                </div>
+              ),
+              image: ({ value }) => (
+                 <figure className="my-4">
+                  {value.asset?.url && (
                     <Image
-                      src={value.image.asset.url}
+                      src={value.asset.url}
                       alt={value.caption || ""}
                       width={800}
                       height={600}
-                      className="w-full h-auto object-contain"
+                      className="w-full h-auto object-contain grayscale"
                     />
                   )}
                   {value.caption && (
-                    <figcaption className="text-sm text-gray-600 mt-2">
-                      {value.caption}
-                    </figcaption>
+                    <figcaption className="text-[24px] pt-4">{value.caption}</figcaption>
                   )}
                 </figure>
               ),
@@ -59,6 +121,10 @@ export default async function ServicesPage() {
       ) : (
         <p>No content added yet.</p>
       )}
+
+      <div className="fixed bottom-[-30px] left-[-150px] w-[200%] h-[60px] -rotate-45 bg-blue-600 text-white flex items-center justify-center shadow-lg">
+        <p className="font-display uppercase pl-[210px]">🍑 Adults Only 🍑</p>
+      </div>
     </div>
   )
 }

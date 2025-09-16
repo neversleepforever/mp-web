@@ -8,13 +8,13 @@ export default async function Header() {
   })
 
   return (
-    <header className="fixed z-40 inset-0 h-4 py-4 dark:text-white">
+    <header className="fixed z-40 inset-0 h-4 py-4 px-7 dark:text-white">
       <div>
         <div className="flex w-full">
           <nav className='w-full'>
             <ul
               role="list"
-              className="flex w-full justify-around text-xs sm:text-base tracking-tight font-mono"
+              className="flex w-full justify-between text-xs sm:text-base tracking-tight font-mono"
             >
               <li>
                 <Link href="/about" className="hover:underline">

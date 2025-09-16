@@ -138,22 +138,66 @@ export const allFoliosQuery = defineQuery(`
 
 export const servicesQuery = defineQuery(`
   *[_type == "services"][0]{
-    _id,
     content[]{
       ...,
-      _type == "borderedImage" => {
-        _type,
-        caption,
-        image{
-          asset->{
-            url,
-            metadata { dimensions }
+      _type == "image" => {
+        ...,
+        "asset": asset->{
+          url
+        }
+      },
+      _type == "servicesSection" => {
+        ...,
+        body[]{
+          ...,
+          _type == "image" => {
+            ...,
+            "asset": asset->{
+              url
+            }
+          }
+        }
+      },
+      _type == "ratesSection" => {
+        ...,
+        rates[]{
+          ...,
+          _type == "image" => {
+            ...,
+            "asset": asset->{
+              url
+            }
+          }
+        }
+      },
+      _type == "outcallSection" => {
+        ...,
+        body[]{
+          ...,
+          _type == "image" => {
+            ...,
+            "asset": asset->{
+              url
+            }
+          }
+        }
+      },
+      _type == "virtualSection" => {
+        ...,
+        body[]{
+          ...,
+          _type == "image" => {
+            ...,
+            "asset": asset->{
+              url
+            }
           }
         }
       }
     }
   }
 `)
+
 
 export const aboutQuery = defineQuery(`
   *[_type == "about"][0]{

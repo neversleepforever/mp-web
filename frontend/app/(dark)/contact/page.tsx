@@ -26,8 +26,8 @@ export default async function ContactPage() {
   }
 
   return (
-    <div className="container">
-      <h1 className="text-4xl font-bold mb-8">Contact</h1>
+    <div className="p-6 m-6 my-12 border-1 dark:text-white dark:bg-black">
+      <h1 className="text-[38px] mb-8">Contact</h1>
       {data.socials1?.length > 0 && (
         <div className="mb-8">
           <ul className="space-y-2">
@@ -37,7 +37,7 @@ export default async function ContactPage() {
                   href={link.href}
                   target={link.openInNewTab ? "_blank" : "_self"}
                   rel={link.openInNewTab ? "noopener noreferrer" : undefined}
-                  className="text-blue-600 hover:underline"
+                  className="text-[37px]"
                 >
                   {link.displayTitle}
                 </Link>
@@ -55,7 +55,7 @@ export default async function ContactPage() {
                   href={link.href}
                   target={link.openInNewTab ? "_blank" : "_self"}
                   rel={link.openInNewTab ? "noopener noreferrer" : undefined}
-                  className="text-blue-600 hover:underline"
+                  className="text-[37px]"
                 >
                   {link.displayTitle}
                 </Link>

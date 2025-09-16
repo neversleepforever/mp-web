@@ -17,7 +17,7 @@ export default async function AboutPage() {
           value={data.content}
           components={{
             block: {
-              h1: ({ children }) => <h1 className="font-display heading-1">{children}</h1>,
+              h1: ({ children }) => <h1 className="font-sans uppercase heading-1">{children}</h1>,
               normal: ({ children }) => <p className="mt-6">{children}</p>
             },
             types: {

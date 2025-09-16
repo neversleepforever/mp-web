@@ -1,11 +1,11 @@
 import type { Metadata, ResolvingMetadata } from "next"
 import { notFound } from "next/navigation"
-import type { PortableTextBlock } from "sanity"
 
-import PortableText from "@/app/components/PortableText"
+import { PortableText } from "next-sanity"
 import { sanityFetch } from "@/sanity/lib/live"
 import { folioPagesSlugs, folioQuery } from "@/sanity/lib/queries"
 import { resolveOpenGraphImage } from "@/sanity/lib/utils"
+import Gallery from "./Gallery"
 
 export interface Folio {
     _id: string
@@ -84,8 +84,7 @@ export default async function FolioPage({ params }: Props) {
   }
 
   return (
-    <div className="container my-12 lg:my-24 grid gap-12">
-      {/* Header */}
+    <div className="my-12 lg:my-24 p-6">
       <header className="border-b border-gray-200 pb-6">
         <h1 className="text-4xl font-bold tracking-tight text-gray-900">
           {folio.title ?? "Untitled"}
@@ -99,35 +98,15 @@ export default async function FolioPage({ params }: Props) {
         </div>
       </header>
 
-      {/* Description */}
       {folio.description?.length ? (
         <PortableText
-          className="prose prose-lg max-w-2xl"
+          // className="prose prose-lg max-w-2xl"
           value={folio.description}
         />
       ) : null}
 
-      {/* Images */}
       {folio.images?.length ? (
-        <section className="grid gap-8">
-          {folio.images.map(
-            (img, i) =>
-              img?.asset?.url && (
-                <figure key={i} className="flex flex-col gap-2">
-                  <img
-                    src={img.asset.url}
-                    alt={img.alt || folio.title || ""}
-                    className="rounded-lg shadow"
-                  />
-                  {img.credit && (
-                    <figcaption className="text-sm text-gray-500">
-                      {img.credit}
-                    </figcaption>
-                  )}
-                </figure>
-              )
-          )}
-        </section>
+        <Gallery images={folio.images} title={folio.title} />
       ) : null}
     </div>
   )

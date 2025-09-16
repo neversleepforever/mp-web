@@ -10,9 +10,7 @@ import {infoSection} from './objects/infoSection'
 import {settings} from './singletons/settings'
 import {link} from './objects/link'
 import {blockContent} from './objects/blockContent'
-
-
-// Export an array of all the schema types.  This is used in the Sanity Studio configuration. https://www.sanity.io/docs/schema-types
+import { portableText } from "./objects/portableText"
 
 export const schemaTypes = [
   // Singletons
@@ -25,10 +23,10 @@ export const schemaTypes = [
   post,
   person,
   folio,
-
   // Objects
   blockContent,
   infoSection,
   callToAction,
   link,
+  portableText,
 ]
