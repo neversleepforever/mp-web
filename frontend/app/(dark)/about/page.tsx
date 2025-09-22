@@ -11,7 +11,9 @@ export default async function AboutPage() {
   }
 
   return (
-    <div className="p-6 m-6 my-12 border-1 lg:my-24 dark:text-white dark:bg-black">
+    <div className="md:grid md:grid-cols-2">
+    <div className="md:bg-gray-800"></div>
+    <div className="p-6 m-6 md:pl-4 md:pr-6 md:ml-4 md:mr-6 md:mt-18 border-1 dark:text-white dark:bg-black">
       {data.content?.length ? (
         <PortableText
           value={data.content}
@@ -43,6 +45,7 @@ export default async function AboutPage() {
       ) : (
         <p>No content added yet.</p>
       )}
+    </div>
     </div>
   )
 }

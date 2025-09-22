@@ -44,7 +44,9 @@ export default async function ServicesPage() {
   }
 
   return (
-    <div className="container my-12 lg:my-24 dark:text-white dark:bg-black">
+    <div className=" my-12 md:my-0 md:grid md:grid-cols-2 dark:text-white dark:bg-black">
+      <div className="md:bg-gray-800"></div>
+      <div className="md:col-start-2 md:my-12 md:pl-4 md:pr-6">
       {data.content?.length ? (
         <PortableText
           value={data.content}
@@ -118,12 +120,14 @@ export default async function ServicesPage() {
             },
           }}
         />
+        
       ) : (
         <p>No content added yet.</p>
       )}
 
       <div className="fixed bottom-[-30px] left-[-150px] w-[200%] h-[60px] -rotate-45 bg-blue-600 text-white flex items-center justify-center shadow-lg">
         <p className="font-display uppercase pl-[210px]">🍑 Adults Only 🍑</p>
+      </div>
       </div>
     </div>
   )
