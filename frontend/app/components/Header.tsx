@@ -1,49 +1,38 @@
-import Link from 'next/link'
-import {settingsQuery} from '@/sanity/lib/queries'
-import {sanityFetch} from '@/sanity/lib/live'
+"use client"
 
-export default async function Header() {
-  const {data: settings} = await sanityFetch({
-    query: settingsQuery,
-  })
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+
+export default function Header() {
+  const pathname = usePathname()
+
+  const links = [
+    { href: "/about", label: "About" },
+    { href: "/services", label: "Services" },
+    { href: "/folio", label: "Folio" },
+    { href: "/booking", label: "Booking" },
+    { href: "/contact", label: "Contact" },
+  ]
 
   return (
     <header className="fixed z-40 inset-0 h-4 py-4 px-7 md:pt-8 dark:text-white">
-      <div>
-        <div className="flex w-full">
-          <nav className='w-full'>
-            <ul
-              role="list"
-              className="flex w-full justify-between text-xs sm:text-base tracking-tight font-mono"
-            >
-              <li>
-                <Link href="/about" className="hover:underline">
-                  About
+      <div className="flex w-full">
+        <nav className="w-full">
+          <ul className="flex w-full justify-between text-xs sm:text-base tracking-tight font-mono">
+            {links.map(({ href, label }) => (
+              <li key={href}>
+                <Link
+                  href={href}
+                  className={`hover:underline ${
+                    pathname === href ? "line-through" : ""
+                  }`}
+                >
+                  {label}
                 </Link>
               </li>
-              <li>
-                <Link href="/services" className="hover:underline">
-                  Services
-                </Link>
-              </li>
-              <li>
-                <Link href="/folio" className="hover:underline">
-                  Folio
-                </Link>
-              </li>
-              <li>
-                <Link href="/booking" className="hover:underline">
-                  Booking
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="hover:underline">
-                  Contact
-                </Link>
-              </li>
-            </ul>
-          </nav>
-        </div>
+            ))}
+          </ul>
+        </nav>
       </div>
     </header>
   )
