@@ -5,6 +5,7 @@ import { allFoliosQuery } from "@/sanity/lib/queries"
 
 type FolioListItem = {
   _id: string
+  _type: "gallery" | "journal" | "video"
   title?: string
   subtitle?: string
   photographer?: string
@@ -14,6 +15,10 @@ type FolioListItem = {
     asset?: { url: string }
     credit?: string
   }[]
+  displayImage?: {
+    asset?: { url: string }
+    alt?: string
+  }
 }
 
 export default async function FolioIndexPage() {
@@ -28,39 +33,62 @@ export default async function FolioIndexPage() {
   }
 
   return (
-    <div className="container p-6 pt-14 pb-14">
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {folios.map((folio) => (
-          <Link
-            key={folio._id}
-            href={`/folio/${folio.slug}`}
-            className="block"
-          >
-            {folio.images?.[0]?.asset?.url && (
-              <div className="mb-4">
-                <Image
-                  src={folio.images[0].asset.url}
-                  alt={folio.title || ""}
-                  width={600}
-                  height={400}
-                  className="w-full h-auto object-cover"
-                />
+    <div className="h-[85vh] pl-6 pr-6 md:pr-0 my-12 md:my-18">
+      <div
+        className="
+          grid gap-6
+          md:grid-rows-2 md:grid-flow-col
+          md:overflow-x-auto md:scroll-smooth
+          h-full
+        "
+      >
+        {folios.map((folio) => {
+          const previewImage =
+            folio._type === "video"
+              ? folio.displayImage?.asset?.url
+              : folio.images?.[0]?.asset?.url
+
+          return (
+            <Link
+              key={folio._id}
+              href={`/folio/${folio._type}/${folio.slug}`}
+              className="flex flex-col md:min-w-[35vw] lg:min-w-[300px] h-full"
+            >
+              {previewImage ? (
+                <div className="flex-1 relative">
+                  <div className="absolute inset-0">
+                    <Image
+                      src={previewImage}
+                      alt={folio.title || folio.displayImage?.alt || ""}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 45vw, 300px"
+                    />
+                  </div>
+                  <div className="pt-[125%]" /> {/* maintain 4/5 aspect ratio */}
+                </div>
+              ) : (
+                <div className="flex-1 flex items-center justify-center bg-gray-200">
+                  <span className="text-gray-600 italic">{folio._type}</span>
+                </div>
+              )}
+
+              <div className="mt-2">
+                <h2>{folio.title ?? "Untitled"}</h2>
+                {/* <p className="text-sm text-gray-500">{folio._type}</p> */}
+                {folio.date && (
+                  <p>
+                    {new Date(folio.date).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </p>
+                )}
               </div>
-            )}
-            <h2 className="">{folio.title ?? "Untitled"}</h2>
-            {/* {folio.subtitle && (
-              <p className="text-gray-600 text-sm">{folio.subtitle}</p>
-            )} */}
-            <p className="">
-              {/* {folio.photographer ?? "Unknown"}{" "} */}
-              {folio.date && new Date(folio.date).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-                })}
-            </p>
-          </Link>
-        ))}
+            </Link>
+          )
+        })}
       </div>
     </div>
   )

@@ -808,12 +808,21 @@ export type PagesSlugsResult = Array<{
 // Variable: folioPagesSlugs
 // Query: *[_type == "folio" && defined(slug.current)]{    "slug": slug.current  }
 export type FolioPagesSlugsResult = Array<never>
+// Variable: journalSlugsQuery
+// Query: *[_type == "journal" && defined(slug.current)]{    "slug": slug.current  }
+export type JournalSlugsQueryResult = Array<never>
+// Variable: videoSlugsQuery
+// Query: *[_type == "video" && defined(slug.current)]{    "slug": slug.current  }
+export type VideoSlugsQueryResult = Array<never>
 // Variable: folioQuery
-// Query: *[_type == "folio" && slug.current == $slug][0]{    _id,    title,    subtitle,    photographer,    date,    description,    "slug": slug.current,    images[]{      asset->{ url },      alt,      credit    }  }
+// Query: *[_type == "gallery" && slug.current == $slug][0]{    _id,    title,    subtitle,    photographer,    date,    description,    "slug": slug.current,    images[]{      asset->{ url },      alt,      credit    }  }
 export type FolioQueryResult = null
-// Variable: allFoliosQuery
-// Query: *[_type == "folio" && defined(slug.current)] | order(date desc, _updatedAt desc) {    _id,    title,    subtitle,    photographer,    date,    "slug": slug.current,    images[]{      asset->{        url      },      credit    }  }
-export type AllFoliosQueryResult = Array<never>
+// Variable: videoQuery
+// Query: *[_type == "video" && slug.current == $slug][0]{    _id,    title,    subtitle,    photographer,    date,    description,    "slug": slug.current,    videoUrl,    displayImage{      asset->{ url },      alt    }  }
+export type VideoQueryResult = null
+// Variable: allGalleryQuery
+// Query: *[_type == "gallery" && defined(slug.current)] | order(date desc, _updatedAt desc) {    _id,    title,    subtitle,    photographer,    date,    "slug": slug.current,    images[]{      asset->{        url      },      credit    }  }
+export type AllGalleryQueryResult = Array<never>
 // Variable: servicesQuery
 // Query: *[_type == "services"][0]{    content[]{      ...,      _type == "image" => {        ...,        "asset": asset->{          url        }      },      _type == "servicesSection" => {        ...,        body[]{          ...,          _type == "image" => {            ...,            "asset": asset->{              url            }          }        }      },      _type == "ratesSection" => {        ...,        rates[]{          ...,          _type == "image" => {            ...,            "asset": asset->{              url            }          }        }      },      _type == "outcallSection" => {        ...,        body[]{          ...,          _type == "image" => {            ...,            "asset": asset->{              url            }          }        }      },      _type == "virtualSection" => {        ...,        body[]{          ...,          _type == "image" => {            ...,            "asset": asset->{              url            }          }        }      }    }  }
 export type ServicesQueryResult = null
@@ -834,8 +843,11 @@ declare module '@sanity/client' {
     '\n  *[_type == "post" && defined(slug.current)]\n  {"slug": slug.current}\n': PostPagesSlugsResult
     '\n  *[_type == "page" && defined(slug.current)]\n  {"slug": slug.current}\n': PagesSlugsResult
     '\n  *[_type == "folio" && defined(slug.current)]{\n    "slug": slug.current\n  }\n': FolioPagesSlugsResult
-    '\n  *[_type == "folio" && slug.current == $slug][0]{\n    _id,\n    title,\n    subtitle,\n    photographer,\n    date,\n    description,\n    "slug": slug.current,\n    images[]{\n      asset->{ url },\n      alt,\n      credit\n    }\n  }\n': FolioQueryResult
-    '\n  *[_type == "folio" && defined(slug.current)] | order(date desc, _updatedAt desc) {\n    _id,\n    title,\n    subtitle,\n    photographer,\n    date,\n    "slug": slug.current,\n    images[]{\n      asset->{\n        url\n      },\n      credit\n    }\n  }\n': AllFoliosQueryResult
+    '\n  *[_type == "journal" && defined(slug.current)]{\n    "slug": slug.current\n  }\n': JournalSlugsQueryResult
+    '\n  *[_type == "video" && defined(slug.current)]{\n    "slug": slug.current\n  }\n': VideoSlugsQueryResult
+    '\n  *[_type == "gallery" && slug.current == $slug][0]{\n    _id,\n    title,\n    subtitle,\n    photographer,\n    date,\n    description,\n    "slug": slug.current,\n    images[]{\n      asset->{ url },\n      alt,\n      credit\n    }\n  }\n': FolioQueryResult
+    '\n  *[_type == "video" && slug.current == $slug][0]{\n    _id,\n    title,\n    subtitle,\n    photographer,\n    date,\n    description,\n    "slug": slug.current,\n    videoUrl,\n    displayImage{\n      asset->{ url },\n      alt\n    }\n  }\n': VideoQueryResult
+    '\n  *[_type == "gallery" && defined(slug.current)] | order(date desc, _updatedAt desc) {\n    _id,\n    title,\n    subtitle,\n    photographer,\n    date,\n    "slug": slug.current,\n    images[]{\n      asset->{\n        url\n      },\n      credit\n    }\n  }\n': AllGalleryQueryResult
     '\n  *[_type == "services"][0]{\n    content[]{\n      ...,\n      _type == "image" => {\n        ...,\n        "asset": asset->{\n          url\n        }\n      },\n      _type == "servicesSection" => {\n        ...,\n        body[]{\n          ...,\n          _type == "image" => {\n            ...,\n            "asset": asset->{\n              url\n            }\n          }\n        }\n      },\n      _type == "ratesSection" => {\n        ...,\n        rates[]{\n          ...,\n          _type == "image" => {\n            ...,\n            "asset": asset->{\n              url\n            }\n          }\n        }\n      },\n      _type == "outcallSection" => {\n        ...,\n        body[]{\n          ...,\n          _type == "image" => {\n            ...,\n            "asset": asset->{\n              url\n            }\n          }\n        }\n      },\n      _type == "virtualSection" => {\n        ...,\n        body[]{\n          ...,\n          _type == "image" => {\n            ...,\n            "asset": asset->{\n              url\n            }\n          }\n        }\n      }\n    }\n  }\n': ServicesQueryResult
     '\n  *[_type == "about"][0]{\n    _id,\n    content[]{\n      ...,\n      _type == "image" => {\n        asset->{\n          url,\n          metadata { dimensions }\n        },\n        alt\n      }\n    }\n  }\n': AboutQueryResult
   }

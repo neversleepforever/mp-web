@@ -1,7 +1,9 @@
 import {person} from './documents/person'
 import {page} from './documents/page'
 import {post} from './documents/post'
-import {folio} from './documents/folio'
+import {gallery} from './documents/gallery'
+import {journal} from './documents/journal'
+import {video} from './documents/video'
 import {services} from "./singletons/services"
 import {contact} from "./singletons/contact"
 import { about } from './singletons/about'
@@ -22,7 +24,9 @@ export const schemaTypes = [
   page,
   post,
   person,
-  folio,
+  gallery,
+  journal,
+  video,
   // Objects
   blockContent,
   infoSection,

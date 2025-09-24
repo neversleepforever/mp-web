@@ -1,9 +1,9 @@
 import {defineField, defineType} from 'sanity'
 import {DocumentIcon} from '@sanity/icons'
 
-export const folio = defineType({
-  name: 'folio',
-  title: 'Folio',
+export const video = defineType({
+  name: 'video',
+  title: 'Video',
   type: 'document',
   icon: DocumentIcon,
   fields: [
@@ -29,7 +29,7 @@ export const folio = defineType({
       type: 'slug',
       validation: (Rule) => Rule.required(),
       options: {
-        source: 'title', // auto-generate from title
+        source: 'title',
         maxLength: 96,
       },
     }),
@@ -49,21 +49,16 @@ export const folio = defineType({
       of: [{type: 'block'}],
     }),
     defineField({
-      name: 'images',
-      title: 'Images',
-      type: 'array',
-      of: [
-        {
-          type: 'image',
-          options: {hotspot: true},
-          fields: [
-            defineField({
-              name: 'credit',
-              title: 'Credit',
-              type: 'string',
-            }),
-          ],
-        },
+      name: "displayImage",
+      title: "Display Image (Thumbnail)",
+      type: "image",
+      options: { hotspot: true },
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Alt text",
+          type: "string",
+        }),
       ],
     }),
   ],

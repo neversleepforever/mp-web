@@ -102,8 +102,20 @@ export const folioPagesSlugs: string = defineQuery(`
   }
 `)
 
+export const journalSlugsQuery = defineQuery(`
+  *[_type == "journal" && defined(slug.current)]{
+    "slug": slug.current
+  }
+`)
+
+export const videoSlugsQuery = defineQuery(`
+  *[_type == "video" && defined(slug.current)]{
+    "slug": slug.current
+  }
+`)
+
 export const folioQuery: string = defineQuery(`
-  *[_type == "folio" && slug.current == $slug][0]{
+  *[_type == "gallery" && slug.current == $slug][0]{
     _id,
     title,
     subtitle,
@@ -119,8 +131,76 @@ export const folioQuery: string = defineQuery(`
   }
 `)
 
-export const allFoliosQuery = defineQuery(`
-  *[_type == "folio" && defined(slug.current)] | order(date desc, _updatedAt desc) {
+export const allFoliosQuery = `
+  *[_type in ["gallery", "journal", "video"]] | order(date desc) {
+    _id,
+    _type,
+    title,
+    subtitle,
+    photographer,
+    date,
+    "slug": slug.current,
+    _type in ["gallery", "journal"] => {
+      images[]{
+        asset->{ url },
+        credit
+      }
+    },
+    _type == "video" => {
+      displayImage{
+        asset->{ url },
+        alt
+      }
+    }
+  }
+`
+
+export const galleryQuery = `
+  *[_type == "gallery" && slug.current == $slug][0]{
+    _id,
+    title,
+    subtitle,
+    photographer,
+    date,
+    "slug": slug.current,
+    description,
+    images[]{ asset->{url}, credit }
+  }
+`
+
+export const journalQuery = `
+  *[_type == "journal" && slug.current == $slug][0]{
+    _id,
+    title,
+    subtitle,
+    photographer,
+    date,
+    "slug": slug.current,
+    description,
+    images[]{ asset->{url}, credit }
+  }
+`
+
+export const videoQuery = defineQuery(`
+  *[_type == "video" && slug.current == $slug][0]{
+    _id,
+    title,
+    subtitle,
+    photographer,
+    date,
+    description,
+    "slug": slug.current,
+    videoUrl,
+    displayImage{
+      asset->{ url },
+      alt
+    }
+  }
+`)
+
+
+export const allGalleryQuery = defineQuery(`
+  *[_type == "gallery" && defined(slug.current)] | order(date desc, _updatedAt desc) {
     _id,
     title,
     subtitle,
