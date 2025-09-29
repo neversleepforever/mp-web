@@ -48,6 +48,11 @@ export const video = defineType({
       type: 'array',
       of: [{type: 'block'}],
     }),
+      defineField({
+        name: "muxVideo",
+        title: "Mux Video",
+        type: "mux.video", 
+      }),
     defineField({
       name: "displayImage",
       title: "Display Image (Thumbnail)",

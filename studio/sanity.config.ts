@@ -16,6 +16,7 @@ import {
   type DocumentLocation,
 } from 'sanity/presentation'
 import {assist} from '@sanity/assist'
+import {muxInput} from "sanity-plugin-mux-input"
 
 // Environment variables for project configuration
 const projectId = process.env.SANITY_STUDIO_PROJECT_ID || 'your-projectID'
@@ -53,6 +54,9 @@ export default defineConfig({
   dataset,
 
   plugins: [
+    muxInput({
+      mp4_support: "standard", // optional, enables downloadable MP4s
+    }),
     // Presentation tool configuration for Visual Editing
     presentationTool({
       previewUrl: {

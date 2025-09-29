@@ -182,20 +182,23 @@ export const journalQuery = `
 `
 
 export const videoQuery = defineQuery(`
-  *[_type == "video" && slug.current == $slug][0]{
-    _id,
-    title,
-    subtitle,
-    photographer,
-    date,
-    description,
-    "slug": slug.current,
-    videoUrl,
-    displayImage{
-      asset->{ url },
-      alt
+*[_type == "video" && slug.current == $slug][0]{
+  _id,
+  title,
+  subtitle,
+  photographer,
+  date,
+  "slug": slug.current,
+  description,
+  videoUrl,
+  muxVideo {
+    asset->{
+      playbackId,
+      assetId,
+      status
     }
   }
+}
 `)
 
 

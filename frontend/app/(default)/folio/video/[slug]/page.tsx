@@ -6,6 +6,7 @@ import { sanityFetch } from "@/sanity/lib/live"
 import { videoSlugsQuery, videoQuery } from "@/sanity/lib/queries"
 import { resolveOpenGraphImage } from "@/sanity/lib/utils"
 import Link from "next/link"
+import MuxPlayer from "@mux/mux-player-react"
 
 export interface Video {
   _id: string
@@ -16,7 +17,15 @@ export interface Video {
   slug: string
   description?: any[]
   videoUrl?: string
+  muxVideo?: {
+    asset?: {
+      playbackId?: string
+      assetId?: string
+      status?: string
+    }
+  }
 }
+
 
 type Props = { params: { slug: string } }
 
@@ -65,6 +74,7 @@ export default async function VideoPage({ params }: Props) {
 
   const video = data as Video | null
   if (!video?._id) return notFound()
+    console.log(video)
 
   return (
     <div className="my-12 lg:my-24 p-6">
@@ -88,19 +98,23 @@ export default async function VideoPage({ params }: Props) {
           <PortableText value={video.description} />
         ) : null}
       </div>
-
-      {video.videoUrl && (
-        <div className="aspect-video mt-8">
-          <iframe
+    {video.muxVideo?.asset?.playbackId ? (
+        <MuxPlayer
+            playbackId={video?.muxVideo?.asset?.playbackId}
+            streamType="on-demand"
+            autoPlay={false}
+            // controls
+            className="w-full h-full object-contain"
+        />
+        ) : video.videoUrl ? (
+        <video
             src={video.videoUrl}
-            className="w-full h-full"
-            frameBorder="0"
-            allow="autoplay; fullscreen"
-            allowFullScreen
-          />
-        </div>
-      )}
-
+            controls
+            className="w-full h-full object-contain"
+        />
+        ) : (
+        <p className="text-gray-500 italic">No video available</p>
+        )}
       <nav className="fixed bottom-7 uppercase mix-blend-difference z-90">
         <Link href="/folio" className="hover:underline text-[14px]">
           Folio
