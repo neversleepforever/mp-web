@@ -38,13 +38,6 @@ export default async function BaseLayout({
       <body className={`${theme === "dark" ? "dark" : "" } dark:bg-black` }>
         <AgeCheck>
           <section className="min-h-screen">
-            {/* <Toaster /> */}
-            {/* {isDraftMode && (
-              <>
-                <DraftModeToast />
-                <VisualEditing />
-              </>
-            )} */}
             <SanityLive onError={handleError} />
             <Header />
             <main>{children}</main>

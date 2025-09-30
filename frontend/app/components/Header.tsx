@@ -15,7 +15,7 @@ export default function Header() {
   ]
 
   return (
-    <header className="fixed z-40 inset-0 h-4 py-4 px-7 md:pt-8 dark:text-white">
+    <header className="fixed top-0 left-0 right-0 z-40 py-4 px-7 md:pt-8 dark:text-white bg-transparent">
       <div className="flex w-full">
         <nav className="w-full">
           <ul className="flex w-full justify-between text-xs sm:text-base tracking-tight font-mono">
@@ -35,5 +35,6 @@ export default function Header() {
         </nav>
       </div>
     </header>
+
   )
 }
