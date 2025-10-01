@@ -19,16 +19,16 @@ export default function Gallery({
 }) {
   const [selectedIndex, setSelectedIndex] = useState(0)
   const pathname = usePathname()
-  const isFullGallery = pathname?.includes("/folio/gallery/")
+  const isFullGallery = pathname?.includes("/folio/gallery/") ?? false
 
   if (!images?.length) return null
   const selected = images[selectedIndex]
 
-  // ✅ Always call useEffect
+  // ✅ Always call useEffect, no conditionals
   useEffect(() => {
-    if (!isFullGallery) return // only run on full gallery pages
-
     const handleKey = (e: KeyboardEvent) => {
+      if (!isFullGallery) return
+
       if (e.key === "ArrowDown" || e.key === "ArrowRight") {
         setSelectedIndex((prev) => (prev + 1) % images.length)
       }
@@ -64,10 +64,12 @@ export default function Gallery({
       </div>
 
       {/* Thumbnails */}
-      <div className="
+      <div
+        className="
           flex justify-center overflow-x-auto px-2 pb-2
           lg:w-15 lg:h-full lg:overflow-y-auto lg:flex-col lg:px-0 lg:pb-0 lg:ml-7.5
-        ">
+        "
+      >
         {images.map((img, i) =>
           img?.asset?.url ? (
             <button
