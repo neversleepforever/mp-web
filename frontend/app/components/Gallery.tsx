@@ -24,9 +24,9 @@ export default function Gallery({
   if (!images?.length) return null
   const selected = images[selectedIndex]
 
-  // ✅ Always call useEffect, but guard inside
+  // ✅ Always call useEffect
   useEffect(() => {
-    if (!isFullGallery) return
+    if (!isFullGallery) return // only run on full gallery pages
 
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "ArrowDown" || e.key === "ArrowRight") {
@@ -64,8 +64,10 @@ export default function Gallery({
       </div>
 
       {/* Thumbnails */}
-      <div className="flex justify-center overflow-x-auto px-2 pb-2
-                      lg:w-15 lg:h-full lg:overflow-y-auto lg:flex-col lg:px-0 lg:pb-0 lg:ml-7.5">
+      <div className="
+          flex justify-center overflow-x-auto px-2 pb-2
+          lg:w-15 lg:h-full lg:overflow-y-auto lg:flex-col lg:px-0 lg:pb-0 lg:ml-7.5
+        ">
         {images.map((img, i) =>
           img?.asset?.url ? (
             <button
@@ -87,7 +89,7 @@ export default function Gallery({
         )}
       </div>
 
-      {/* Up/Down buttons (only in full gallery mode) */}
+      {/* Up/Down buttons only for full gallery */}
       {isFullGallery && (
         <div className="absolute bottom-4 right-4 flex flex-col gap-2 text-white">
           <button
