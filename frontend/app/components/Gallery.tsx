@@ -1,7 +1,6 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
-import { usePathname } from "next/navigation"
+import {useEffect, useState} from "react"
 import Image from "next/image"
 
 interface GalleryImage {
@@ -10,45 +9,48 @@ interface GalleryImage {
   credit?: string
 }
 
+type Props = {
+  images: GalleryImage[]
+  title?: string
+  enableKeyboard?: boolean      // set true on full gallery page
+  showControls?: boolean        // set true on full gallery page
+}
+
 export default function Gallery({
   images,
   title,
-}: {
-  images: GalleryImage[]
-  title?: string
-}) {
+  enableKeyboard = false,
+  showControls = false,
+}: Props) {
   const [selectedIndex, setSelectedIndex] = useState(0)
-  const pathname = usePathname()
-  const isFullGallery = pathname?.includes("/folio/gallery/") ?? false
-
   if (!images?.length) return null
+
+  // Keyboard navigation (always register the listener, guard with the flag)
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (!enableKeyboard) return
+      const key = e.key.toLowerCase()
+      if (key === "arrowup" || key === "arrowleft") {
+        e.preventDefault()
+        setSelectedIndex((i) => (i - 1 + images.length) % images.length)
+      } else if (key === "arrowdown" || key === "arrowright") {
+        e.preventDefault()
+        setSelectedIndex((i) => (i + 1) % images.length)
+      }
+    }
+    window.addEventListener("keydown", onKeyDown)
+    return () => window.removeEventListener("keydown", onKeyDown)
+  }, [enableKeyboard, images.length])
+
   const selected = images[selectedIndex]
 
-  // ✅ UseCallback for keyboard handler
-  const handleKey = useCallback(
-    (e: KeyboardEvent) => {
-      if (!isFullGallery) return
-
-      if (e.key === "ArrowDown" || e.key === "ArrowRight") {
-        setSelectedIndex((prev) => (prev + 1) % images.length)
-      }
-      if (e.key === "ArrowUp" || e.key === "ArrowLeft") {
-        setSelectedIndex((prev) => (prev - 1 + images.length) % images.length)
-      }
-    },
-    [isFullGallery, images.length]
-  )
-
-  // ✅ Hook always runs — no conditionals
-  useEffect(() => {
-    window.addEventListener("keydown", handleKey)
-    return () => {
-      window.removeEventListener("keydown", handleKey)
-    }
-  }, [handleKey])
+  const goPrev = () =>
+    setSelectedIndex((i) => (i - 1 + images.length) % images.length)
+  const goNext = () =>
+    setSelectedIndex((i) => (i + 1) % images.length)
 
   return (
-    <div className="w-full h-[85vh] flex flex-col lg:flex-row relative">
+    <div className="relative w-full h-[85vh] flex flex-col lg:flex-row">
       {/* Main image */}
       <div className="flex-1 flex justify-center items-center overflow-hidden">
         {selected?.asset?.url && (
@@ -69,7 +71,7 @@ export default function Gallery({
         )}
       </div>
 
-      {/* Thumbnails */}
+      {/* Thumbnails (keep your original layout classes) */}
       <div
         className="
           flex justify-center overflow-x-auto px-2 pb-2
@@ -83,7 +85,9 @@ export default function Gallery({
               onClick={() => setSelectedIndex(i)}
               className={`relative flex-shrink-0 overflow-hidden border 
                 ${i === selectedIndex ? "border-blue-500" : "border-transparent"}
-                h-20 w-auto lg:w-full lg:h-auto`}
+                h-20 w-auto lg:w-full lg:h-auto
+              `}
+              aria-label={`Select image ${i + 1}`}
             >
               <Image
                 src={img.asset.url}
@@ -97,24 +101,22 @@ export default function Gallery({
         )}
       </div>
 
-      {/* Up/Down buttons only in full gallery */}
-      {isFullGallery && (
-        <div className="absolute bottom-4 right-4 flex flex-col gap-2 text-white">
+      {/* Minimal text controls (UP/DOWN) — only when asked */}
+      {showControls && (
+        <div className="pointer-events-none absolute right-3 bottom-3 flex flex-col gap-2 lg:right-28 lg:bottom-4">
           <button
-            onClick={() =>
-              setSelectedIndex((prev) => (prev - 1 + images.length) % images.length)
-            }
-            className="uppercase text-xs hover:underline cursor-pointer"
+            type="button"
+            onClick={goPrev}
+            className="pointer-events-auto text-xs uppercase underline decoration-1 hover:decoration-2"
           >
-            UP
+            Up
           </button>
           <button
-            onClick={() =>
-              setSelectedIndex((prev) => (prev + 1) % images.length)
-            }
-            className="uppercase text-xs hover:underline cursor-pointer"
+            type="button"
+            onClick={goNext}
+            className="pointer-events-auto text-xs uppercase underline decoration-1 hover:decoration-2"
           >
-            DOWN
+            Down
           </button>
         </div>
       )}

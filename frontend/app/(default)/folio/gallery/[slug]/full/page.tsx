@@ -51,7 +51,8 @@ export default async function FullShootPage({ params }: Props) {
       <div className="p-6 md:p-12">
 
         {folio.images?.length ? (
-          <Gallery images={folio.images} title={folio.title} />
+          <Gallery images={folio.images} title={folio.title} enableKeyboard showControls />
+
         ) : (
           <p>No images found for this shoot.</p>
         )}
