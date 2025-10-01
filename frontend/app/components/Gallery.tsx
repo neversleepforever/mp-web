@@ -1,6 +1,6 @@
 "use client"
 
-import {useEffect, useState} from "react"
+import { useState /*, useEffect */ } from "react"
 import Image from "next/image"
 
 interface GalleryImage {
@@ -12,20 +12,21 @@ interface GalleryImage {
 type Props = {
   images: GalleryImage[]
   title?: string
-  enableKeyboard?: boolean      // set true on full gallery page
-  showControls?: boolean        // set true on full gallery page
+  // enableKeyboard?: boolean      // commented for now
+  // showControls?: boolean        // commented for now
 }
 
 export default function Gallery({
   images,
   title,
-  enableKeyboard = false,
-  showControls = false,
+  // enableKeyboard = false,
+  // showControls = false,
 }: Props) {
   const [selectedIndex, setSelectedIndex] = useState(0)
   if (!images?.length) return null
 
-  // Keyboard navigation (always register the listener, guard with the flag)
+  // 🔒 Temporarily removed keyboard navigation hook
+  /*
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (!enableKeyboard) return
@@ -41,13 +42,9 @@ export default function Gallery({
     window.addEventListener("keydown", onKeyDown)
     return () => window.removeEventListener("keydown", onKeyDown)
   }, [enableKeyboard, images.length])
+  */
 
   const selected = images[selectedIndex]
-
-  const goPrev = () =>
-    setSelectedIndex((i) => (i - 1 + images.length) % images.length)
-  const goNext = () =>
-    setSelectedIndex((i) => (i + 1) % images.length)
 
   return (
     <div className="relative w-full h-[85vh] flex flex-col lg:flex-row">
@@ -71,7 +68,7 @@ export default function Gallery({
         )}
       </div>
 
-      {/* Thumbnails (keep your original layout classes) */}
+      {/* Thumbnails */}
       <div
         className="
           flex justify-center overflow-x-auto px-2 pb-2
@@ -101,7 +98,8 @@ export default function Gallery({
         )}
       </div>
 
-      {/* Minimal text controls (UP/DOWN) — only when asked */}
+      {/* Controls commented out for now */}
+      {/*
       {showControls && (
         <div className="pointer-events-none absolute right-3 bottom-3 flex flex-col gap-2 lg:right-28 lg:bottom-4">
           <button
@@ -120,6 +118,7 @@ export default function Gallery({
           </button>
         </div>
       )}
+      */}
     </div>
   )
 }
