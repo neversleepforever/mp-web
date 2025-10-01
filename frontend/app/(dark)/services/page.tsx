@@ -45,7 +45,8 @@ export default async function ServicesPage() {
   }
 
   return (
-    <div className="py-8 px-6 md:py-0 md:px-0 md:grid md:grid-cols-2 dark:text-white bg-[#454545] ">
+    <>
+    <div className=" md:grid md:grid-cols-2 dark:text-white bg-[#454545] ">
       <div className="bg-[url('/images/servicesbg.png')] bg-cover bg-center mix-blend-exclusion"></div>
         {/* Mobile Centerfold Image */}
         <div className="fixed inset-0 z-20 md:hidden pointer-events-none">
@@ -60,7 +61,7 @@ export default async function ServicesPage() {
           <div className="md:w-1/2 md:h-screen md:bg-[url('/images/scantexture.png')] md:bg-cover md:bg-center" />
         </div> */}
 
-      <div className="bg-[url('/images/scantexture.jpg')] bg-cover bg-center mix-blend-plus-lighter md:col-start-2 md:py-12 md:pl-4 md:pr-6 md:h-screen md:overflow-y-scroll lg:px-26 ">
+      <div className="bg-[url('/images/scantexture.jpg')] grayscale bg-cover bg-center mix-blend-plus-lighter md:col-start-2 py-8 px-6 md:py-12 md:pl-4 md:pr-6 md:h-screen md:overflow-y-scroll lg:px-26 ">
       {/* <Filter> */}
       {data.content?.length ? (
         <PortableText
@@ -179,10 +180,11 @@ export default async function ServicesPage() {
         <p>No content added yet.</p>
       )}
       {/* </Filter> */}
+      </div>
+    </div>
       <div className="fixed bottom-[-30px] left-[-150px] w-[200%] h-[60px] -rotate-45 bg-black text-white flex items-center justify-center shadow-lg">
         <p className="font-display uppercase pl-[210px]">🍑 Adults Only 🍑</p>
       </div>
-      </div>
-    </div>
+    </>
   )
 }

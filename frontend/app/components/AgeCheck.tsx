@@ -18,14 +18,17 @@ export default function AgeCheck({ children }: { children: React.ReactNode }) {
     <div className="relative">
       {children}
       {!verified && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md">
-          <div className="bg-black text-white text-center w-full py-5 px-1 font-display uppercase">
-            <h2 className="text-xl">The following content is for 18+ adults only - <span><button
-              onClick={handleVerify}
-              className="uppercase underline"
-            >
-              Proceed
-            </button></span></h2>
+        <div className="fixed inset-0 h-full w-full z-40 flex items-center justify-center backdrop-blur-lg">
+          <div className="bg-black z-40  text-white text-center w-full py-5 px-1 font-display uppercase">
+            <h2 className="text-xl">
+              The following content is for 18+ adults only –{" "}
+              <button
+                onClick={handleVerify}
+                className="uppercase underline decoration-1 hover:decoration-2 transition-all cursor-pointer"
+              >
+                Proceed
+              </button>
+            </h2>
           </div>
         </div>
       )}

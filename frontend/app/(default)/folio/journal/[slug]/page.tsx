@@ -96,41 +96,46 @@ export default async function JournalPage({ params }: Props) {
     <div className="fixed inset-0 z-20 md:hidden pointer-events-none">
       <div className="w-full h-full bg-[url('/images/centerfoldmobilelight.png')] bg-cover bg-center" />
     </div>
+    <div className="md:fixed md:inset-0 md:z-20 md:pointer-events-none">
+      <div className="md:w-auto md:h-screen md:bg-[url('/images/centerfoldmedium.png')] md:bg-center md:bg-no-repeat md:bg-contain" />
+    </div>
 
-      <div className="my-12 lg:my-24 p-6">
-        <header className="pb-6">
-          <h1 className="text-[38px] font-bold tracking-tight text-gray-900">
-            {journal.title ?? "Untitled"}
-          </h1>
-          {journal.subtitle && (
-            <p className="text-lg text-gray-600 mt-2">{journal.subtitle}</p>
-          )}
-          <div className="mt-8 text-[18px]">
-            {journal.photographer && (
-              <div className="uppercase">Shot By {journal.photographer}</div>
+      <div className="my-12 p-6 lg:p-0 lg:-my-0 lg:pr-7.5 lg:grid lg:grid-cols-2 h-screen">
+        <div className="overflow-y-scroll lg:min-h-screen lg:pt-54 lg:py-24 lg:px-30 ">
+          <header className="pb-6">
+            <h1 className="text-[38px] font-bold tracking-tight text-gray-900">
+              {journal.title ?? "Untitled"}
+            </h1>
+            {journal.subtitle && (
+              <p className="text-lg text-gray-600 mt-2">{journal.subtitle}</p>
             )}
-            {journal.date && <div>{journal.date}</div>}
+            <div className="mt-8 text-[18px]">
+              {journal.photographer && (
+                <div className="uppercase">Shot By {journal.photographer}</div>
+              )}
+              {journal.date && <div>{journal.date}</div>}
+            </div>
+          </header>
+          <div className="text-[22px]">
+            {journal.description?.length ? (
+              <PortableText value={journal.description} components={{
+                ...portableTextComponents,
+              }} />
+            ) : null}
           </div>
-        </header>
-
-        <div className="text-[22px]">
-          {journal.description?.length ? (
-            <PortableText value={journal.description} components={{
-              ...portableTextComponents,
-            }} />
-          ) : null}
         </div>
-
-        {journal.images?.length ? (
-          <Gallery images={journal.images} title={journal.title} />
-        ) : null}
-
-        <nav className="fixed bottom-7 uppercase mix-blend-difference z-90">
+        <div className="lg:flex lg:flex-col lg:justify-center lg:pl-24">
+          {journal.images?.length ? (
+            <Gallery images={journal.images} title={journal.title} />
+           ) : null}
+        </div>
+      </div>
+    
+         <nav className="fixed bottom-7 uppercase mix-blend-difference z-90">
           <Link href="/folio" className="hover:underline text-[14px]">
             Folio
           </Link>
         </nav>
-      </div>
     </>
 
   )

@@ -80,8 +80,8 @@ export default async function ContactPage() {
       {/* Contact content + image on md+ */}
            {/* Contact content with image inside border */}
 {/* Contact content + image on md+ */}
-<section className="z-10 md:flex md:items-center md:justify-center px-6 dark:text-white min-h-[calc(100vh-72px)]">
-  <div className="w-full max-w-[668px] max-h-[470px] border p-6 bg-black/60 md:py-12 md:px-10 md:m-4 md:bg-transparent md:flex md:items-start">
+<section className="z-40 md:flex md:items-center md:justify-center px-6 dark:text-white min-h-[calc(100vh-72px)]">
+  <div className="w-full max-w-[668px] max-h-[470px] border p-6 bg-black md:py-12 md:px-10 md:m-4 md:flex md:items-start">
     <div className="flex-1">
       <h1 className="text-[38px] mb-8">Contact</h1>
 

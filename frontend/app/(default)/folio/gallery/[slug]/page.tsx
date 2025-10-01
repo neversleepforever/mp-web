@@ -1,12 +1,11 @@
 import type { Metadata, ResolvingMetadata } from "next"
 import { notFound } from "next/navigation"
-
 import { PortableText, type PortableTextComponents } from "next-sanity"
 import { sanityFetch } from "@/sanity/lib/live"
 import { folioPagesSlugs, folioQuery } from "@/sanity/lib/queries"
 import { resolveOpenGraphImage } from "@/sanity/lib/utils"
-import Gallery from "../../../../components/Gallery"
-import Link from 'next/link'
+import Link from "next/link"
+import Image from "next/image"
 
 const portableTextComponents: PortableTextComponents = {
   block: {
@@ -29,27 +28,26 @@ const portableTextComponents: PortableTextComponents = {
   },
 }
 
-
 export interface Folio {
-    _id: string
-    title?: string
-    subtitle?: string
-    photographer?: string
-    date?: string
-    slug: string
-    description?: {
-      _type: "block"
-      children?: {
-        _type: "span"
-        text?: string
-      }[]
+  _id: string
+  title?: string
+  subtitle?: string
+  photographer?: string
+  date?: string
+  slug: string
+  description?: {
+    _type: "block"
+    children?: {
+      _type: "span"
+      text?: string
     }[]
-    images?: {
-      asset?: { url: string }
-      alt?: string
-      credit?: string
-    }[]
-  }
+  }[]
+  images?: {
+    asset?: { url: string }
+    alt?: string
+    credit?: string
+  }[]
+}
 
 type Props = {
   params: { slug: string }
@@ -61,7 +59,6 @@ export async function generateStaticParams() {
     perspective: "published",
     stega: false,
   })
-
   return data as { slug: string }[]
 }
 
@@ -76,7 +73,6 @@ export async function generateMetadata(
   })
 
   const folio = data as Folio | null
-
   const previousImages = (await parent).openGraph?.images || []
   const ogImage = folio?.images?.[0]
     ? resolveOpenGraphImage(folio.images[0])
@@ -101,44 +97,78 @@ export default async function FolioPage({ params }: Props) {
   })
 
   const folio = data as Folio | null
+  if (!folio?._id) return notFound()
 
-  if (!folio?._id) {
-    return notFound()
-  }
+  const firstImage = folio.images?.[0]
 
   return (
-    <div className="my-12 lg:my-24 p-6">
-      <header className="pb-6">
-        <h1 className="text-[38px] font-bold tracking-tight text-gray-900">
-          {folio.title ?? "Untitled"}
-        </h1>
-        {folio.subtitle && (
-          <p className="text-lg text-gray-600 mt-2">{folio.subtitle}</p>
-        )}
-        <div className="mt-8 text-[18px]">
-          {folio.photographer ? <div className="uppercase">Shot By {folio.photographer}</div> : <></>}
-          {folio.date ? <div>{folio.date}</div> : <></>}
-        </div>
-      </header>
-      <div className="text-[22px] mb-12">
-       {folio.description?.length ? (
-        <PortableText
-          components={portableTextComponents}
-          value={folio.description}
-        />
-      ) : null}
+    <>
+      {/* Background images (mobile + desktop) */}
+      <div className="fixed inset-0 z-0 md:hidden pointer-events-none">
+        <div className="w-full h-full bg-[url('/images/centerfoldmobilelight.png')] bg-cover bg-center" />
       </div>
-      <Link href={`/folio/${folio.slug}/gallery`} className="uppercase hover:underline">
-        View Full Shoot
-      </Link>
-      {folio.images?.length ? (
-        <Gallery images={folio.images} title={folio.title} />
-      ) : null}
+      <div className="md:fixed md:inset-0 md:z-0 md:pointer-events-none">
+        <div className="md:w-auto md:h-screen md:bg-[url('/images/centerfoldmedium.png')] md:bg-center md:bg-no-repeat md:bg-contain" />
+      </div>
+
+      {/* Main layout */}
+      <div className="my-12 p-6 lg:p-0 lg:-my-0 lg:pr-7.5 lg:grid lg:grid-cols-2 h-screen">
+        {/* Left side content */}
+        <div className="overflow-y-scroll lg:min-h-screen lg:pt-54 lg:py-24 lg:px-30 ">
+          <header className="pb-6">
+            <h1 className="text-[38px] font-bold tracking-tight text-gray-900">
+              {folio.title ?? "Untitled"}
+            </h1>
+            {folio.subtitle && (
+              <p className="text-lg text-gray-600 mt-2">{folio.subtitle}</p>
+            )}
+            <div className="mt-8 text-[18px]">
+              {folio.photographer && (
+                <div className="uppercase">Shot By {folio.photographer}</div>
+              )}
+              {folio.date && <div>{folio.date}</div>}
+            </div>
+          </header>
+          <div className="text-[22px]">
+            {folio.description?.length ? (
+              <PortableText
+                components={portableTextComponents}
+                value={folio.description}
+              />
+            ) : null}
+          </div>
+        </div>
+
+        {/* Right side: preview image link */}
+        <div className="lg:flex lg:flex-col lg:justify-center lg:pl-24">
+          {firstImage?.asset?.url && (
+            <Link href={`/folio/gallery/${folio.slug}/full`} className="block group">
+              <div className="relative w-full flex justify-center items-center">
+                <Image
+                  src={firstImage.asset.url}
+                  alt={firstImage.alt || folio.title || ""}
+                  width={800}
+                  height={600}
+                  className="object-contain -z-10 w-auto max-h-[50vh] transition-transform duration-300"
+                />
+              </div>
+              {firstImage.credit && (
+                <p className="text-sm text-gray-500 mt-2">{firstImage.credit}</p>
+              )}
+              <p className="mt-4 uppercase text-sm underline">
+                View Full Shoot →
+              </p>
+            </Link>
+          )}
+        </div>
+      </div>
+
+      {/* Bottom nav */}
       <nav className="fixed bottom-7 uppercase mix-blend-difference z-90">
-        <Link href="/folio" className="hover:underline text-[14px] z-90">
+        <Link href="/folio" className="hover:underline text-[14px]">
           Folio
         </Link>
       </nav>
-    </div>
+    </>
   )
 }
