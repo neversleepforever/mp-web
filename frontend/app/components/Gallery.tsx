@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { usePathname } from "next/navigation"
 import Image from "next/image"
 
@@ -24,9 +24,9 @@ export default function Gallery({
   if (!images?.length) return null
   const selected = images[selectedIndex]
 
-  // ✅ Always call useEffect, no conditionals
-  useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
+  // ✅ UseCallback for keyboard handler
+  const handleKey = useCallback(
+    (e: KeyboardEvent) => {
       if (!isFullGallery) return
 
       if (e.key === "ArrowDown" || e.key === "ArrowRight") {
@@ -35,11 +35,17 @@ export default function Gallery({
       if (e.key === "ArrowUp" || e.key === "ArrowLeft") {
         setSelectedIndex((prev) => (prev - 1 + images.length) % images.length)
       }
-    }
+    },
+    [isFullGallery, images.length]
+  )
 
+  // ✅ Hook always runs — no conditionals
+  useEffect(() => {
     window.addEventListener("keydown", handleKey)
-    return () => window.removeEventListener("keydown", handleKey)
-  }, [isFullGallery, images.length])
+    return () => {
+      window.removeEventListener("keydown", handleKey)
+    }
+  }, [handleKey])
 
   return (
     <div className="w-full h-[85vh] flex flex-col lg:flex-row relative">
@@ -91,7 +97,7 @@ export default function Gallery({
         )}
       </div>
 
-      {/* Up/Down buttons only for full gallery */}
+      {/* Up/Down buttons only in full gallery */}
       {isFullGallery && (
         <div className="absolute bottom-4 right-4 flex flex-col gap-2 text-white">
           <button
