@@ -1,8 +1,8 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import Image from "next/image"
 import { usePathname } from "next/navigation"
+import Image from "next/image"
 
 interface GalleryImage {
   asset?: { url: string }
@@ -19,39 +19,32 @@ export default function Gallery({
 }) {
   const [selectedIndex, setSelectedIndex] = useState(0)
   const pathname = usePathname()
-  if (!images?.length) return null
+  const isFullGallery = pathname?.includes("/folio/gallery/")
 
+  if (!images?.length) return null
   const selected = images[selectedIndex]
 
-  const goUp = () => {
-    setSelectedIndex((prev) => (prev > 0 ? prev - 1 : images.length - 1))
-  }
-
-  const goDown = () => {
-    setSelectedIndex((prev) => (prev < images.length - 1 ? prev + 1 : 0))
-  }
-
-  // keyboard controls
+  // ✅ Always call useEffect, but guard inside
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
+    if (!isFullGallery) return
+
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowDown" || e.key === "ArrowRight") {
+        setSelectedIndex((prev) => (prev + 1) % images.length)
+      }
       if (e.key === "ArrowUp" || e.key === "ArrowLeft") {
-        goUp()
-      } else if (e.key === "ArrowDown" || e.key === "ArrowRight") {
-        goDown()
+        setSelectedIndex((prev) => (prev - 1 + images.length) % images.length)
       }
     }
 
-    window.addEventListener("keydown", handleKeyDown)
-    return () => window.removeEventListener("keydown", handleKeyDown)
-  }, [])
-
-  // show controls only on full gallery path
-  const isFullGallery = pathname?.includes("/folio/gallery/") && pathname?.endsWith("/full")
+    window.addEventListener("keydown", handleKey)
+    return () => window.removeEventListener("keydown", handleKey)
+  }, [isFullGallery, images.length])
 
   return (
-    <div className="w-full h-[85vh] flex flex-col lg:flex-row">
-      {/* Main image fills remaining space */}
-      <div className="flex-1 flex justify-center items-center overflow-hidden relative">
+    <div className="w-full h-[85vh] flex flex-col lg:flex-row relative">
+      {/* Main image */}
+      <div className="flex-1 flex justify-center items-center overflow-hidden">
         {selected?.asset?.url && (
           <figure className="relative w-full h-full flex flex-col justify-center">
             <Image
@@ -68,33 +61,11 @@ export default function Gallery({
             )}
           </figure>
         )}
-
-        {/* Up/Down buttons overlay (only on full gallery page) */}
-        {isFullGallery && (
-          <div className="absolute top-1/2 right-4 flex flex-col gap-2 -translate-y-1/2">
-            <button
-              onClick={goUp}
-              className="uppercase text-sm hover:underline cursor-pointer"
-            >
-              UP
-            </button>
-            <button
-              onClick={goDown}
-              className="uppercase text-sm hover:underline cursor-pointer"
-            >
-              DOWN
-            </button>
-          </div>
-        )}
       </div>
 
       {/* Thumbnails */}
-      <div
-        className="
-          flex justify-center overflow-x-auto px-2 pb-2
-          lg:w-15 lg:h-full lg:overflow-y-auto lg:flex-col lg:px-0 lg:pb-0 lg:ml-7.5
-        "
-      >
+      <div className="flex justify-center overflow-x-auto px-2 pb-2
+                      lg:w-15 lg:h-full lg:overflow-y-auto lg:flex-col lg:px-0 lg:pb-0 lg:ml-7.5">
         {images.map((img, i) =>
           img?.asset?.url ? (
             <button
@@ -102,8 +73,7 @@ export default function Gallery({
               onClick={() => setSelectedIndex(i)}
               className={`relative flex-shrink-0 overflow-hidden border 
                 ${i === selectedIndex ? "border-blue-500" : "border-transparent"}
-                h-20 w-auto lg:w-full lg:h-auto
-              `}
+                h-20 w-auto lg:w-full lg:h-auto`}
             >
               <Image
                 src={img.asset.url}
@@ -116,6 +86,28 @@ export default function Gallery({
           ) : null
         )}
       </div>
+
+      {/* Up/Down buttons (only in full gallery mode) */}
+      {isFullGallery && (
+        <div className="absolute bottom-4 right-4 flex flex-col gap-2 text-white">
+          <button
+            onClick={() =>
+              setSelectedIndex((prev) => (prev - 1 + images.length) % images.length)
+            }
+            className="uppercase text-xs hover:underline cursor-pointer"
+          >
+            UP
+          </button>
+          <button
+            onClick={() =>
+              setSelectedIndex((prev) => (prev + 1) % images.length)
+            }
+            className="uppercase text-xs hover:underline cursor-pointer"
+          >
+            DOWN
+          </button>
+        </div>
+      )}
     </div>
   )
 }
