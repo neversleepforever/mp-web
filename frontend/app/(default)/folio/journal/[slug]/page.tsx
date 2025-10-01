@@ -1,12 +1,32 @@
 import type { Metadata, ResolvingMetadata } from "next"
 import { notFound } from "next/navigation"
-
-import { PortableText } from "next-sanity"
+import { PortableText, type PortableTextComponents } from "next-sanity"
 import { sanityFetch } from "@/sanity/lib/live"
 import { journalSlugsQuery, journalQuery } from "@/sanity/lib/queries"
 import { resolveOpenGraphImage } from "@/sanity/lib/utils"
 import Link from "next/link"
-import Image from "next/image"
+import Gallery from "../../../../components/Gallery"
+
+const portableTextComponents: PortableTextComponents = {
+  block: {
+    h1: ({ children }) => <h1 className="heading-1">{children}</h1>,
+    h2: ({ children }) => <h2 className="heading-2">{children}</h2>,
+    h3: ({ children }) => <h3 className="heading-3">{children}</h3>,
+    normal: ({ children }) => <p className="mt-6 font-sans">{children}</p>,
+  },
+  list: {
+    bullet: ({ children }) => (
+      <ul className="list-disc list-inside mt-4 space-y-2">{children}</ul>
+    ),
+    number: ({ children }) => (
+      <ol className="list-decimal list-inside mt-4 space-y-2">{children}</ol>
+    ),
+  },
+  listItem: {
+    bullet: ({ children }) => <li className="ml-6">{children}</li>,
+    number: ({ children }) => <li className="ml-6">{children}</li>,
+  },
+}
 
 export interface Journal {
   _id: string
@@ -72,57 +92,46 @@ export default async function JournalPage({ params }: Props) {
   if (!journal?._id) return notFound()
 
   return (
-    <div className="my-12 lg:my-24 p-6">
-      <header className="pb-6">
-        <h1 className="text-[38px] font-bold tracking-tight text-gray-900">
-          {journal.title ?? "Untitled"}
-        </h1>
-        {journal.subtitle && (
-          <p className="text-lg text-gray-600 mt-2">{journal.subtitle}</p>
-        )}
-        <div className="mt-8 text-[18px]">
-          {journal.photographer && (
-            <div className="uppercase">Shot By {journal.photographer}</div>
-          )}
-          {journal.date && <div>{journal.date}</div>}
-        </div>
-      </header>
-
-      <div className="text-[22px]">
-        {journal.description?.length ? (
-          <PortableText value={journal.description} />
-        ) : null}
-      </div>
-
-      {journal.images?.length ? (
-        <section className="grid gap-8 mt-8">
-          {journal.images.map(
-            (img, i) =>
-              img?.asset?.url && (
-                <figure key={i} className="flex flex-col gap-2">
-                  <Image
-                    src={img.asset.url}
-                    alt={img.alt || journal.title || ""}
-                    width={1000}
-                    height={1200}
-                    className="rounded-lg shadow object-contain"
-                  />
-                  {img.credit && (
-                    <figcaption className="text-sm text-gray-500">
-                      {img.credit}
-                    </figcaption>
-                  )}
-                </figure>
-              )
-          )}
-        </section>
-      ) : null}
-
-      <nav className="fixed bottom-7 uppercase mix-blend-difference z-90">
-        <Link href="/folio" className="hover:underline text-[14px]">
-          Folio
-        </Link>
-      </nav>
+    <>    
+    <div className="fixed inset-0 z-20 md:hidden pointer-events-none">
+      <div className="w-full h-full bg-[url('/images/centerfoldmobilelight.png')] bg-cover bg-center" />
     </div>
+
+      <div className="my-12 lg:my-24 p-6">
+        <header className="pb-6">
+          <h1 className="text-[38px] font-bold tracking-tight text-gray-900">
+            {journal.title ?? "Untitled"}
+          </h1>
+          {journal.subtitle && (
+            <p className="text-lg text-gray-600 mt-2">{journal.subtitle}</p>
+          )}
+          <div className="mt-8 text-[18px]">
+            {journal.photographer && (
+              <div className="uppercase">Shot By {journal.photographer}</div>
+            )}
+            {journal.date && <div>{journal.date}</div>}
+          </div>
+        </header>
+
+        <div className="text-[22px]">
+          {journal.description?.length ? (
+            <PortableText value={journal.description} components={{
+              ...portableTextComponents,
+            }} />
+          ) : null}
+        </div>
+
+        {journal.images?.length ? (
+          <Gallery images={journal.images} title={journal.title} />
+        ) : null}
+
+        <nav className="fixed bottom-7 uppercase mix-blend-difference z-90">
+          <Link href="/folio" className="hover:underline text-[14px]">
+            Folio
+          </Link>
+        </nav>
+      </div>
+    </>
+
   )
 }

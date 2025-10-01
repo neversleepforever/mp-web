@@ -38,7 +38,7 @@ export default function Gallery({ images, title }: { images: GalleryImage[]; tit
         )}
       </div>
 
-    <div className="-mx-6"> {/* pulls it outside the parent padding */}
+    <div className="-mx-6"> 
         <div className="flex gap-0 overflow-x-auto px-6 pb-2 scrollbar-hide">
             {images.map((img, i) =>
             img?.asset?.url ? (

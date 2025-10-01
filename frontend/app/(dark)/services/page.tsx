@@ -1,3 +1,4 @@
+import Filter from "@/app/components/Filter"
 import PixelateOverlay from "@/app/components/PixelateOverlay"
 import { sanityFetch } from "@/sanity/lib/live"
 import { servicesQuery } from "@/sanity/lib/queries"
@@ -44,9 +45,23 @@ export default async function ServicesPage() {
   }
 
   return (
-    <div className=" my-12 md:my-0 md:grid md:grid-cols-2 dark:text-white bg-[#454545]">
-      <div className="bg-[url('/images/servicesbg.png')] bg-cover bg-center"></div>
-      <div className="md:col-start-2 md:py-12 md:pl-4 md:pr-6 md:h-screen md:overflow-y-scroll">
+    <div className="py-8 px-6 md:py-0 md:px-0 md:grid md:grid-cols-2 dark:text-white bg-[#454545] ">
+      <div className="bg-[url('/images/servicesbg.png')] bg-cover bg-center mix-blend-exclusion"></div>
+        {/* Mobile Centerfold Image */}
+        <div className="fixed inset-0 z-20 md:hidden pointer-events-none">
+          <div className="w-full h-full bg-[url('/images/centerfoldmobile.png')] bg-cover bg-center" />
+        </div>
+        {/* Medium Centerfold Image */}
+        <div className="md:fixed md:inset-0 md:z-20 md:pointer-events-none">
+          <div className="md:w-auto md:h-screen md:bg-[url('/images/centerfoldmedium.png')] md:bg-center md:bg-no-repeat md:bg-contain" />
+        </div>
+         {/* <div className="md:fixed md:inset-0 md:z-50 md:pointer-events-none">
+          <div className="md:w-1/2 md:h-screen md:bg-[url('/images/scantexture.png')] md:bg-cover md:bg-center" />
+          <div className="md:w-1/2 md:h-screen md:bg-[url('/images/scantexture.png')] md:bg-cover md:bg-center" />
+        </div> */}
+
+      <div className="bg-[url('/images/scantexture.jpg')] bg-cover bg-center mix-blend-plus-lighter md:col-start-2 md:py-12 md:pl-4 md:pr-6 md:h-screen md:overflow-y-scroll lg:px-26 ">
+      {/* <Filter> */}
       {data.content?.length ? (
         <PortableText
           value={data.content}
@@ -67,9 +82,48 @@ export default async function ServicesPage() {
               ),
               ratesSection: ({ value }) => (
                 <div className="border">
-                  <h2 className="text-xl font-bold mb-2 p-4 my-4">
-                    {value.title}
-                  </h2>
+                  <div className="font-display text-[47px] p-6 uppercase flex flex-row justify-center gap-6 items-center">
+                    <div className="flex flex-col"><div>$</div><div>$</div></div>
+                    <div>
+                      <div className="flex flex-row justify-center items-center gap-4 mix-blend-luminosity">
+                        <Image
+                          src={"/images/discover.jpg"}
+                          alt={value.caption || ""}
+                          width={55}
+                          height={35}
+                          className=""
+                        />
+                          <Image
+                          src={"/images/amex.jpg"}
+                          alt={value.caption || ""}
+                          width={55}
+                          height={35}
+                          className=""
+                        />
+                      </div>
+                      <h2 className="">
+                        {value.title}
+                      </h2>
+                      <div className="flex flex-row justify-center items-center gap-4 mix-blend-luminosity">
+                        <Image
+                          src={"/images/mastercard.jpg"}
+                          alt={value.caption || ""}
+                          width={55}
+                          height={35}
+                          className=""
+                        />
+                          <Image
+                          src={"/images/visa.jpg"}
+                          alt={value.caption || ""}
+                          width={55}
+                          height={35}
+                          className=""
+                        />
+                      </div>
+                    </div>
+                    <div className="flex flex-col"><div>$</div><div>$</div></div>
+                  </div>
+             
                   <h3 className="font-display bg-white text-black text-[12px] py-[10px] px-16 text-center">
                     {value.banner}
                   </h3>
@@ -124,7 +178,7 @@ export default async function ServicesPage() {
       ) : (
         <p>No content added yet.</p>
       )}
-
+      {/* </Filter> */}
       <div className="fixed bottom-[-30px] left-[-150px] w-[200%] h-[60px] -rotate-45 bg-black text-white flex items-center justify-center shadow-lg">
         <p className="font-display uppercase pl-[210px]">🍑 Adults Only 🍑</p>
       </div>

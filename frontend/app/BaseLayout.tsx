@@ -41,9 +41,18 @@ export default async function BaseLayout({
             <SanityLive onError={handleError} />
             <Header />
             <main>{children}</main>
-            <Footer />
+            {/* <Footer /> */}
           </section>
         </AgeCheck>
+
+        <svg height="0" width="0" className="absolute">
+          <defs>
+            <filter id="blurfilter" x="0" y="0">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="3" />
+            </filter>
+          </defs>
+        </svg>
+
         <SpeedInsights />
       </body>
     </html>
