@@ -59,7 +59,10 @@ export async function generateStaticParams() {
     perspective: "published",
     stega: false,
   })
-  return data as { slug: string }[]
+
+  return (data || []).map((item: any) => ({
+    slug: item.slug,
+  }))
 }
 
 export async function generateMetadata(
