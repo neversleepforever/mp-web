@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation"
 import { sanityFetch } from "@/sanity/lib/live"
 import { folioQuery, folioPagesSlugs } from "@/sanity/lib/queries"
-import Gallery from "@/components/Gallery"
+import Gallery from "../../../../../components/Gallery"
 
 export interface Folio {
   _id: string
