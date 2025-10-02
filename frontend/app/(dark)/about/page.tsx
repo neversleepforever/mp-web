@@ -1,15 +1,19 @@
 import Filter from "@/app/components/Filter"
 import { sanityFetch } from "@/sanity/lib/live"
 import { aboutQuery } from "@/sanity/lib/queries"
-import { PortableText } from "next-sanity"
+import { PortableText, type PortableTextBlock } from "next-sanity"
 import Image from "next/image"
+
+interface AboutData {
+  _id: string
+  content?: PortableTextBlock[]
+}
 
 export default async function AboutPage() {
   const { data } = await sanityFetch({ query: aboutQuery })
+  const about = data as AboutData | null   // ← cast result
 
-  if (!data) {
-    return <p>No About content found. Add it in Sanity Studio.</p>
-  }
+  if (!about) return <p>No About content found. Add it in Sanity Studio.</p>
 
   return (
     <>    
@@ -26,9 +30,9 @@ export default async function AboutPage() {
 
   <div className="bg-[url('/images/fence.png')] grayscale bg-cover bg-center md:col-start-2 pt-12 pb-12 px-6 md:pt-16 md:h-screen md:overflow-y-scroll lg:px-26 ">
       <div className="border-1 p-6 bg-black">
-      {data.content?.length ? (
+      {about.content?.length ? (
           <PortableText
-            value={data.content}
+            value={about.content}
             components={{
               block: {
                 h1: ({ children }) => <h1 className="font-sans uppercase heading-1">{children}</h1>,
