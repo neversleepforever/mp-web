@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation"
 import { sanityFetch } from "@/sanity/lib/live"
 import { folioQuery, folioPagesSlugs } from "@/sanity/lib/queries"
-import Gallery from "../../../../../components/Gallery"
+import Gallery from "@/components/Gallery"
 
 export interface Folio {
   _id: string
@@ -13,11 +13,6 @@ export interface Folio {
     credit?: string
   }[]
 }
-
-type PageProps = {
-  params: { slug: string }
-}
-
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
   const { data } = await sanityFetch({
     query: folioPagesSlugs,
@@ -30,7 +25,11 @@ export async function generateStaticParams(): Promise<{ slug: string }[]> {
   }))
 }
 
-export default async function FullShootPage({ params }: PageProps) {
+export default async function FullShootPage({
+  params,
+}: {
+  params: { slug: string }
+}) {
   const { data } = await sanityFetch({
     query: folioQuery,
     params,
