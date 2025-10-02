@@ -1,4 +1,3 @@
-// app/folio/gallery/[slug]/full/page.tsx
 import { notFound } from "next/navigation"
 import { sanityFetch } from "@/sanity/lib/live"
 import { folioQuery, folioPagesSlugs } from "@/sanity/lib/queries"
@@ -15,20 +14,23 @@ export interface Folio {
   }[]
 }
 
-type Props = {
+type PageProps = {
   params: { slug: string }
 }
 
-export async function generateStaticParams() {
+export async function generateStaticParams(): Promise<{ slug: string }[]> {
   const { data } = await sanityFetch({
     query: folioPagesSlugs,
     perspective: "published",
     stega: false,
   })
-  return data as { slug: string }[]
+
+  return (data || []).map((item: any) => ({
+    slug: String(item.slug),
+  }))
 }
 
-export default async function FullShootPage({ params }: Props) {
+export default async function FullShootPage({ params }: PageProps) {
   const { data } = await sanityFetch({
     query: folioQuery,
     params,
@@ -38,26 +40,19 @@ export default async function FullShootPage({ params }: Props) {
   if (!folio?._id) return notFound()
 
   return (
-    <>
-        <div className="fixed inset-0 z-20 md:hidden pointer-events-none">
-          <div className="w-full h-full bg-[url('/images/centerfoldmobile.png')] bg-cover bg-center" />
-        </div>
-        {/* Medium Centerfold Image */}
-        <div className="md:fixed md:inset-0 md:z-20 md:pointer-events-none">
-          <div className="md:w-auto md:h-screen md:bg-[url('/images/centerfoldmedium.png')] md:bg-center md:bg-no-repeat md:bg-contain" />
-        </div>
- 
     <div className="relative min-h-screen">
       <div className="p-6 md:p-12">
-
         {folio.images?.length ? (
-          <Gallery images={folio.images} title={folio.title} />
-
+          <Gallery
+            images={folio.images}
+            title={folio.title}
+            enableKeyboard
+            showControls
+          />
         ) : (
           <p>No images found for this shoot.</p>
         )}
       </div>
     </div>
-       </>
   )
 }
