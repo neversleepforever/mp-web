@@ -26,25 +26,26 @@ export interface Video {
   }
 }
 
-
-type Props = { params: { slug: string } }
-
-export async function generateStaticParams() {
+export async function generateStaticParams(): Promise<{ slug: string }[]> {
   const { data } = await sanityFetch({
     query: videoSlugsQuery,
     perspective: "published",
     stega: false,
   })
-  return data as { slug: string }[]
+  return (data || []).map((item: any) => ({
+    slug: String(item.slug),
+  }))
 }
 
 export async function generateMetadata(
-  { params }: Props,
+  { params }: { params: Promise<{ slug: string }> },
   parent: ResolvingMetadata
 ): Promise<Metadata> {
+  const { slug } = await params
+
   const { data } = await sanityFetch({
     query: videoQuery,
-    params,
+    params: { slug },
     stega: false,
   })
 
@@ -52,6 +53,8 @@ export async function generateMetadata(
   const previousImages = (await parent).openGraph?.images || []
   const ogImage = video?.videoUrl
     ? { url: `https://img.youtube.com/vi/${video.videoUrl}/hqdefault.jpg` }
+    : video?.muxVideo?.asset?.playbackId
+    ? { url: `https://image.mux.com/${video.muxVideo.asset.playbackId}/thumbnail.png` }
     : null
 
   return {
@@ -66,15 +69,20 @@ export async function generateMetadata(
   }
 }
 
-export default async function VideoPage({ params }: Props) {
+export default async function VideoPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}) {
+  const { slug } = await params
+
   const { data } = await sanityFetch({
     query: videoQuery,
-    params,
+    params: { slug },
   })
 
   const video = data as Video | null
   if (!video?._id) return notFound()
-    console.log(video)
 
   return (
     <div className="my-12 lg:my-24 p-6">
@@ -98,23 +106,24 @@ export default async function VideoPage({ params }: Props) {
           <PortableText value={video.description} />
         ) : null}
       </div>
-    {video.muxVideo?.asset?.playbackId ? (
+
+      {video.muxVideo?.asset?.playbackId ? (
         <MuxPlayer
-            playbackId={video?.muxVideo?.asset?.playbackId}
-            streamType="on-demand"
-            autoPlay={false}
-            // controls
-            className="w-full h-full object-contain"
+          playbackId={video.muxVideo.asset.playbackId}
+          streamType="on-demand"
+          autoPlay={false}
+          className="w-full h-full object-contain"
         />
-        ) : video.videoUrl ? (
+      ) : video.videoUrl ? (
         <video
-            src={video.videoUrl}
-            controls
-            className="w-full h-full object-contain"
+          src={video.videoUrl}
+          controls
+          className="w-full h-full object-contain"
         />
-        ) : (
+      ) : (
         <p className="text-gray-500 italic">No video available</p>
-        )}
+      )}
+
       <nav className="fixed bottom-7 uppercase mix-blend-difference z-90">
         <Link href="/folio" className="hover:underline text-[14px]">
           Folio

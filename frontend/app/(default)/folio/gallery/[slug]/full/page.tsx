@@ -13,26 +13,26 @@ export interface Folio {
     credit?: string
   }[]
 }
+
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
   const { data } = await sanityFetch({
     query: folioPagesSlugs,
     perspective: "published",
     stega: false,
   })
-
-  return (data || []).map((item: any) => ({
-    slug: String(item.slug),
-  }))
+  return (data || []).map((item: any) => ({ slug: String(item.slug) }))
 }
 
 export default async function FullShootPage({
   params,
 }: {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }) {
+  const { slug } = await params
+
   const { data } = await sanityFetch({
     query: folioQuery,
-    params,
+    params: { slug },
   })
 
   const folio = data as Folio | null
@@ -42,12 +42,7 @@ export default async function FullShootPage({
     <div className="relative min-h-screen">
       <div className="p-6 md:p-12">
         {folio.images?.length ? (
-          <Gallery
-            images={folio.images}
-            title={folio.title}
-            enableKeyboard
-            showControls
-          />
+          <Gallery images={folio.images} title={folio.title} />
         ) : (
           <p>No images found for this shoot.</p>
         )}

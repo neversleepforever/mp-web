@@ -7,27 +7,6 @@ import { resolveOpenGraphImage } from "@/sanity/lib/utils"
 import Link from "next/link"
 import Gallery from "../../../../components/Gallery"
 
-const portableTextComponents: PortableTextComponents = {
-  block: {
-    h1: ({ children }) => <h1 className="heading-1">{children}</h1>,
-    h2: ({ children }) => <h2 className="heading-2">{children}</h2>,
-    h3: ({ children }) => <h3 className="heading-3">{children}</h3>,
-    normal: ({ children }) => <p className="mt-6 font-sans">{children}</p>,
-  },
-  list: {
-    bullet: ({ children }) => (
-      <ul className="list-disc list-inside mt-4 space-y-2">{children}</ul>
-    ),
-    number: ({ children }) => (
-      <ol className="list-decimal list-inside mt-4 space-y-2">{children}</ol>
-    ),
-  },
-  listItem: {
-    bullet: ({ children }) => <li className="ml-6">{children}</li>,
-    number: ({ children }) => <li className="ml-6">{children}</li>,
-  },
-}
-
 export interface Journal {
   _id: string
   title?: string
@@ -43,27 +22,23 @@ export interface Journal {
   }[]
 }
 
-type Props = { params: { slug: string } }
-
 export async function generateStaticParams() {
   const { data } = await sanityFetch({
     query: journalSlugsQuery,
     perspective: "published",
     stega: false,
   })
-
-  return (data || []).map((item: any) => ({
-    slug: item.slug,
-  }))
+  return (data || []).map((item: any) => ({ slug: item.slug }))
 }
 
 export async function generateMetadata(
-  { params }: Props,
+  { params }: { params: Promise<{ slug: string }> },
   parent: ResolvingMetadata
 ): Promise<Metadata> {
+  const { slug } = await params
   const { data } = await sanityFetch({
     query: journalQuery,
-    params,
+    params: { slug },
     stega: false,
   })
 
@@ -76,19 +51,20 @@ export async function generateMetadata(
   return {
     title: journal?.title ?? "Untitled",
     description:
-      journal?.subtitle ||
-      journal?.description?.[0]?.children?.[0]?.text ||
-      undefined,
-    openGraph: {
-      images: ogImage ? [ogImage, ...previousImages] : previousImages,
-    },
+      journal?.subtitle || journal?.description?.[0]?.children?.[0]?.text,
+    openGraph: { images: ogImage ? [ogImage, ...previousImages] : previousImages },
   }
 }
 
-export default async function JournalPage({ params }: Props) {
+export default async function JournalPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}) {
+  const { slug } = await params
   const { data } = await sanityFetch({
     query: journalQuery,
-    params,
+    params: { slug },
   })
 
   const journal = data as Journal | null
@@ -142,4 +118,26 @@ export default async function JournalPage({ params }: Props) {
     </>
 
   )
+}
+
+
+const portableTextComponents: PortableTextComponents = {
+  block: {
+    h1: ({ children }) => <h1 className="heading-1">{children}</h1>,
+    h2: ({ children }) => <h2 className="heading-2">{children}</h2>,
+    h3: ({ children }) => <h3 className="heading-3">{children}</h3>,
+    normal: ({ children }) => <p className="mt-6 font-sans">{children}</p>,
+  },
+  list: {
+    bullet: ({ children }) => (
+      <ul className="list-disc list-inside mt-4 space-y-2">{children}</ul>
+    ),
+    number: ({ children }) => (
+      <ol className="list-decimal list-inside mt-4 space-y-2">{children}</ol>
+    ),
+  },
+  listItem: {
+    bullet: ({ children }) => <li className="ml-6">{children}</li>,
+    number: ({ children }) => <li className="ml-6">{children}</li>,
+  },
 }

@@ -14,18 +14,6 @@ const portableTextComponents: PortableTextComponents = {
     h3: ({ children }) => <h3 className="heading-3">{children}</h3>,
     normal: ({ children }) => <p className="mt-6 font-sans">{children}</p>,
   },
-  list: {
-    bullet: ({ children }) => (
-      <ul className="list-disc list-inside mt-4 space-y-2">{children}</ul>
-    ),
-    number: ({ children }) => (
-      <ol className="list-decimal list-inside mt-4 space-y-2">{children}</ol>
-    ),
-  },
-  listItem: {
-    bullet: ({ children }) => <li className="ml-6">{children}</li>,
-    number: ({ children }) => <li className="ml-6">{children}</li>,
-  },
 }
 
 export interface Folio {
@@ -35,22 +23,12 @@ export interface Folio {
   photographer?: string
   date?: string
   slug: string
-  description?: {
-    _type: "block"
-    children?: {
-      _type: "span"
-      text?: string
-    }[]
-  }[]
+  description?: any[]
   images?: {
     asset?: { url: string }
     alt?: string
     credit?: string
   }[]
-}
-
-type Props = {
-  params: { slug: string }
 }
 
 export async function generateStaticParams() {
@@ -59,19 +37,17 @@ export async function generateStaticParams() {
     perspective: "published",
     stega: false,
   })
-
-  return (data || []).map((item: any) => ({
-    slug: item.slug,
-  }))
+  return (data || []).map((item: any) => ({ slug: item.slug }))
 }
 
 export async function generateMetadata(
-  { params }: Props,
+  { params }: { params: Promise<{ slug: string }> },
   parent: ResolvingMetadata
 ): Promise<Metadata> {
+  const { slug } = await params
   const { data } = await sanityFetch({
     query: folioQuery,
-    params,
+    params: { slug },
     stega: false,
   })
 
@@ -83,20 +59,20 @@ export async function generateMetadata(
 
   return {
     title: folio?.title ?? "Untitled",
-    description:
-      folio?.subtitle ||
-      folio?.description?.[0]?.children?.[0]?.text ||
-      undefined,
-    openGraph: {
-      images: ogImage ? [ogImage, ...previousImages] : previousImages,
-    },
+    description: folio?.subtitle || folio?.description?.[0]?.children?.[0]?.text,
+    openGraph: { images: ogImage ? [ogImage, ...previousImages] : previousImages },
   }
 }
 
-export default async function FolioPage({ params }: Props) {
+export default async function FolioPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}) {
+  const { slug } = await params
   const { data } = await sanityFetch({
     query: folioQuery,
-    params,
+    params: { slug },
   })
 
   const folio = data as Folio | null
