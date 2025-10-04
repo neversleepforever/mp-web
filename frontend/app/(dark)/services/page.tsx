@@ -1,5 +1,6 @@
 import Filter from "@/app/components/Filter"
 import PixelateOverlay from "@/app/components/PixelateOverlay"
+import TextDistortFilter from "@/app/components/TextFilter"
 import { sanityFetch } from "@/sanity/lib/live"
 import { servicesQuery } from "@/sanity/lib/queries"
 import { PortableText, type PortableTextComponents, type PortableTextBlock } from "next-sanity"
@@ -52,6 +53,7 @@ export default async function ServicesPage() {
 
   return (
     <>
+      <TextDistortFilter>
       <div className="md:grid md:grid-cols-2 dark:text-white bg-[#454545]">
         <div className="bg-[url('/images/servicesbg.png')] bg-cover bg-center mix-blend-exclusion"></div>
 
@@ -157,6 +159,7 @@ export default async function ServicesPage() {
       <div className="fixed bottom-[-30px] left-[-150px] w-[200%] h-[60px] -rotate-45 bg-black text-white flex items-center justify-center shadow-lg">
         <p className="font-display uppercase pl-[210px]">🍑 Adults Only 🍑</p>
       </div>
+      </TextDistortFilter>
     </>
   )
 }
