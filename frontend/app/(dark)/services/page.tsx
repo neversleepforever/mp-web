@@ -156,7 +156,7 @@ export default async function ServicesPage() {
         </div>
       </div>
 
-      <div className="fixed bottom-[-30px] left-[-150px] w-[200%] h-[60px] -rotate-45 bg-black text-white flex items-center justify-center shadow-lg">
+      <div className="fixed bottom-[-30px] left-[-150px] w-[200%] h-[60px] -rotate-45 bg-black text-white flex items-center justify-center shadow-lg overflow-hidden">
         <p className="font-display uppercase pl-[210px]">🍑 Adults Only 🍑</p>
       </div>
       </TextDistortFilter>

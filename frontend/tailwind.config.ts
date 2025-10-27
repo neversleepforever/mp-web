@@ -14,6 +14,7 @@ export default {
       fontFamily: {
         sans: ["Univers LT Std", "sans-serif"], // default
         display: ["Futura Std", "sans-serif"], // headings
+        nav: ["Sharp Sans No2", "sans-serif"], // navigation
       },
       boxShadow: {
         layer: '0 35px 60px -15px rgba(0, 0, 0, 0.3)',

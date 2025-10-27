@@ -46,6 +46,14 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: "Sharp Sans No2";
+  src: url("/fonts/sharp-sans-no2-medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
 @layer base {
   body {
     font-family: "Univers LT Std";
@@ -75,6 +83,7 @@
 
   --font-display: 'Futura Std', 'sans-serif';
   --font-sans: 'Univers Lt Std', 'sans-serif';
+  --font-nav: 'Sharp Sans No2', 'sans-serif';
 
   --default-transition-duration: 250ms;
 }

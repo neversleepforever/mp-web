@@ -23,7 +23,7 @@ export default function Header() {
     <header className="fixed top-0 left-0 right-0 z-40 py-4 px-7 md:pt-4 dark:text-white bg-transparent">
       <div className="flex w-full">
         <nav className="w-full">
-          <ul className="flex w-full justify-between text-xs sm:text-base tracking-tight font-mono">
+          <ul className="flex w-full justify-between text-xs sm:text-base tracking-tight font-nav uppercase">
               <li key={"/"}>
                 <Link
                   href={"/"}
@@ -33,7 +33,7 @@ export default function Header() {
                     alt="Logo"
                     width={225}
                     height={30}
-                    className="object-contain"
+                    className="object-contain dark:invert"
                   />
                 </Link>
               </li>
