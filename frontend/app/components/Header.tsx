@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import Image from "next/image"
 
 export default function Header() {
   const pathname = usePathname()
@@ -23,6 +24,19 @@ export default function Header() {
       <div className="flex w-full">
         <nav className="w-full">
           <ul className="flex w-full justify-between text-xs sm:text-base tracking-tight font-mono">
+              <li key={"/"}>
+                <Link
+                  href={"/"}
+                >
+                  <Image
+                    src="/images/logo.png"
+                    alt="Logo"
+                    width={225}
+                    height={30}
+                    className="object-contain"
+                  />
+                </Link>
+              </li>
             {links.map(({ href, label }) => (
               <li key={href}>
                 <Link
