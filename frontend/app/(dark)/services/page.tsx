@@ -89,11 +89,11 @@ export default async function ServicesPage() {
                   ratesSection: ({ value }) => (
                     <div className="border">
                       <div className="font-display text-[47px] p-6 uppercase flex flex-row justify-center gap-6 items-center">
-                        <div className="flex flex-col">
+                        <div className="flex flex-col lg:flex-row">
                           <div>$</div>
                           <div>$</div>
                         </div>
-                        <div>
+                        <div className="lg:flex lg:flex-row">
                           <div className="flex flex-row justify-center items-center gap-4 mix-blend-luminosity">
                             <Image src={"/images/discover.jpg"} alt="" width={55} height={35} />
                             <Image src={"/images/amex.jpg"} alt="" width={55} height={35} />
@@ -104,7 +104,7 @@ export default async function ServicesPage() {
                             <Image src={"/images/visa.jpg"} alt="" width={55} height={35} />
                           </div>
                         </div>
-                        <div className="flex flex-col">
+                        <div className="flex flex-col lg:flex-row">
                           <div>$</div>
                           <div>$</div>
                         </div>
@@ -143,7 +143,7 @@ export default async function ServicesPage() {
                           className="w-full h-auto object-contain grayscale"
                         />
                         {value.caption && (
-                          <figcaption className="text-[24px] pt-4">{value.caption}</figcaption>
+                          <figcaption className="heading-1 text-justify break-normal pt-4">{value.caption}</figcaption>
                         )}
                       </figure>
                     ) : null,
@@ -156,9 +156,9 @@ export default async function ServicesPage() {
         </div>
       </div>
 
-      <div className="fixed bottom-[-30px] left-[-150px] w-[200%] h-[60px] -rotate-45 bg-black text-white flex items-center justify-center shadow-lg overflow-hidden">
+      {/* <div className="fixed bottom-[-30px] left-[-150px] w-[200%] h-[60px] -rotate-45 bg-black text-white flex items-center justify-center shadow-lg overflow-hidden">
         <p className="font-display uppercase pl-[210px]">🍑 Adults Only 🍑</p>
-      </div>
+      </div> */}
       </TextDistortFilter>
     </>
   )

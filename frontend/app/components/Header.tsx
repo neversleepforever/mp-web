@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import Image from "next/image"
+import TextDistortFilter from "./TextFilter"
 
 export default function Header() {
   const pathname = usePathname()
@@ -22,19 +23,23 @@ export default function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 z-40 py-4 px-7 md:pt-4 dark:text-white bg-transparent">
       <div className="flex w-full">
+      
         <nav className="w-full">
+            <TextDistortFilter>
           <ul className="flex w-full justify-between text-xs sm:text-base tracking-tight font-nav uppercase">
               <li key={"/"}>
                 <Link
                   href={"/"}
                 >
-                  <Image
-                    src="/images/logo.png"
-                    alt="Logo"
-                    width={225}
-                    height={30}
-                    className="object-contain dark:invert"
-                  />
+                  
+                    <Image
+                      src="/images/logo.png"
+                      alt="Logo"
+                      width={225}
+                      height={30}
+                      className="object-contain dark:invert"
+                    />
+                  
                 </Link>
               </li>
             {links.map(({ href, label }) => (
@@ -50,6 +55,7 @@ export default function Header() {
               </li>
             ))}
           </ul>
+           </TextDistortFilter>
         </nav>
       </div>
     </header>

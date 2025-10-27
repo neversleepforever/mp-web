@@ -90,9 +90,12 @@
 
 @layer components {
   .heading-1 {
-    @apply text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl;
+    @apply text-[40px] font-display font-extrabold tracking-tight uppercase sm:text-5xl lg:text-6xl;
   }
   .heading-2 {
+    @apply text-[22px] font-display uppercase;
+  }
+    .heading-3 {
     @apply text-[20px] font-display uppercase;
   }
 }
