@@ -41,7 +41,7 @@ export default async function BaseLayout({
             <SanityLive onError={handleError} />
             <Header />
             <main>{children}</main>
-            {/* <Footer /> */}
+            <Footer />
           </section>
         </AgeCheck>
 

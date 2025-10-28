@@ -21,13 +21,14 @@ export default function Header() {
   if (hideNav) return null
 
   return (
+    <>
     <header className="fixed top-0 left-0 right-0 z-40 py-4 px-7 md:pt-4 dark:text-white bg-transparent">
       <div className="flex w-full">
       
         <nav className="w-full">
             <TextDistortFilter>
           <ul className="flex w-full justify-between text-xs sm:text-base tracking-tight font-nav uppercase">
-              <li key={"/"}>
+              <li key={"/"} className="hidden lg:block">
                 <Link
                   href={"/"}
                 >
@@ -59,5 +60,6 @@ export default function Header() {
         </nav>
       </div>
     </header>
+</>
   )
 }
