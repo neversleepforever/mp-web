@@ -5,6 +5,7 @@ import { PortableText, type PortableTextBlock } from "next-sanity"
 import Image from "next/image"
 import Link from "next/link"
 import Filter from "@/app/components/Filter"
+import TextDistortFilter from "@/app/components/TextFilter"
 
 interface SocialLink {
   displayTitle: string
@@ -45,20 +46,20 @@ export default async function ContactPage() {
   }
 
   return (
-    <div className="relative min-h-screen pt-16">
+    <div className="grid grid-cols-2 grid-rows-1 h-screen w-screen overflow-hidden">
       {/* Mobile background image */}
-      <div className="fixed inset-0 -z-20 md:hidden">
+      <div className="col-start-1 row-start-1 col-span-2 row-span-1 -z-20 md:hidden">
         <div className="w-full h-full bg-[url('/images/linkspage.png')] bg-cover bg-center bg-black/30 bg-blend-multiply" />
       </div>
 
       {/* Medium Centerfold Image */}
-      <div className="md:fixed md:inset-0 md:z-20 md:pointer-events-none">
+      <div className="md:col-start-1 md:row-start-1 md:col-span-2 md:row-span-1 md:pointer-events-none">
         <div className="md:w-auto md:h-screen md:bg-[url('/images/centerfoldmedium.png')] md:bg-center md:bg-no-repeat md:bg-contain" />
       </div>
 
       {/* Mirrored About content (md+ only) */}
       {about?.content?.length ? (
-        <div className="pointer-events-none hidden md:block absolute inset-y-0 left-0 w-1/2 -z-10 overflow-hidden">
+        <div className="pointer-events-none hidden md:block md:col-start-1 md:row-start-1 md:col-span-1 md:row-span-1 -z-10 overflow-hidden">
           <div className="h-full w-full p-6 scale-x-[-1] opacity-15 text-white">
             <Filter>
               <PortableText
@@ -96,8 +97,10 @@ export default async function ContactPage() {
       ) : null}
 
       {/* Contact content */}
-      <section className="z-40 md:flex md:items-center md:justify-center px-6 dark:text-white min-h-[calc(100vh-72px)]">
-        <div className="w-full max-w-[668px] max-h-[470px] border p-6 bg-black md:py-12 md:px-10 md:m-4 md:flex md:items-start">
+ 
+      <section className="col-start-1 row-start-1 col-span-2 row-span-1 pt-12 md:pt-0 md:flex md:flex-1 md:items-center md:justify-center z-40 px-6 md:pr-0 dark:text-white ">
+     <TextDistortFilter>
+        <div className="w-full h-auto md:w-[670px] md:h-[470px] border p-4 md:grid md:grid-cols-2 md:grid-rows-1">
           <div className="flex-1">
             <h1 className="heading-1 mb-8">Contact</h1>
 
@@ -140,16 +143,18 @@ export default async function ContactPage() {
             ) : null}
           </div>
 
-          <div className="hidden md:block flex-shrink-0 md:flex-1 md:flex md:justify-end">
+          <div className="hidden md:block md:flex md:items-center md:justify-end md:p-6 md:overflow-hidden">
             <Image
               src="/images/linkspage.png"
               alt="Links Page Illustration"
-              width={245}
-              height={370}
+              width={283}
+              height={400}
             />
           </div>
         </div>
+    </TextDistortFilter>
       </section>
+
     </div>
   )
 }
