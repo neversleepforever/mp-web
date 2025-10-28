@@ -1,4 +1,5 @@
 import Filter from "@/app/components/Filter"
+import TextDistortFilter from "@/app/components/TextFilter"
 import { sanityFetch } from "@/sanity/lib/live"
 import { aboutQuery } from "@/sanity/lib/queries"
 import { PortableText, type PortableTextBlock } from "next-sanity"
@@ -28,15 +29,18 @@ export default async function AboutPage() {
           <div className="md:w-auto md:h-screen md:bg-[url('/images/centerfoldmedium.png')] md:bg-center md:bg-no-repeat md:bg-contain" />
         </div>
 
-  <div className="bg-[url('/images/fence.png')] grayscale bg-cover bg-center md:col-start-2 pt-12 pb-12 px-6 md:pt-16 md:h-screen md:overflow-y-scroll lg:px-26 ">
+  <div className="bg-[url('/images/fence.png')] bg-cover bg-center md:col-start-2 pt-12 pb-16 px-6 md:pt-16 md:h-screen md:overflow-y-scroll lg:px-26 ">
+  <TextDistortFilter>
       <div className="border-1 p-6 bg-black">
       {about.content?.length ? (
           <PortableText
             value={about.content}
             components={{
               block: {
-                h1: ({ children }) => <h1 className="font-sans uppercase heading-1">{children}</h1>,
-                normal: ({ children }) => <p className="mt-6">{children}</p>
+                h1: ({ children }) => <h1 className="heading-1">{children}</h1>,
+                h2: ({ children }) => <h2 className="heading-2">{children}</h2>,
+                h3: ({ children }) => <h3 className="heading-3">{children}</h3>,
+                normal: ({ children }) => <p className="font-sans text-[22px] mt-6">{children}</p>
               },
               types: {
                 image: ({ value }) => {
@@ -44,7 +48,7 @@ export default async function AboutPage() {
                   const dims = value.asset?.metadata?.dimensions
                   if (!url || !dims) return null
                   return (
-                    <div className="mt-6 grayscale mix-blend-difference">
+                    <div className="mt-6 mix-blend-difference md:grayscale md:contrast-200">
                       <Image
                         src={url}
                         alt={value.alt || ""}
@@ -62,6 +66,7 @@ export default async function AboutPage() {
           <p>No content added yet.</p>
         )}
         </div>
+        </TextDistortFilter>
       </div>
       </div>
     {/* <div className="fixed inset-0 z-10 md:hidden pointer-events-none">
