@@ -80,18 +80,26 @@ export default async function JournalPage({
     </div>
 
       <div className="my-12 p-6 lg:p-0 lg:-my-0 lg:pr-7.5 lg:grid lg:grid-cols-2 h-screen">
-        <div className="overflow-y-scroll lg:min-h-screen lg:pt-54 lg:py-24 lg:px-30 ">
+        <div className="overflow-y-scroll lg:min-h-screen lg:pt-54 lg:py-24 lg:px-30 scrollbar-hide">
           <header className="pb-6">
-            <h1 className="text-[38px] font-bold tracking-tight text-gray-900">
+            <h1 className="heading-1 text-justify">
               {journal.title ?? "Untitled"}
             </h1>
             {journal.subtitle && (
               <p className="text-lg text-gray-600 mt-2">{journal.subtitle}</p>
             )}
-            <div className="mt-8 text-[18px]">
-              {journal.date && <div>{journal.date}</div>}
+              <div className="mt-8 text-[18px] font-extrabold mb-3">
+              {journal.date && (
+                  <p className="uppercase font-sans text-[18px]">
+                    {new Date(journal.date).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </p>
+                )}
               {journal.photographer && (
-                <div className="uppercase">Shot By {journal.photographer}</div>
+                <div className="uppercase font-nav text-[12px]">{journal.photographer}</div>
               )}
             </div>
           </header>
@@ -109,12 +117,11 @@ export default async function JournalPage({
            ) : null}
         </div>
       </div>
-    
-         <nav className="fixed bottom-7 uppercase mix-blend-difference z-90">
-          <Link href="/folio" className="hover:underline text-[14px]">
-            Folio
-          </Link>
-        </nav>
+      <nav className="fixed bottom-5 lg:pl-16 uppercase mix-blend-difference z-90">
+        <Link href="/folio" className="hover:underline text-[14px]">
+          Folio
+        </Link>
+      </nav>
     </>
 
   )

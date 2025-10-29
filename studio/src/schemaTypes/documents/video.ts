@@ -19,9 +19,17 @@ export const video = defineType({
       type: 'string',
     }),
     defineField({
-      name: 'photographer',
-      title: 'Photographer',
+      name: 'displayTitle',
+      title: 'Display Title',
       type: 'string',
+      description: "Title that will be displayed on Folio index page.",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'photographer',
+      title: 'Photographer/Collaborator',
+      type: 'string',
+      description: "Name of the photographer or collaborator for video or photoshoot.",
     }),
     defineField({
       name: 'slug',

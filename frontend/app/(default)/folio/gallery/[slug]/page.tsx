@@ -82,30 +82,34 @@ export default async function FolioPage({
 
   return (
     <>
-      {/* Background images (mobile + desktop) */}
       <div className="fixed inset-0 z-0 md:hidden pointer-events-none">
         <div className="w-full h-full bg-[url('/images/centerfoldmobilelight.png')] bg-cover bg-center" />
       </div>
       <div className="md:fixed md:inset-0 md:z-0 md:pointer-events-none">
         <div className="md:w-auto md:h-screen md:bg-[url('/images/centerfoldmedium.png')] md:bg-center md:bg-no-repeat md:bg-contain" />
       </div>
-
-      {/* Main layout */}
       <div className="my-12 p-6 lg:p-0 lg:-my-0 lg:pr-7.5 lg:grid lg:grid-cols-2 h-screen">
-        {/* Left side content */}
-        <div className="overflow-y-scroll lg:min-h-screen lg:pt-54 lg:py-24 lg:px-30 ">
+        <div className="overflow-y-scroll lg:min-h-screen lg:pt-54 lg:py-24 lg:px-30 scrollbar-hide">
           <header className="pb-6">
-            <h1 className="text-[38px] font-bold tracking-tight text-gray-900">
+            <h1 className="heading-1 text-justify">
               {folio.title ?? "Untitled"}
             </h1>
             {folio.subtitle && (
               <p className="text-lg text-gray-600 mt-2">{folio.subtitle}</p>
             )}
-            <div className="mt-8 text-[18px]">
+            <div className="mt-8 text-[18px] font-extrabold mb-3">
+                  {folio.date && (
+                  <p className="uppercase font-sans text-[18px]">
+                    {new Date(folio.date).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </p>
+                )}
               {folio.photographer && (
-                <div className="uppercase">Shot By {folio.photographer}</div>
+                <div className="uppercase font-nav text-[12px]">{folio.photographer}</div>
               )}
-              {folio.date && <div>{folio.date}</div>}
             </div>
           </header>
           <div className="text-[22px]">
@@ -118,7 +122,6 @@ export default async function FolioPage({
           </div>
         </div>
 
-        {/* Right side: preview image link */}
         <div className="lg:flex lg:flex-col lg:justify-center lg:pl-24">
           {firstImage?.asset?.url && (
             <Link href={`/folio/gallery/${folio.slug}/full`} className="block group">
@@ -141,9 +144,7 @@ export default async function FolioPage({
           )}
         </div>
       </div>
-
-      {/* Bottom nav */}
-      <nav className="fixed bottom-7 uppercase mix-blend-difference z-90">
+      <nav className="fixed bottom-5 lg:pl-16 uppercase mix-blend-difference z-90">
         <Link href="/folio" className="hover:underline text-[14px]">
           Folio
         </Link>

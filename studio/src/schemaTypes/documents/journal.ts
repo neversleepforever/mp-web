@@ -19,6 +19,13 @@ export const journal = defineType({
       type: 'string',
     }),
     defineField({
+      name: 'displayTitle',
+      title: 'Display Title',
+      type: 'string',
+      description: "Title that will be displayed on Folio index page.",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: 'photographer',
       title: 'Photographer',
       type: 'string',
