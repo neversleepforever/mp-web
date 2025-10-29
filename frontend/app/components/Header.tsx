@@ -16,9 +16,9 @@ export default function Header() {
     { href: "/contact", label: "Contact" },
   ]
   
-  const hideNav = pathname.startsWith("/folio/")
+  // const hideNav = pathname.startsWith("/folio/")
 
-  if (hideNav) return null
+  // if (hideNav) return null
 
   return (
     <>

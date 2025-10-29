@@ -7,6 +7,7 @@ import { videoSlugsQuery, videoQuery } from "@/sanity/lib/queries"
 import { resolveOpenGraphImage } from "@/sanity/lib/utils"
 import Link from "next/link"
 import MuxPlayer from "@mux/mux-player-react"
+import TextDistortFilter from "@/app/components/TextFilter"
 
 export interface Video {
   _id: string
@@ -24,6 +25,7 @@ export interface Video {
       status?: string
     }
   }
+  caption?: string
 }
 
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
@@ -85,50 +87,79 @@ export default async function VideoPage({
   if (!video?._id) return notFound()
 
   return (
-    <div className="my-12 lg:my-24 p-6">
-      <header className="pb-6">
-        <h1 className="text-[38px] font-bold tracking-tight text-gray-900">
-          {video.title ?? "Untitled"}
-        </h1>
-        {video.subtitle && (
-          <p className="text-lg text-gray-600 mt-2">{video.subtitle}</p>
-        )}
-        <div className="mt-8 text-[18px]">
-          {video.photographer && (
-            <div className="uppercase">Shot By {video.photographer}</div>
-          )}
-          {video.date && <div>{video.date}</div>}
+      <>
+      <div className="fixed inset-0 z-20 md:hidden pointer-events-none">
+        <div className="w-full h-full bg-[url('/images/centerfoldmobilelight.png')] bg-cover bg-center" />
+      </div>
+      <div className="md:fixed md:inset-0 md:z-20 md:pointer-events-none">
+        <div className="md:w-auto md:h-screen md:bg-[url('/images/centerfoldmedium.png')] md:mix-blend-exclusion md:bg-center md:bg-no-repeat md:bg-contain" />
+      </div>
+      <div className="my-12 px-6 md:px-21 py-0 lg:p-0 lg:-my-0 lg:grid lg:grid-cols-2 h-screen">
+        <div className="lg:min-h-screen lg:pt-54 lg:py-24 lg:px-30 lg:overflow-y-scroll scrollbar-hide ">
+          <TextDistortFilter>
+          <header className="pb-6">
+            <h1 className="heading-1 text-justify">
+              {video.title ?? "Untitled"}
+            </h1>
+            {video.subtitle && (
+              <p className="text-lg text-gray-600">{video.subtitle}</p>
+            )}
+            <div className="mt-8 text-[18px] font-extrabold mb-3">
+              {video.date && (
+                  <p className="uppercase font-sans text-[18px]">
+                    {new Date(video.date).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </p>
+                )}
+              {video.photographer && (
+                <div className="uppercase font-nav text-[12px]">{video.photographer}</div>
+              )}
+            </div>
+          </header>
+        <div className="text-[22px]">
+          {video.description?.length ? (
+            <PortableText value={video.description} />
+          ) : null}
         </div>
-      </header>
-
-      <div className="text-[22px]">
-        {video.description?.length ? (
-          <PortableText value={video.description} />
-        ) : null}
+        </TextDistortFilter>
       </div>
 
       {video.muxVideo?.asset?.playbackId ? (
-        <MuxPlayer
-          playbackId={video.muxVideo.asset.playbackId}
-          streamType="on-demand"
-          autoPlay={false}
-          className="w-full h-full object-contain"
-        />
-      ) : video.videoUrl ? (
-        <video
-          src={video.videoUrl}
-          controls
-          className="w-full h-full object-contain"
-        />
-      ) : (
+        <div className="relative w-full h-[85vh] lg:h-[100vh] lg:px-16 xl:px-30 flex flex-col items-center justify-center">
+          <MuxPlayer
+            playbackId={video.muxVideo.asset.playbackId}
+            streamType="on-demand"
+            autoPlay={false}
+            className="w-full object-contain"
+          />
+          {video.caption && (
+            <p className="mt-7 font-sans w-full">
+              {video.caption}
+            </p>
+          )}
+        </div>
+      ) 
+      // : video.videoUrl ? (
+      //   <video
+      //     src={video.videoUrl}
+      //     controls
+      //     className="w-full object-contain"
+      //   />
+      // ) 
+      : (
         <p className="text-gray-500 italic">No video available</p>
       )}
 
-      <nav className="fixed bottom-7 uppercase mix-blend-difference z-90">
+ 
+      <nav className="fixed bottom-5 lg:pl-16 uppercase mix-blend-difference z-90">
         <Link href="/folio" className="hover:underline text-[14px]">
           Folio
         </Link>
       </nav>
     </div>
+    </>
   )
 }

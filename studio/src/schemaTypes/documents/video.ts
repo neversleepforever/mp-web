@@ -54,6 +54,12 @@ export const video = defineType({
         type: "mux.video", 
       }),
     defineField({
+      name: "caption",
+      title: "Video Caption",
+      type: "string",
+      description: "Optional caption or description to appear under the video.",
+    }),
+    defineField({
       name: "displayImage",
       title: "Display Image (Thumbnail)",
       type: "image",

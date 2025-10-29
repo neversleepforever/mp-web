@@ -33,14 +33,19 @@ export default async function FolioIndexPage() {
   }
 
   return (
-   <div className="h-[100vh] md:px-6 md:pt-16 overflow-y-auto">
+  <div
+  className="
+    h-[100vh] px-6 pt-12 pb-16 
+    overflow-y-auto overflow-x-hidden 
+    md:overflow-x-auto md:overflow-y-hidden 
+    xl:overflow-x-hidden xl:overflow-y-auto
+  "
+  >
   <div
      className="
-          grid gap-3
-          md:pb-6
-          md:grid-cols-3 lg:grid-cols-5 lg:pb-0
-          md:[grid-template-rows:repeat(2,_minmax(0,_42vh))]
-          md:auto-rows-[minmax(0,_42vh)]
+          grid gap-3 grid-cols-1 auto-rows-max 
+          md:pb-6 md:grid-cols-none md:grid-rows-2 md:auto-cols-max md:grid-flow-col md:snap-x md:snap-mandatory md:h-full
+          xl:grid-rows-none xl:grid-flow-row xl:grid-cols-5 xl:auto-rows-[minmax(0,_1fr)]
         "
   >
     {folios.map((folio) => {
@@ -55,15 +60,13 @@ export default async function FolioIndexPage() {
           href={`/folio/${folio._type}/${folio.slug}`}
           className="flex flex-col h-full"
         >
-          {/* Image fills available space */}
           {previewImage ? (
-            <div className="relative flex-1">
+            <div className="relative w-full aspect-[4/5] md:h-[421px] md:w-[300px] overflow-hidden">
               <Image
                 src={previewImage}
-                alt={folio.title || folio.displayImage?.alt || ""}
+                alt={folio.title || ""}
                 fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, (min-width: 768px) 20vw"
+                className="object-cover object-center"
               />
             </div>
           ) : (
@@ -71,9 +74,7 @@ export default async function FolioIndexPage() {
               <span className="text-gray-600 italic">{folio._type}</span>
             </div>
           )}
-
-          {/* Text only takes as much height as it needs */}
-          <div className="mt-2">
+          <div className="mt-2 font-nav uppercase">
             <h2>{folio.title ?? "Untitled"}</h2>
             {folio.date && (
               <p>

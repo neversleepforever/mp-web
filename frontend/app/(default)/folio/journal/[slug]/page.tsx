@@ -89,10 +89,10 @@ export default async function JournalPage({
               <p className="text-lg text-gray-600 mt-2">{journal.subtitle}</p>
             )}
             <div className="mt-8 text-[18px]">
+              {journal.date && <div>{journal.date}</div>}
               {journal.photographer && (
                 <div className="uppercase">Shot By {journal.photographer}</div>
               )}
-              {journal.date && <div>{journal.date}</div>}
             </div>
           </header>
           <div className="text-[22px]">

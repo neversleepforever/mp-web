@@ -55,7 +55,7 @@ export default async function ServicesPage() {
     <>
       <TextDistortFilter>
       <div className="md:grid md:grid-cols-2 dark:text-white bg-[#454545]">
-        <div className="bg-[url('/images/servicesbg.png')] bg-cover bg-center mix-blend-exclusion"></div>
+        <div className="bg-[url('/images/servicesbg.jpg')] bg-cover bg-center mix-blend-screen"></div>
 
         {/* Mobile Centerfold Image */}
         <div className="fixed inset-0 z-20 md:hidden pointer-events-none">
@@ -67,7 +67,7 @@ export default async function ServicesPage() {
           <div className="md:w-auto md:h-screen md:bg-[url('/images/centerfoldmedium.png')] md:bg-center md:bg-no-repeat md:bg-contain" />
         </div>
 
-        <div className="bg-[url('/images/scantexture.jpg')] grayscale bg-cover bg-center mix-blend-plus-lighter md:col-start-2 py-8 px-6 md:py-12 md:pl-4 md:pr-6 md:h-screen md:overflow-y-scroll lg:px-26">
+        <div className="bg-[url('/images/scantexture.jpg')] grayscale bg-cover bg-center mix-blend-plus-lighter md:col-start-2 py-8 px-6 md:py-12 md:pl-4 md:pr-6 md:h-screen md:overflow-y-scroll xl:px-26">
           {services.content?.length ? (
             <PortableText
               value={services.content}
@@ -88,27 +88,32 @@ export default async function ServicesPage() {
                   ),
                   ratesSection: ({ value }) => (
                     <div className="border">
-                      <div className="font-display text-[47px] p-6 uppercase flex flex-row justify-center gap-6 items-center">
-                        <div className="flex flex-col lg:flex-row">
-                          <div>$</div>
-                          <div>$</div>
-                        </div>
-                        <div className="lg:flex lg:flex-row">
-                          <div className="flex flex-row justify-center items-center gap-4 mix-blend-luminosity">
-                            <Image src={"/images/discover.jpg"} alt="" width={55} height={35} />
-                            <Image src={"/images/amex.jpg"} alt="" width={55} height={35} />
+                      <div className="font-display text-[47px] py-6 uppercase grid place-items-center gap-4 text-center">
+                      {/* Payment row */}
+                      <div className="grid grid-cols-[auto_1fr_auto] items-center justify-center gap-4 mix-blend-luminosity">
+                        <div className="flex justify-center gap-2 text-[32px]">$</div>
+
+                        <div className="flex flex-col lg:flex-row items-center justify-center gap-4">
+                          {/* Left payment icons */}
+                          <div className="flex justify-center items-center gap-4">
+                            <Image src="/images/discover.jpg" alt="Discover" width={55} height={35} />
+                            <Image src="/images/amex.jpg" alt="Amex" width={55} height={35} />
                           </div>
-                          <h2>{value.title}</h2>
-                          <div className="flex flex-row justify-center items-center gap-4 mix-blend-luminosity">
-                            <Image src={"/images/mastercard.jpg"} alt="" width={55} height={35} />
-                            <Image src={"/images/visa.jpg"} alt="" width={55} height={35} />
+
+                          {/* Title */}
+                          <h2 className="text-[36px] sm:text-[42px] md:text-[47px] leading-none">{value.title}</h2>
+
+                          {/* Right payment icons */}
+                          <div className="flex justify-center items-center gap-4">
+                            <Image src="/images/mastercard.jpg" alt="MasterCard" width={55} height={35} />
+                            <Image src="/images/visa.jpg" alt="Visa" width={55} height={35} />
                           </div>
                         </div>
-                        <div className="flex flex-col lg:flex-row">
-                          <div>$</div>
-                          <div>$</div>
-                        </div>
+
+                        <div className="flex justify-center gap-2 text-[32px]">$</div>
+                        
                       </div>
+                    </div>
 
                       <h3 className="font-display bg-white text-black text-[12px] py-[10px] px-16 text-center">
                         {value.banner}
@@ -140,10 +145,10 @@ export default async function ServicesPage() {
                           alt={value.caption || ""}
                           width={800}
                           height={600}
-                          className="w-full h-auto object-contain grayscale"
+                          className="w-full h-auto object-contain grayscale border-white border-1"
                         />
                         {value.caption && (
-                          <figcaption className="heading-1 text-justify break-normal pt-4">{value.caption}</figcaption>
+                          <figcaption className="heading-1 text-justify break-normal leading-none pt-4">{value.caption}</figcaption>
                         )}
                       </figure>
                     ) : null,

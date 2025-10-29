@@ -191,6 +191,7 @@ export const videoQuery = defineQuery(`
   "slug": slug.current,
   description,
   videoUrl,
+  caption,
   muxVideo {
     asset->{
       playbackId,
