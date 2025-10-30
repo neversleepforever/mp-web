@@ -47,9 +47,9 @@ export default function Gallery({
   const selected = images[selectedIndex]
 
   return (
-    <div className="relative w-full h-[85vh] flex flex-col lg:flex-row">
+    <div className="relative w-full h-[100vh] flex flex-col lg:flex-row scrollbar-hide">
       {/* Main image */}
-      <div className="flex-1 flex justify-center items-center overflow-hidden">
+      <div className="flex-1 flex justify-center items-center overflow-hidden scrollbar-hide">
         {selected?.asset?.url && (
           <figure className="relative w-full h-full flex flex-col justify-center">
             <Image
@@ -71,7 +71,7 @@ export default function Gallery({
       {/* Thumbnails */}
       <div
         className="
-          flex justify-center overflow-x-auto px-2 pb-2
+          flex overflow-x-auto overflow-visible px-2 pb-2 scrollbar-hide
           lg:w-15 lg:h-full lg:overflow-y-auto lg:flex-col lg:px-0 lg:pb-0 lg:ml-7.5
         "
       >
@@ -81,7 +81,7 @@ export default function Gallery({
               key={i}
               onClick={() => setSelectedIndex(i)}
               className={`relative flex-shrink-0 overflow-hidden border 
-                ${i === selectedIndex ? "border-blue-500" : "border-transparent"}
+                ${i === selectedIndex ? "border-black" : "border-transparent"}
                 h-20 w-auto lg:w-full lg:h-auto
               `}
               aria-label={`Select image ${i + 1}`}

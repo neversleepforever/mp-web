@@ -137,11 +137,14 @@ export default async function FolioPage({
               {firstImage.credit && (
                 <p className="text-sm text-gray-500 mt-2">{firstImage.credit}</p>
               )}
-              <p className="mt-4 uppercase text-sm underline">
-                View Full Shoot →
-              </p>
+         
             </Link>
           )}
+             <Link href={`/folio/gallery/${folio.slug}/full`}>
+                <p className="w-full text-center place-self-end mt-4 uppercase text-sm hover:underline">
+                  View Full Shoot
+                </p>
+              </Link>
         </div>
       </div>
       <nav className="fixed bottom-5 lg:pl-16 uppercase mix-blend-difference z-90">
