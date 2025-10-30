@@ -98,9 +98,9 @@ export default async function ContactPage() {
 
       {/* Contact content */}
  
-      <section className="col-start-1 row-start-1 col-span-2 row-span-1 pt-12 md:pt-0 md:flex md:flex-1 md:items-center md:justify-center z-40 px-6 md:pr-0 dark:text-white ">
+      <section className="pointer-events-none col-start-1 row-start-1 col-span-2 row-span-1 pt-12 md:pt-0 md:flex md:flex-1 md:items-center md:justify-center z-40 px-6 md:pr-0 dark:text-white ">
      <TextDistortFilter>
-        <div className="w-full h-auto md:w-[670px] md:h-[470px] border p-4 md:grid md:grid-cols-2 md:grid-rows-1">
+        <div className="pointer-events-auto w-full h-auto md:w-[670px] md:h-[470px] border p-4 md:grid md:grid-cols-2 md:grid-rows-1">
           <div className="flex-1">
             <h1 className="heading-1 mb-8">Contact</h1>
 
