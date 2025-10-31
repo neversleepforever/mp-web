@@ -14,6 +14,7 @@ import { settingsQuery } from "@/sanity/lib/queries"
 import { resolveOpenGraphImage } from "@/sanity/lib/utils"
 import { handleError } from "./client-utils"
 import AgeCheck from "./components/AgeCheck"
+import Centerfold from "./components/Centerfold"
 
 const inter = Inter({
   variable: "--font-inter",
@@ -35,7 +36,8 @@ export default async function BaseLayout({
       lang="en"
       className={`${inter.variable}`}
     >
-      <body className={`${theme === "dark" ? "dark" : "" } dark:bg-black` }>
+      <body className={`${theme === "dark" ? "dark" : "" } dark:bg-black isolate` }>
+        <Centerfold />
         <AgeCheck>
           <section className="min-h-screen">
             <SanityLive onError={handleError} />

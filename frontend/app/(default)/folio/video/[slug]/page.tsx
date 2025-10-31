@@ -88,12 +88,6 @@ export default async function VideoPage({
 
   return (
       <>
-      <div className="fixed inset-0 z-20 md:hidden pointer-events-none">
-        <div className="w-full h-full bg-[url('/images/centerfoldmobilelight.png')] bg-cover bg-center" />
-      </div>
-      <div className="md:fixed md:inset-0 md:z-20 md:pointer-events-none">
-        <div className="md:w-auto md:h-screen md:bg-[url('/images/centerfoldmedium.png')] md:mix-blend-exclusion md:bg-center md:bg-no-repeat md:bg-contain" />
-      </div>
       <div className="my-12 px-6 md:px-21 py-0 lg:p-0 lg:-my-0 lg:grid lg:grid-cols-2 h-screen">
         <div className="lg:min-h-screen lg:pt-54 lg:py-24 lg:px-30 lg:overflow-y-scroll scrollbar-hide ">
           <TextDistortFilter>

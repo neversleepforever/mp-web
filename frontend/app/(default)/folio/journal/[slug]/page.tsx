@@ -72,13 +72,6 @@ export default async function JournalPage({
 
   return (
     <>    
-    <div className="fixed inset-0 z-20 md:hidden pointer-events-none">
-      <div className="w-full h-full bg-[url('/images/centerfoldmobilelight.png')] bg-cover bg-center" />
-    </div>
-    <div className="md:fixed md:inset-0 md:z-20 md:pointer-events-none">
-      <div className="md:w-auto md:h-screen md:bg-[url('/images/centerfoldmedium.png')] md:bg-center md:bg-no-repeat md:bg-contain" />
-    </div>
-
       <div className="my-12 p-6 lg:p-0 lg:-my-0 lg:pr-7.5 lg:grid lg:grid-cols-2 h-screen">
         <div className="overflow-y-scroll lg:min-h-screen lg:pt-54 lg:py-24 lg:px-30 scrollbar-hide">
           <header className="pb-6">

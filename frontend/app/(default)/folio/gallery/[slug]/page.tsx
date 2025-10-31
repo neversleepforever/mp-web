@@ -6,6 +6,7 @@ import { folioPagesSlugs, folioQuery } from "@/sanity/lib/queries"
 import { resolveOpenGraphImage } from "@/sanity/lib/utils"
 import Link from "next/link"
 import Image from "next/image"
+import Centerfold from "@/app/components/Centerfold"
 
 const portableTextComponents: PortableTextComponents = {
   block: {
@@ -80,24 +81,26 @@ export default async function FolioPage({
 
   const firstImage = folio.images?.[0]
 
+const viewFullShootButton = (
+  <Link href={`/folio/gallery/${folio.slug}/full`}>
+    <p className="w-full text-left mt-7 mb-7 md:text-center place-self-end md:mb-0 md:mt-4 uppercase text-sm hover:underline">
+      View Full Shoot
+    </p>
+  </Link>
+)
+
   return (
     <>
-      <div className="fixed inset-0 z-0 md:hidden pointer-events-none">
-        <div className="w-full h-full bg-[url('/images/centerfoldmobilelight.png')] bg-cover bg-center mix-blend-exclusion" />
-      </div>
-      <div className="md:fixed md:inset-0 md:z-0 md:pointer-events-none">
-        <div className="md:w-auto md:h-screen md:bg-[url('/images/centerfoldmedium.png')] md:bg-center md:bg-no-repeat md:bg-contain md:mix-blend-difference" />
-      </div>
-      <div className="my-12 p-6 lg:p-0 lg:-my-0 lg:pr-7.5 lg:grid lg:grid-cols-2 h-screen">
+      <div className="my-12 p-6 pt-0 lg:p-0 lg:-my-0 lg:pr-7.5 lg:grid lg:grid-cols-2 min-h-screen">
         <div className="overflow-y-scroll lg:min-h-screen lg:pt-54 lg:py-24 lg:px-30 scrollbar-hide">
-          <header className="pb-6">
+          <header className="md:pb-6">
             <h1 className="heading-1 text-justify">
               {folio.title ?? "Untitled"}
             </h1>
             {folio.subtitle && (
               <p className="text-lg text-gray-600 mt-2">{folio.subtitle}</p>
             )}
-            <div className="mt-8 text-[18px] font-extrabold mb-3">
+            <div className="mt-12 text-[18px] font-extrabold mb-3">
                   {folio.date && (
                   <p className="uppercase font-sans text-[18px]">
                     {new Date(folio.date).toLocaleDateString("en-US", {
@@ -108,11 +111,11 @@ export default async function FolioPage({
                   </p>
                 )}
               {folio.photographer && (
-                <div className="uppercase font-nav text-[12px]">{folio.photographer}</div>
+                <div className="font-sans text-[18px] uppercase md:font-nav md:text-[12px]">{folio.photographer}</div>
               )}
             </div>
           </header>
-          <div className="text-[22px]">
+          <div className="text-[22px] mt-12">
             {folio.description?.length ? (
               <PortableText
                 components={portableTextComponents}
@@ -121,6 +124,8 @@ export default async function FolioPage({
             ) : null}
           </div>
         </div>
+
+        <div className="block md:hidden">{viewFullShootButton}</div>
 
         <div className="lg:flex lg:flex-col lg:justify-center lg:pl-24">
           {firstImage?.asset?.url && (
@@ -131,7 +136,7 @@ export default async function FolioPage({
                   alt={firstImage.alt || folio.title || ""}
                   width={800}
                   height={600}
-                  className="object-contain -z-10 w-auto max-h-[50vh] transition-transform duration-300"
+                  className="object-contain w-auto md:max-h-[50vh]"
                 />
               </div>
               {firstImage.credit && (
@@ -140,15 +145,11 @@ export default async function FolioPage({
          
             </Link>
           )}
-             <Link href={`/folio/gallery/${folio.slug}/full`}>
-                <p className="w-full text-center place-self-end mt-4 uppercase text-sm hover:underline">
-                  View Full Shoot
-                </p>
-              </Link>
+          <div className="hidden md:block">{viewFullShootButton}</div>
         </div>
       </div>
-      <nav className="fixed bottom-5 lg:pl-16 uppercase mix-blend-difference z-90">
-        <Link href="/folio" className="hover:underline text-[14px]">
+      <nav className="fixed bottom-5 pl-6 lg:pl-16 uppercase">
+        <Link href="/folio" className="hover:underline text-[14px] text-black mix-blend-difference">
           Folio
         </Link>
       </nav>

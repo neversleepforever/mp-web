@@ -56,18 +56,7 @@ export default async function ServicesPage() {
       <TextDistortFilter>
       <div className="md:grid md:grid-cols-2 dark:text-white bg-[#454545]">
         <div className="bg-[url('/images/servicesbg.jpg')] bg-cover bg-center mix-blend-screen"></div>
-
-        {/* Mobile Centerfold Image */}
-        <div className="fixed inset-0 z-20 md:hidden pointer-events-none">
-          <div className="w-full h-full bg-[url('/images/centerfoldmobile.png')] bg-cover bg-center" />
-        </div>
-
-        {/* Medium Centerfold Image */}
-        <div className="md:fixed md:inset-0 md:z-20 md:pointer-events-none">
-          <div className="md:w-auto md:h-screen md:bg-[url('/images/centerfoldmedium.png')] md:bg-center md:bg-no-repeat md:bg-contain" />
-        </div>
-
-        <div className="bg-[url('/images/scantexture.jpg')] grayscale bg-cover bg-center mix-blend-plus-lighter md:col-start-2 py-8 px-6 md:py-12 md:pl-4 md:pr-6 md:h-screen md:overflow-y-scroll xl:px-26">
+        <div className="bg-[url('/images/scantexture.jpg')] grayscale bg-cover bg-center mix-blend-plus-lighter md:col-start-2 pt-8 pb-12 px-6 md:py-12 md:pl-4 md:pr-6 md:h-screen md:overflow-y-scroll xl:px-26">
           {services.content?.length ? (
             <PortableText
               value={services.content}

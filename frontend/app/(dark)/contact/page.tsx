@@ -47,16 +47,6 @@ export default async function ContactPage() {
 
   return (
     <div className="grid grid-cols-2 grid-rows-1 h-screen w-screen overflow-hidden">
-      {/* Mobile background image */}
-      <div className="col-start-1 row-start-1 col-span-2 row-span-1 -z-20 md:hidden">
-        <div className="w-full h-full bg-[url('/images/linkspage.png')] bg-cover bg-center bg-black/30 bg-blend-multiply" />
-      </div>
-
-      {/* Medium Centerfold Image */}
-      <div className="md:col-start-1 md:row-start-1 md:col-span-2 md:row-span-1 md:pointer-events-none">
-        <div className="md:w-auto md:h-screen md:bg-[url('/images/centerfoldmedium.png')] md:bg-center md:bg-no-repeat md:bg-contain" />
-      </div>
-
       {/* Mirrored About content (md+ only) */}
       {about?.content?.length ? (
         <div className="pointer-events-none hidden md:block md:col-start-1 md:row-start-1 md:col-span-1 md:row-span-1 -z-10 overflow-hidden">
@@ -100,7 +90,7 @@ export default async function ContactPage() {
  
       <section className="pointer-events-none col-start-1 row-start-1 col-span-2 row-span-1 pt-12 md:pt-0 md:flex md:flex-1 md:items-center md:justify-center z-40 px-6 md:pr-0 dark:text-white ">
      <TextDistortFilter>
-        <div className="pointer-events-auto w-full h-auto md:w-[670px] md:h-[470px] border p-4 md:grid md:grid-cols-2 md:grid-rows-1">
+        <div className="pointer-events-auto bg-black w-full h-auto md:w-[670px] md:h-[470px] border p-4 md:grid md:grid-cols-2 md:grid-rows-1">
           <div className="flex-1">
             <h1 className="heading-1 mb-8">Contact</h1>
 

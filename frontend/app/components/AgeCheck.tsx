@@ -15,7 +15,7 @@ export default function AgeCheck({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="relative z-[99]">
+    <div className="relative">
       {children}
       {!verified && (
         <div className="fixed inset-0 h-full w-full z-40 flex items-center justify-center backdrop-blur-lg z-[9999]">

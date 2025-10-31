@@ -3,7 +3,7 @@ import Image from "next/image"
 
 export default function Footer() {
   return (
-    <footer className="fixed lg:hidden bottom-0 left-0 right-0 z-40 py-4 px-7 w-full mix-blend-color-burn dark:mix-blend-luminosity z-50">
+    <footer className="fixed lg:hidden bottom-0 left-0 right-0 py-4 px-7 w-full ">
      <div className="flex w-full justify-center">
       <Link href={"/"}>
         <Image
@@ -11,7 +11,7 @@ export default function Footer() {
           alt="Logo"
           width={225}
           height={30}
-          className="object-contain dark:invert"
+          className="object-contain dark:invert mix-blend-difference"
         />
       </Link>
     </div>
