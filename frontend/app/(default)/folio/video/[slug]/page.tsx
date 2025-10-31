@@ -88,8 +88,8 @@ export default async function VideoPage({
 
   return (
       <>
-      <div className="my-12 px-6 md:px-21 py-0 lg:p-0 lg:-my-0 lg:grid lg:grid-cols-2 h-screen">
-        <div className="lg:min-h-screen lg:pt-54 lg:py-24 lg:px-30 lg:overflow-y-scroll scrollbar-hide ">
+      <div className="my-12 px-6 md:px-21 py-0 xl:p-0 xl:-my-0 xl:grid xl:grid-cols-2 h-screen">
+        <div className="xl:min-h-screen lg:pt-54 xl:pb-24 xl:px-30 xl:overflow-y-scroll scrollbar-hide ">
           <TextDistortFilter>
           <header className="pb-6">
             <h1 className="heading-1 text-justify">
@@ -122,7 +122,7 @@ export default async function VideoPage({
       </div>
 
       {video.muxVideo?.asset?.playbackId ? (
-        <div className="relative w-full h-[85vh] lg:h-[100vh] lg:px-16 xl:px-30 flex flex-col items-center justify-center">
+        <div className="relative w-full pt-16 pb-16 lg:mt-0 md:h-[75vh] xl:h-[100vh] xl:px-16 xl:px-30 flex flex-col items-center justify-center">
           <MuxPlayer
             playbackId={video.muxVideo.asset.playbackId}
             streamType="on-demand"
@@ -148,7 +148,7 @@ export default async function VideoPage({
       )}
 
  
-      <nav className="fixed bottom-5 lg:pl-16 uppercase mix-blend-difference z-90">
+      <nav className="fixed bottom-5 xl:pl-16 uppercase mix-blend-difference z-90">
         <Link href="/folio" className="hover:underline text-[14px]">
           Folio
         </Link>
