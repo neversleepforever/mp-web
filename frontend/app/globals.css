@@ -90,7 +90,7 @@
 
 @layer components {
   .heading-1 {
-    @apply text-[30px] md:text-[40px] font-display font-extrabold tracking-tight uppercase ;
+    @apply text-[35px] md:text-[40px] font-display font-extrabold tracking-tight uppercase ;
   }
   .heading-2 {
     @apply text-[22px] font-display uppercase;

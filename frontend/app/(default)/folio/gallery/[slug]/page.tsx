@@ -7,6 +7,8 @@ import { resolveOpenGraphImage } from "@/sanity/lib/utils"
 import Link from "next/link"
 import Image from "next/image"
 import Centerfold from "@/app/components/Centerfold"
+import TextDistortFilter from "@/app/components/TextFilter"
+import Submit from "@/app/components/Submit"
 
 const portableTextComponents: PortableTextComponents = {
   block: {
@@ -83,7 +85,7 @@ export default async function FolioPage({
 
 const viewFullShootButton = (
   <Link href={`/folio/gallery/${folio.slug}/full`}>
-    <p className="w-full text-left mt-7 mb-7 md:text-center place-self-end md:mb-0 md:mt-4 uppercase text-sm hover:underline">
+    <p className="w-full text-left mt-7 mb-7 xl:text-center place-self-end md:mb-0 md:mt-4 uppercase text-sm hover:underline">
       View Full Shoot
     </p>
   </Link>
@@ -91,8 +93,10 @@ const viewFullShootButton = (
 
   return (
     <>
-      <div className="my-12 p-6 pt-0 lg:p-0 lg:-my-0 lg:pr-7.5 lg:grid lg:grid-cols-2 min-h-screen">
-        <div className="overflow-y-scroll lg:min-h-screen lg:pt-54 lg:py-24 lg:px-30 scrollbar-hide">
+      <Submit />
+      <div className="my-12 p-6 pt-0 xl:p-0 xl:-my-0 xl:pr-7.5 xl:grid xl:grid-cols-2 min-h-screen">
+        <TextDistortFilter>
+        <div className="overflow-y-scroll md:px-20 xl:min-h-screen xl:pt-54 xl:py-24 xl:px-30 scrollbar-hide">
           <header className="md:pb-6">
             <h1 className="heading-1 text-justify">
               {folio.title ?? "Untitled"}
@@ -123,35 +127,45 @@ const viewFullShootButton = (
               />
             ) : null}
           </div>
+          <div className="block xl:hidden">{viewFullShootButton}</div>
         </div>
+        </TextDistortFilter>
+        
+        {/* <TextDistortFilter>
 
-        <div className="block md:hidden">{viewFullShootButton}</div>
+        </TextDistortFilter> */}
 
-        <div className="lg:flex lg:flex-col lg:justify-center lg:pl-24">
-          {firstImage?.asset?.url && (
-            <Link href={`/folio/gallery/${folio.slug}/full`} className="block group">
-              <div className="relative w-full flex justify-center items-center">
-                <Image
-                  src={firstImage.asset.url}
-                  alt={firstImage.alt || folio.title || ""}
-                  width={800}
-                  height={600}
-                  className="object-contain w-auto md:max-h-[50vh]"
-                />
-              </div>
-              {firstImage.credit && (
-                <p className="text-sm text-gray-500 mt-2">{firstImage.credit}</p>
-              )}
-         
-            </Link>
-          )}
-          <div className="hidden md:block">{viewFullShootButton}</div>
-        </div>
+       <div className="md:flex md:flex-col md:justify-between xl:pl-24 md:h-[75vh] xl:h-[100vh]">
+        {firstImage?.asset?.url && (
+          <Link href={`/folio/gallery/${folio.slug}/full`} className="block group flex-1 flex justify-center items-center">
+            <div className="relative w-full flex justify-center items-center">
+              <Image
+                src={firstImage.asset.url}
+                alt={firstImage.alt || folio.title || ""}
+                width={800}
+                height={600}
+                className="object-contain w-auto md:max-h-[50vh]"
+              />
+            </div>
+          </Link>
+        )}
+
+        {firstImage?.credit && (
+          <p className="text-sm text-gray-500 mt-2">{firstImage.credit}</p>
+        )}
+
+        <TextDistortFilter>
+          <div className="hidden xl:block xl:mb-5">{viewFullShootButton}</div>
+        </TextDistortFilter>
+      </div>
+
       </div>
       <nav className="fixed bottom-5 pl-6 lg:pl-16 uppercase">
-        <Link href="/folio" className="hover:underline text-[14px] text-black mix-blend-difference">
-          Folio
-        </Link>
+        <TextDistortFilter>
+          <Link href="/folio" className="hover:underline text-[14px] text-black mix-blend-difference">
+            Folio
+          </Link>
+        </TextDistortFilter>
       </nav>
     </>
   )
