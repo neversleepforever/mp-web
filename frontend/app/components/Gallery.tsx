@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react"
 import { usePathname } from "next/navigation"
 import Image from "next/image"
-import Link from "next/link"
 
 interface GalleryImage {
   asset?: { url: string }
@@ -26,8 +25,13 @@ export default function Gallery({
 }: Props) {
   const [selectedIndex, setSelectedIndex] = useState(0)
   const pathname = usePathname()
-  if (!images?.length) return null
-  
+
+  const goPrev = () =>
+    setSelectedIndex((i) => (i - 1 + images.length) % images.length)
+
+  const goNext = () =>
+    setSelectedIndex((i) => (i + 1) % images.length)
+
   const isFullGallery = pathname?.endsWith("/full")
   const basePath = pathname?.endsWith("/full")
     ? pathname.replace(/\/full$/, "")
@@ -51,13 +55,9 @@ export default function Gallery({
     return () => window.removeEventListener("keydown", handleKeyDown)
   }, [enableKeyboard, images.length])
 
-  const selected = images[selectedIndex]
- 
-  const goPrev = () =>
-    setSelectedIndex((i) => (i - 1 + images.length) % images.length)
+  if (!images?.length) return null
 
-  const goNext = () =>
-    setSelectedIndex((i) => (i + 1) % images.length)
+  const selected = images[selectedIndex]
 
   return (
     <>

@@ -51,13 +51,14 @@ export default async function ContactPage() {
       {about?.content?.length ? (
         <div className="pointer-events-none hidden md:block md:col-start-1 md:row-start-1 md:col-span-1 md:row-span-1 -z-10 overflow-hidden">
           <div className="h-full w-full p-6 scale-x-[-1] opacity-15 text-white">
-            <Filter>
+
+            <TextDistortFilter>
               <PortableText
                 value={about.content}
                 components={{
                   block: {
                     h1: ({ children }) => (
-                      <h1 className="font-sans uppercase text-[38px] mb-6">{children}</h1>
+                      <h1 className="heading-1 mb-6">{children}</h1>
                     ),
                     normal: ({ children }) => <p className="mt-6">{children}</p>,
                   },
@@ -81,16 +82,37 @@ export default async function ContactPage() {
                   },
                 }}
               />
-            </Filter>
+            </TextDistortFilter>
+    
           </div>
         </div>
       ) : null}
 
       {/* Contact content */}
+
+      <div className="absolute inset-0 md:hidden">
+        <Image
+          src="/images/linkspage.png"
+          alt="Links Page Illustration"
+          fill
+          className="object-cover object-center opacity-20"
+          priority
+        />
+      </div>
+
+      <div className="hidden md:block md:absolute inset-y-0 left-0 w-1/2">
+        <Image
+          src="/images/fenceblack.png"
+          alt=""
+          fill
+          className="object-cover object-center"
+          priority
+        />
+      </div>
  
       <section className="pointer-events-none col-start-1 row-start-1 col-span-2 row-span-1 pt-12 md:pt-0 md:flex md:flex-1 md:items-center md:justify-center z-40 px-6 md:pr-0 dark:text-white ">
      <TextDistortFilter>
-        <div className="pointer-events-auto bg-black w-full h-auto md:w-[670px] md:h-[470px] border p-4 md:grid md:grid-cols-2 md:grid-rows-1">
+        <div className="pointer-events-auto md:bg-black w-full h-auto md:w-[670px] md:h-[470px] border p-4 md:grid md:grid-cols-2 md:grid-rows-1">
           <div className="flex-1">
             <h1 className="heading-1 mb-8">Contact</h1>
 

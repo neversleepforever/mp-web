@@ -1,5 +1,6 @@
 import Filter from "@/app/components/Filter"
 import PixelateOverlay from "@/app/components/PixelateOverlay"
+import Rates from "@/app/components/Rates"
 import TextDistortFilter from "@/app/components/TextFilter"
 import { sanityFetch } from "@/sanity/lib/live"
 import { servicesQuery } from "@/sanity/lib/queries"
@@ -77,33 +78,7 @@ export default async function ServicesPage() {
                   ),
                   ratesSection: ({ value }) => (
                     <div className="border">
-                      <div className="font-display text-[47px] py-6 uppercase grid place-items-center gap-4 text-center">
-                      {/* Payment row */}
-                      <div className="grid grid-cols-[auto_1fr_auto] items-center justify-center gap-4 mix-blend-luminosity">
-                        <div className="flex justify-center gap-2 text-[32px]">$</div>
-
-                        <div className="flex flex-col lg:flex-row items-center justify-center gap-4">
-                          {/* Left payment icons */}
-                          <div className="flex justify-center items-center gap-4">
-                            <Image src="/images/discover.jpg" alt="Discover" width={55} height={35} />
-                            <Image src="/images/amex.jpg" alt="Amex" width={55} height={35} />
-                          </div>
-
-                          {/* Title */}
-                          <h2 className="text-[36px] sm:text-[42px] md:text-[47px] leading-none">{value.title}</h2>
-
-                          {/* Right payment icons */}
-                          <div className="flex justify-center items-center gap-4">
-                            <Image src="/images/mastercard.jpg" alt="MasterCard" width={55} height={35} />
-                            <Image src="/images/visa.jpg" alt="Visa" width={55} height={35} />
-                          </div>
-                        </div>
-
-                        <div className="flex justify-center gap-2 text-[32px]">$</div>
-                        
-                      </div>
-                    </div>
-
+                      <Rates title={value.title} />
                       <h3 className="font-display bg-white text-black text-[12px] py-[10px] px-16 text-center">
                         {value.banner}
                       </h3>
