@@ -6,6 +6,7 @@ import { journalSlugsQuery, journalQuery } from "@/sanity/lib/queries"
 import { resolveOpenGraphImage } from "@/sanity/lib/utils"
 import Link from "next/link"
 import Gallery from "../../../../components/Gallery"
+import Submit from "@/app/components/Submit"
 
 export interface Journal {
   _id: string
@@ -72,9 +73,10 @@ export default async function JournalPage({
 
   return (
     <>    
-      <div className="my-12 p-6 lg:p-0 lg:-my-0 lg:pr-7.5 lg:grid lg:grid-cols-2 h-screen">
-        <div className="overflow-y-scroll lg:min-h-screen lg:pt-54 lg:py-24 lg:px-30 scrollbar-hide">
-          <header className="pb-6">
+    {/* <Submit /> */}
+      <div className="mt-12 mb-12 md:mb-16 p-6 md:p-0 pt-0 xl:p-0 xl:-my-0 xl:grid xl:grid-cols-2 xl:h-screen">
+          <div className="overflow-y-scroll md:px-20 lg:pb-16 xl:min-h-screen xl:pt-54 xl:py-24 lg:px-30 scrollbar-hide">
+          <header className="mb-6">
             <h1 className="heading-1 text-justify">
               {journal.title ?? "Untitled"}
             </h1>
@@ -104,13 +106,13 @@ export default async function JournalPage({
             ) : null}
           </div>
         </div>
-        <div className="lg:flex lg:flex-col lg:justify-center lg:pl-24">
+        <div className="lg:px-30 xl:pl-30 xl:pt-20 xl:pr-7.5 lg:flex lg:flex-col lg:justify-center xl:max-h-screen">
           {journal.images?.length ? (
             <Gallery images={journal.images} title={journal.title} />
            ) : null}
         </div>
       </div>
-      <nav className="fixed bottom-5 lg:pl-16 uppercase mix-blend-difference z-90">
+      <nav className="fixed bottom-5 pl-5 lg:pl-16 uppercase mix-blend-difference z-90">
         <Link href="/folio" className="hover:underline text-[14px]">
           Folio
         </Link>

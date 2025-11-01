@@ -2,6 +2,7 @@ import { notFound } from "next/navigation"
 import { sanityFetch } from "@/sanity/lib/live"
 import { folioQuery, folioPagesSlugs } from "@/sanity/lib/queries"
 import Gallery from "../../../../../components/Gallery"
+import Submit from "@/app/components/Submit"
 
 export interface Folio {
   _id: string
@@ -40,7 +41,8 @@ export default async function FullShootPage({
 
   return (
     <>
-    <div className="relative min-h-screen">
+    <Submit />
+    <div className="relative min-h-screen max-h-screen lg:pt-6 xl:pt-0 lg:pl-20 lg:pr-5">
       <div className="">
         {folio.images?.length ? (
           <Gallery images={folio.images} title={folio.title} />

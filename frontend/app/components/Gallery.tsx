@@ -61,18 +61,15 @@ export default function Gallery({
 
   return (
     <>
-    <Link href={basePath}
-        className="fixed z-40 top-5 left-5 pointer-events-auto uppercase text-[14px] self-start hover:underline">Submit
-    </Link>
-    <div className="relative w-full h-[100vh] flex flex-col lg:flex-row scrollbar-hide lg:h-[calc(100vh-3rem)]">
-      <div className="flex-1 flex justify-center items-center overflow-hidden scrollbar-hide pt-12">
+    <div className="relative w-full h-[calc(100vh-4rem)] flex flex-col lg:flex-row scrollbar-hide lg:gap-7.5 xl:pt-6 xl:h-[calc(100vh-3rem)]">
+      <div className="flex-1 flex justify-center items-end lg:items-center overflow-hidden scrollbar-hide pt-12 p-6 md:px-20 lg:p-0">
         {selected?.asset?.url && (
-          <figure className="relative w-full h-full flex flex-col justify-center">
+          <figure className="relative w-full h-full flex flex-col justify-end lg:justify-center">
             <Image
               src={selected.asset.url}
               alt={selected.alt || title || ""}
               fill
-              className="object-contain"
+              className="object-contain object-bottom lg:object-top xl:object-center"
               priority
             />
             {selected.credit && (
@@ -85,8 +82,8 @@ export default function Gallery({
       </div>
       <div
         className="
-          flex overflow-x-auto overflow-visible px-2 pb-2 scrollbar-hide
-          lg:w-[59px] lg:h-full lg:overflow-y-auto lg:flex-col lg:px-0 lg:pb-0 lg:mx-7.5 lg:pt-12
+          flex overflow-x-auto overflow-visible pl-6 pr-6 md:pl-20 md:pr-20 scrollbar-hide
+          lg:w-[59px] lg:h-full lg:overflow-y-auto lg:flex-col lg:px-0 lg:pb-0 lg:mx-0 lg:pt-0
         "
       >
         {images.map((img, i) =>
@@ -114,7 +111,7 @@ export default function Gallery({
       </div>
       
     </div>
-    <div className="lg:h-12 lg:w-full lg:flex lg:flex-row lg:justify-between lg:px-5 lg:font-nav uppercase">
+    <div className="hidden xl:h-12 xl:w-full xl:flex xl:flex-row xl:justify-between xl:font-nav uppercase">
       <button    
         type="button"
         onClick={goNext} 
