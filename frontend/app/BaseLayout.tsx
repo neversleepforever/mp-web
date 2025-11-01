@@ -36,7 +36,7 @@ export default async function BaseLayout({
       lang="en"
       className={`${inter.variable}`}
     >
-      <body className={`${theme === "dark" ? "dark" : "" } dark:bg-black isolate` }>
+      <body className={`${theme === "dark" ? "dark" : "" } bg-white dark:bg-black` }>
         <Centerfold />
         <AgeCheck>
           <section className="min-h-screen">
@@ -54,7 +54,6 @@ export default async function BaseLayout({
             </filter>
           </defs>
         </svg>
-
         <SpeedInsights />
       </body>
     </html>

@@ -73,7 +73,7 @@ export default function Gallery({
               priority
             />
             {selected.credit && (
-              <figcaption className="text-sm text-gray-500 mt-2 text-center relative z-10 bg-black/50 text-white">
+              <figcaption className="text-sm text-gray-500 mt-2 text-center relative bg-black/50 text-white">
                 {selected.credit}
               </figcaption>
             )}
