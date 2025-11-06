@@ -6,6 +6,7 @@ import { sanityFetch } from "@/sanity/lib/live"
 import { servicesQuery } from "@/sanity/lib/queries"
 import { PortableText, type PortableTextComponents, type PortableTextBlock } from "next-sanity"
 import Image from "next/image"
+import Link from "next/link"
 
 interface ServicesData {
   _id: string
@@ -79,9 +80,11 @@ export default async function ServicesPage() {
                   ratesSection: ({ value }) => (
                     <div className="border">
                       <Rates title={value.title} />
-                      <h3 className="font-display bg-white text-black text-[12px] py-[10px] px-16 text-center">
-                        {value.banner}
-                      </h3>
+                      <Link href={`mailto:"missmaggiepeach@gmail.com"`}>
+                        <h3 className="font-display bg-white text-black text-[12px] py-[10px] px-16 text-center">
+                          {value.banner}
+                        </h3>
+                      </Link>
                       <div className="p-4 text-center [&_ul]:mt-6 text-[20px]">
                         <PortableText value={value.rates} components={portableTextComponents} />
                       </div>
