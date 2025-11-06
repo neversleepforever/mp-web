@@ -57,6 +57,7 @@
 @layer base {
   body {
     font-family: "Univers LT Std";
+    line-height: 1.2;
   }
 }
 
@@ -90,13 +91,13 @@
 
 @layer components {
   .heading-1 {
-    @apply text-[35px] md:text-[40px] font-display font-extrabold tracking-tight uppercase ;
+    @apply text-[35px] md:text-[40px] font-display font-extrabold tracking-tight uppercase leading-[1.1];
   }
   .heading-2 {
-    @apply text-[22px] font-display uppercase;
+    @apply text-[22px] font-display uppercase leading-[1.1];
   }
     .heading-3 {
-    @apply text-[20px] font-display uppercase;
+    @apply text-[20px] font-display uppercase leading-[1.1];
   }
 }
 

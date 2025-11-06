@@ -112,7 +112,7 @@ export default async function ServicesPage() {
                           className="w-full h-auto object-contain grayscale border-white border-1"
                         />
                         {value.caption && (
-                          <figcaption className="heading-1 text-justify break-normal leading-none pt-4">{value.caption}</figcaption>
+                          <figcaption className="heading-1 text-justify break-normal leading-[1.1] pt-4">{value.caption}</figcaption>
                         )}
                       </figure>
                     ) : null,
