@@ -57,7 +57,7 @@ export default async function ServicesPage() {
       <TextDistortFilter>
       <div className="md:grid md:grid-cols-2 dark:text-white bg-[#454545]">
         <div className="bg-[url('/images/servicesbg.jpg')] bg-cover bg-center mix-blend-screen"></div>
-        <div className="bg-[url('/images/scantexture.jpg')] grayscale bg-cover bg-center mix-blend-plus-lighter md:col-start-2 pt-8 pb-12 px-6 md:py-12 md:pl-4 md:pr-6 md:h-screen md:overflow-y-scroll xl:px-26">
+        <div className="bg-[url('/images/scantexture.jpg')] md:grayscale bg-cover bg-center mix-blend-plus-lighter md:col-start-2 pt-8 pb-12 px-6 md:py-12 md:pl-4 md:pr-6 md:h-screen md:overflow-y-scroll xl:px-26">
           {services.content?.length ? (
             <PortableText
               value={services.content}
@@ -109,10 +109,10 @@ export default async function ServicesPage() {
                           alt={value.caption || ""}
                           width={800}
                           height={600}
-                          className="w-full h-auto object-contain grayscale border-white border-1"
+                          className="w-full h-auto object-contain md:grayscale border-white border-1"
                         />
                         {value.caption && (
-                          <figcaption className="heading-1 text-justify break-normal leading-[1.1] pt-4">{value.caption}</figcaption>
+                          <figcaption className="heading-1 text-justify break-normal pt-4">{value.caption}</figcaption>
                         )}
                       </figure>
                     ) : null,
