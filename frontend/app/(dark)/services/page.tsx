@@ -81,9 +81,9 @@ export default async function ServicesPage() {
                     <div className="border">
                       <Rates title={value.title} />
                       <Link href={`mailto:"missmaggiepeach@gmail.com"`}>
-                        <h3 className="font-display bg-white text-black text-[12px] py-[10px] px-16 text-center">
-                          {value.banner}
-                        </h3>
+                        <div className="flex justify-center font-display bg-white text-black text-[12px] py-[10px] px-16 text-center">
+                          <h3 className="max-w-[260px]">{value.banner}</h3>
+                        </div>
                       </Link>
                       <div className="p-4 text-center [&_ul]:mt-6 text-[20px]">
                         <PortableText value={value.rates} components={portableTextComponents} />
@@ -132,6 +132,7 @@ export default async function ServicesPage() {
         <p className="font-display uppercase pl-[210px]">🍑 Adults Only 🍑</p>
       </div> */}
       </TextDistortFilter>
+      <Image src="/images/band.png" alt="Adults Only" width={200} height={200} className="fixed bottom-[-10px] right-[-10px]" />
     </>
   )
 }
