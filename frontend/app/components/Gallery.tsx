@@ -82,7 +82,7 @@ export default function Gallery({
       </div>
       <div
         className="
-          flex overflow-x-auto overflow-visible pl-6 pr-6 md:pl-20 md:pr-20 scrollbar-hide
+          flex overflow-x-auto overflow-visible snap-x pl-[50vw] pr-[50vw] scrollbar-hide
           lg:w-[59px] lg:h-full lg:overflow-y-auto lg:flex-col lg:px-0 lg:pb-0 lg:mx-0 lg:pt-0
         "
       >
@@ -103,7 +103,7 @@ export default function Gallery({
                 alt={img.alt || title || ""}
                 width={200}
                 height={200}
-                className="h-full w-auto lg:w-full lg:h-auto object-contain"
+                className="h-full w-auto lg:w-full lg:h-auto object-contain snap-center"
               />
             </button>
           ) : null

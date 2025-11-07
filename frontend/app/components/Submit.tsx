@@ -11,11 +11,12 @@ export default function Submit() {
     : pathname
 
   return (
-    <Link
-      href={basePath || "/"}
-      className="fixed z-40 top-5 left-5 pointer-events-auto uppercase text-[14px] hover:underline"
-    >
-      Submit
-    </Link>
+    null
+    // <Link
+    //   href={basePath || "/"}
+    //   className="fixed z-40 top-5 left-5 pointer-events-auto uppercase text-[14px] hover:underline"
+    // >
+    //   Submit
+    // </Link>
   )
 }
