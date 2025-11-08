@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { usePathname } from "next/navigation"
 import Image from "next/image"
 
@@ -25,6 +25,7 @@ export default function Gallery({
 }: Props) {
   const [selectedIndex, setSelectedIndex] = useState(0)
   const pathname = usePathname()
+  const containerRef = useRef<HTMLDivElement>(null)
 
   const goPrev = () =>
     setSelectedIndex((i) => (i - 1 + images.length) % images.length)
@@ -54,6 +55,35 @@ export default function Gallery({
     window.addEventListener("keydown", handleKeyDown)
     return () => window.removeEventListener("keydown", handleKeyDown)
   }, [enableKeyboard, images.length])
+
+  useEffect(() => {
+    let scrollTimeout: NodeJS.Timeout | null = null
+    let scrollAccumulated = 0
+    const SCROLL_THRESHOLD = 20 
+    const COOLDOWN_MS = 200 
+
+    const handleWheel = (e: WheelEvent) => {
+      scrollAccumulated += e.deltaY
+
+      if (Math.abs(scrollAccumulated) > SCROLL_THRESHOLD) {
+        if (scrollAccumulated > 0) goNext()
+        else goPrev()
+
+        scrollAccumulated = 0
+
+        if (scrollTimeout) clearTimeout(scrollTimeout)
+        scrollTimeout = setTimeout(() => {
+          scrollAccumulated = 0
+        }, COOLDOWN_MS)
+      }
+    }
+
+    window.addEventListener("wheel", handleWheel, { passive: true })
+    return () => {
+      window.removeEventListener("wheel", handleWheel)
+      if (scrollTimeout) clearTimeout(scrollTimeout)
+    }
+  }, [images.length])
 
   if (!images?.length) return null
 
@@ -91,8 +121,8 @@ export default function Gallery({
             <button
               key={i}
               onClick={() => setSelectedIndex(i)}
-              className={`relative flex-shrink-0 overflow-hidden border 
-                ${i === selectedIndex ? "border-black" : "border-transparent"}
+              className={`relative flex-shrink-0 overflow-hidden
+                ${i === selectedIndex ? "outline outline-2 outline-black outline-offset-[-2px]" : "outline-none"}
                 ${i === images.length - 1 ? "lg:mb-12" : ""} 
                 h-20 w-auto lg:w-full lg:h-auto
               `}

@@ -154,19 +154,12 @@ const viewFullShootButton = (
           <p className="text-sm text-gray-500 mt-2">{firstImage.credit}</p>
         )}
 
-        <TextDistortFilter>
+        {/* <TextDistortFilter>
           <div className="hidden xl:block xl:mb-5">{viewFullShootButton}</div>
-        </TextDistortFilter>
+        </TextDistortFilter> */}
       </div>
 
       </div>
-      <nav className="fixed bottom-5 pl-5 lg:pl-16 uppercase">
-        <TextDistortFilter>
-          <Link href="/folio" className="hover:underline text-[14px] text-black mix-blend-difference">
-            Folio
-          </Link>
-        </TextDistortFilter>
-      </nav>
     </>
   )
 }

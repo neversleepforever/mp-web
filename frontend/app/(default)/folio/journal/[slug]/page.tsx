@@ -112,11 +112,6 @@ export default async function JournalPage({
            ) : null}
         </div>
       </div>
-      <nav className="fixed bottom-5 pl-5 lg:pl-16 uppercase mix-blend-difference z-90">
-        <Link href="/folio" className="hover:underline text-[14px]">
-          Folio
-        </Link>
-      </nav>
     </>
 
   )

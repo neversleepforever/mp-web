@@ -146,13 +146,6 @@ export default async function VideoPage({
       : (
         <p className="text-gray-500 italic">No video available</p>
       )}
-
- 
-      <nav className="fixed bottom-5 xl:pl-16 uppercase mix-blend-difference z-90">
-        <Link href="/folio" className="hover:underline text-[14px]">
-          Folio
-        </Link>
-      </nav>
     </div>
     </>
   )
