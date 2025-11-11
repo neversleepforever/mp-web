@@ -39,7 +39,7 @@ export default function Footer() {
                 alt="Logo"
                 width={225}
                 height={30}
-                className="object-contain dark:invert"
+                className="object-contain dark:invert lg:hidden"
               />
             </Link>
           </div>
