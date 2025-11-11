@@ -26,6 +26,7 @@ export default function Gallery({
   const [selectedIndex, setSelectedIndex] = useState(0)
   const pathname = usePathname()
   const containerRef = useRef<HTMLDivElement>(null)
+  const thumbnailRefs = useRef<(HTMLButtonElement | null)[]>([])
 
   const goPrev = () =>
     setSelectedIndex((i) => (i - 1 + images.length) % images.length)
@@ -78,6 +79,7 @@ export default function Gallery({
       }
     }
 
+
     window.addEventListener("wheel", handleWheel, { passive: true })
     return () => {
       window.removeEventListener("wheel", handleWheel)
@@ -85,13 +87,35 @@ export default function Gallery({
     }
   }, [images.length])
 
+
+    useEffect(() => {
+    const container = containerRef.current
+    const selectedThumb = thumbnailRefs.current[selectedIndex]
+    if (container && selectedThumb) {
+      const containerRect = container.getBoundingClientRect()
+      const thumbRect = selectedThumb.getBoundingClientRect()
+
+      const scrollAmount =
+        thumbRect.left -
+        containerRect.left -
+        containerRect.width / 2 +
+        thumbRect.width / 2
+
+      container.scrollBy({
+        left: scrollAmount,
+        top: 0,
+        behavior: "smooth",
+      })
+    }
+  }, [selectedIndex])
+
   if (!images?.length) return null
 
   const selected = images[selectedIndex]
 
   return (
     <>
-    <div className="relative w-full h-[calc(100vh-4rem)] flex flex-col lg:flex-row scrollbar-hide lg:gap-7.5 xl:pt-6 xl:h-[calc(100vh-3rem)]">
+    <div className="relative w-full h-[calc(100vh-4rem)] flex flex-col lg:flex-row scrollbar-hide lg:gap-7.5 xl:pt-6 xl:h-[calc(100vh-4rem)]">
       <div className="flex-1 flex justify-center items-end lg:items-center overflow-hidden scrollbar-hide pt-12 p-6 md:px-20 lg:p-0">
         {selected?.asset?.url && (
           <figure className="relative w-full h-full flex flex-col justify-end lg:justify-center">
@@ -111,46 +135,57 @@ export default function Gallery({
         )}
       </div>
       <div
-        className="
-          flex overflow-x-auto overflow-visible snap-x pl-[50vw] pr-[50vw] scrollbar-hide
-          lg:w-[59px] lg:h-full lg:overflow-y-auto lg:flex-col lg:px-0 lg:pb-0 lg:mx-0 lg:pt-0
-        "
-      >
-        {images.map((img, i) =>
-          img?.asset?.url ? (
-            <button
-              key={i}
-              onClick={() => setSelectedIndex(i)}
-              className={`relative flex-shrink-0 overflow-hidden
-                ${i === selectedIndex ? "outline outline-2 outline-black outline-offset-[-2px]" : "outline-none"}
-                ${i === images.length - 1 ? "lg:mb-12" : ""} 
-                h-20 w-auto lg:w-full lg:h-auto
-              `}
-              aria-label={`Select image ${i + 1}`}
-            >
-              <Image
-                src={img.asset.url}
-                alt={img.alt || title || ""}
-                width={200}
-                height={200}
-                className="h-full w-auto lg:w-full lg:h-auto object-contain snap-center"
-              />
-            </button>
-          ) : null
-        )}
+          ref={containerRef}
+          className="
+            flex overflow-x-auto overflow-visible snap-x pl-[50vw] pr-[50vw] scrollbar-hide
+            lg:w-[59px] lg:h-full lg:overflow-y-auto lg:flex-col lg:px-0 lg:pb-0 lg:mx-0 lg:pt-0
+          "
+        >
+          {images.map((img, i) =>
+            img?.asset?.url ? (
+              <button
+                key={i}
+                ref={(el) => (thumbnailRefs.current[i] = el)}
+                onClick={() => setSelectedIndex(i)}
+                className={`relative flex-shrink-0 overflow-hidden outline-none
+                  ${i === images.length - 1 ? "lg:mb-12" : ""} 
+                  h-20 w-auto lg:w-full lg:h-auto
+                `}
+                aria-label={`Select image ${i + 1}`}
+              >
+                <Image
+                  src={img.asset.url}
+                  alt={img.alt || title || ""}
+                  width={200}
+                  height={200}
+                  className="h-full w-auto lg:w-full lg:h-auto object-contain snap-center"
+                />
+              </button>
+            ) : null
+          )}
+        </div>
       </div>
       
-    </div>
-    <div className="hidden xl:h-12 xl:w-full xl:flex xl:flex-row xl:justify-between xl:font-nav uppercase">
-      <button    
-        type="button"
-        onClick={goNext} 
-        className="pointer-events-auto uppercase text-[14px] self-start cursor-pointer hover:underline">Down</button>
-      <button   
-        type="button"
-        onClick={goPrev} 
-        className="pointer-events-auto uppercase text-[14px] self-start cursor-pointer hover:underline">Up</button>
-    </div>
+<div className="
+  hidden xl:fixed xl:bottom-0 xl:left-0 xl:right-0
+  xl:h-16 xl:flex xl:flex-row xl:justify-between xl:z-50
+  xl:items-center xl:px-8 xl:font-nav xl:pointer-events-none 
+">
+  <button
+    type="button"
+    onClick={goNext}
+    className="pointer-events-auto text-[14px] cursor-pointer uppercase hover:underline"
+  >
+    Down
+  </button>
+  <button
+    type="button"
+    onClick={goPrev}
+    className="pointer-events-auto text-[14px] cursor-pointer uppercase hover:underline"
+  >
+    Up
+  </button>
+</div>
     </>
   )
 }
