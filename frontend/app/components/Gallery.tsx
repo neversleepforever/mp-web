@@ -144,8 +144,8 @@ export default function Gallery({
           {images.map((img, i) =>
             img?.asset?.url ? (
               <button
-                key={i}
-                ref={(el) => (thumbnailRefs.current[i] = el)}
+                  key={i}
+                  ref={(el) => { thumbnailRefs.current[i] = el }}
                 onClick={() => setSelectedIndex(i)}
                 className={`relative flex-shrink-0 overflow-hidden outline-none
                   ${i === images.length - 1 ? "lg:mb-12" : ""} 
