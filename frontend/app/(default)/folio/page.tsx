@@ -63,7 +63,7 @@ export default async function FolioIndexPage() {
           className="flex flex-col h-full"
         >
           {previewImage ? (
-            <div className="relative w-full aspect-[4/5] md:h-[421px] md:w-[300px] xl:w-auto overflow-hidden">
+            <div className="relative w-full aspect-[4/5] md:h-[421px] md:w-[300px] xl:w-auto xl:h-auto overflow-hidden">
               <Image
                 src={previewImage}
                 alt={folio.title || ""}
