@@ -117,10 +117,10 @@ export const videoSlugsQuery = defineQuery(`
 export const homeQuery = `
   *[_type == "home"][0]{
     _id,
-    "image1": image1{ asset->{ url, metadata{ dimensions } }, alt },
-    "image2": image2{ asset->{ url, metadata{ dimensions } }, alt },
-    "image3": image3{ asset->{ url, metadata{ dimensions } }, alt },
-    "image4": image4{ asset->{ url, metadata{ dimensions } }, alt }
+    "image1": image1{ image{ asset->{ url, metadata{ dimensions } } }, link },
+    "image2": image2{ image{ asset->{ url, metadata{ dimensions } } }, link },
+    "image3": image3{ image{ asset->{ url, metadata{ dimensions } } }, link },
+    "image4": image4{ image{ asset->{ url, metadata{ dimensions } } }, link }
   }
 `
 

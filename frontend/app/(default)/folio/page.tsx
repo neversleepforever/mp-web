@@ -60,7 +60,7 @@ export default async function FolioIndexPage() {
         <Link
           key={folio._id}
           href={`/folio/${folio._type}/${folio.slug}`}
-          className="flex flex-col h-full"
+          className="flex flex-col h-full "
         >
           {previewImage ? (
             <div className="relative w-full aspect-[4/5] md:h-[421px] md:w-[300px] xl:w-auto xl:h-auto overflow-hidden">

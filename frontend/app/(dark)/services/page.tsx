@@ -57,7 +57,16 @@ export default async function ServicesPage() {
     <>
       <TextDistortFilter>
       <div className="md:grid md:grid-cols-2 dark:text-white bg-[#454545]">
-        <div className="bg-[url('/images/servicesbg.jpg')] bg-cover bg-center mix-blend-screen"></div>
+        <div className="relative w-full h-full mix-blend-screen">
+          <Image
+            src="/images/servicesbg.jpg"
+            alt="Background"
+            fill
+            priority
+            // placeholder="blur"
+            className="object-cover object-center pointer-events-none select-none"
+          />
+        </div>
         <div className="bg-[url('/images/scantexture.jpg')] md:grayscale bg-cover bg-center mix-blend-plus-lighter md:col-start-2 pt-8 pb-12 px-6 md:py-12 md:pl-4 md:pr-6 md:h-screen md:overflow-y-scroll xl:px-26">
           {services.content?.length ? (
             <PortableText
