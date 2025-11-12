@@ -68,7 +68,7 @@ export default async function FolioIndexPage() {
                 src={previewImage}
                 alt={folio.title || ""}
                 fill
-                className="object-cover object-center"
+                className="object-cover object-center "
               />
             </div>
           ) : (

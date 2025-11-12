@@ -7,6 +7,7 @@ import {video} from './documents/video'
 import {services} from "./singletons/services"
 import {contact} from "./singletons/contact"
 import { about } from './singletons/about'
+import { home } from './singletons/home'
 import {callToAction} from './objects/callToAction'
 import {infoSection} from './objects/infoSection'
 import {settings} from './singletons/settings'
@@ -20,6 +21,7 @@ export const schemaTypes = [
   services,
   contact,
   about,
+  home,
   // Documents
   page,
   post,

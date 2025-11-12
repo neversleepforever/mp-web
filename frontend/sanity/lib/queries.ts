@@ -114,6 +114,16 @@ export const videoSlugsQuery = defineQuery(`
   }
 `)
 
+export const homeQuery = `
+  *[_type == "home"][0]{
+    _id,
+    "image1": image1{ asset->{ url, metadata{ dimensions } }, alt },
+    "image2": image2{ asset->{ url, metadata{ dimensions } }, alt },
+    "image3": image3{ asset->{ url, metadata{ dimensions } }, alt },
+    "image4": image4{ asset->{ url, metadata{ dimensions } }, alt }
+  }
+`
+
 export const folioQuery: string = defineQuery(`
   *[_type == "gallery" && slug.current == $slug][0]{
     _id,
