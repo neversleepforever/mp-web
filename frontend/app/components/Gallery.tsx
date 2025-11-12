@@ -91,6 +91,47 @@ export default function Gallery({
   }
 }, [images.length])
 
+useEffect(() => {
+  const container = containerRef.current
+  if (!container) return
+
+  const mediaQuery = window.matchMedia("(min-width: 1280px)")
+  if (mediaQuery.matches) return 
+
+  let scrollTimeout: NodeJS.Timeout | null = null
+
+  const handleScroll = () => {
+    if (scrollTimeout) clearTimeout(scrollTimeout)
+    scrollTimeout = setTimeout(() => {
+      const containerRect = container.getBoundingClientRect()
+      const containerCenter = containerRect.left + containerRect.width / 2
+
+      let closestIndex = 0
+      let closestDistance = Infinity
+
+      thumbnailRefs.current.forEach((thumb, i) => {
+        if (!thumb) return
+        const thumbRect = thumb.getBoundingClientRect()
+        const thumbCenter = thumbRect.left + thumbRect.width / 2
+        const distance = Math.abs(containerCenter - thumbCenter)
+
+        if (distance < closestDistance) {
+          closestDistance = distance
+          closestIndex = i
+        }
+      })
+
+      setSelectedIndex(closestIndex)
+    }, 80) 
+  }
+
+  container.addEventListener("scroll", handleScroll, { passive: true })
+  return () => {
+    container.removeEventListener("scroll", handleScroll)
+    if (scrollTimeout) clearTimeout(scrollTimeout)
+  }
+}, [images.length])
+
   useEffect(() => {
     const container = containerRef.current
     const selectedThumb = thumbnailRefs.current[selectedIndex]
@@ -168,8 +209,6 @@ export default function Gallery({
           )}
         </div>
       </div>
-
-
             
       <div className="
         hidden xl:fixed xl:bottom-0 xl:left-0 xl:right-0
