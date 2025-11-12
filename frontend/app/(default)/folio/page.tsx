@@ -2,6 +2,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { sanityFetch } from "@/sanity/lib/live"
 import { allFoliosQuery } from "@/sanity/lib/queries"
+import TextDistortFilter from "@/app/components/TextFilter"
 
 type FolioListItem = {
   _id: string
@@ -49,7 +50,6 @@ export default async function FolioIndexPage() {
           xl:grid-rows-none xl:grid-flow-row xl:grid-cols-5 xl:grid-rows-[repeat(2,_minmax(0,_1fr))] xl:grid-flow-row xl:overflow-y-auto xl:pb-16 
         "
   >
-    {/* {[...folios, ...folios].map((folio) => { */}
       {folios.map((folio) => {
       const previewImage =
         folio._type === "video"
@@ -76,6 +76,7 @@ export default async function FolioIndexPage() {
               <span className="text-gray-600 italic">{folio._type}</span>
             </div>
           )}
+          <TextDistortFilter>
           <div className="mt-2 font-nav text-[12px] uppercase">
             <h2>{folio.displayTitle ?? "Untitled"}</h2>
             {folio.date && (
@@ -88,6 +89,7 @@ export default async function FolioIndexPage() {
               </p>
             )}
           </div>
+          </TextDistortFilter>
         </Link>
       )
     })}

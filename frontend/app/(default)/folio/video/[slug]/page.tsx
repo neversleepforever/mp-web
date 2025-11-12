@@ -129,11 +129,18 @@ export default async function VideoPage({
             autoPlay={false}
             className="w-full object-contain"
           />
+        
           {video.caption && (
-            <p className="mt-7 font-sans w-full">
-              {video.caption}
-            </p>
+  
+              <div className="w-full">
+                <TextDistortFilter>
+                  <p className="mt-7 font-sans w-full text-left">
+                    {video.caption}
+                  </p>
+                </TextDistortFilter>
+              </div>
           )}
+
         </div>
       ) 
       // : video.videoUrl ? (
