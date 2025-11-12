@@ -55,7 +55,7 @@ export const services = defineType({
           title: "Rates Section",
           fields: [
             defineField({ name: "title", title: "Title", type: "string" }),
-            defineField({ name: "banner", title: "Banner", type: "string" }),
+            defineField({ name: "Banner", title: "Banner", type: "array", of: [{ type: "block" }] }),
             defineField({ name: "rates", title: "Rates", type: "array", of: [{ type: "block" }] }),
           ],
         },

@@ -105,7 +105,7 @@ export default async function ContactPage() {
           src="/images/fenceblack.png"
           alt=""
           fill
-          className="object-cover object-center"
+          className="object-cover object-center opacity-70"
           priority
         />
       </div>
