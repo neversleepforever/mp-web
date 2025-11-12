@@ -58,37 +58,40 @@ export default function Gallery({
   }, [enableKeyboard, images.length])
 
   useEffect(() => {
-    let scrollTimeout: NodeJS.Timeout | null = null
-    let scrollAccumulated = 0
-    const SCROLL_THRESHOLD = 20 
-    const COOLDOWN_MS = 200 
+  const mediaQuery = window.matchMedia("(min-width: 1280px)")
 
-    const handleWheel = (e: WheelEvent) => {
-      scrollAccumulated += e.deltaY
+  if (!mediaQuery.matches) return 
 
-      if (Math.abs(scrollAccumulated) > SCROLL_THRESHOLD) {
-        if (scrollAccumulated > 0) goNext()
-        else goPrev()
+  let scrollTimeout: NodeJS.Timeout | null = null
+  let scrollAccumulated = 0
+  const SCROLL_THRESHOLD = 20
+  const COOLDOWN_MS = 200
 
-        scrollAccumulated = 0
+  const handleWheel = (e: WheelEvent) => {
+    scrollAccumulated += e.deltaY
 
-        if (scrollTimeout) clearTimeout(scrollTimeout)
-        scrollTimeout = setTimeout(() => {
-          scrollAccumulated = 0
-        }, COOLDOWN_MS)
-      }
-    }
+    if (Math.abs(scrollAccumulated) > SCROLL_THRESHOLD) {
+      if (scrollAccumulated > 0) goNext()
+      else goPrev()
 
+      scrollAccumulated = 0
 
-    window.addEventListener("wheel", handleWheel, { passive: true })
-    return () => {
-      window.removeEventListener("wheel", handleWheel)
       if (scrollTimeout) clearTimeout(scrollTimeout)
+      scrollTimeout = setTimeout(() => {
+        scrollAccumulated = 0
+      }, COOLDOWN_MS)
     }
-  }, [images.length])
+  }
 
+  window.addEventListener("wheel", handleWheel, { passive: true })
 
-    useEffect(() => {
+  return () => {
+    window.removeEventListener("wheel", handleWheel)
+    if (scrollTimeout) clearTimeout(scrollTimeout)
+  }
+}, [images.length])
+
+  useEffect(() => {
     const container = containerRef.current
     const selectedThumb = thumbnailRefs.current[selectedIndex]
     if (container && selectedThumb) {
@@ -145,7 +148,7 @@ export default function Gallery({
             img?.asset?.url ? (
               <button
                   key={i}
-                  ref={(el) => { thumbnailRefs.current[i] = el }}
+                ref={(el) => { thumbnailRefs.current[i] = el }}
                 onClick={() => setSelectedIndex(i)}
                 className={`relative flex-shrink-0 overflow-hidden outline-none
                   ${i === images.length - 1 ? "lg:mb-12" : ""} 

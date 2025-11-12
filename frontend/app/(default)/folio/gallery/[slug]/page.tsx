@@ -6,9 +6,8 @@ import { folioPagesSlugs, folioQuery } from "@/sanity/lib/queries"
 import { resolveOpenGraphImage } from "@/sanity/lib/utils"
 import Link from "next/link"
 import Image from "next/image"
-import Centerfold from "@/app/components/Centerfold"
 import TextDistortFilter from "@/app/components/TextFilter"
-import Submit from "@/app/components/Submit"
+import Gallery from "@/app/components/Gallery"
 
 const portableTextComponents: PortableTextComponents = {
   block: {
@@ -82,6 +81,7 @@ export default async function FolioPage({
   if (!folio?._id) return notFound()
 
   const firstImage = folio.images?.[0]
+  console.log("heyyy", folio.images)
 
 const viewFullShootButton = (
   <Link href={`/folio/gallery/${folio.slug}/full`}>
@@ -93,7 +93,6 @@ const viewFullShootButton = (
 
   return (
     <>
-      {/* <Submit /> */}
       <div className="my-12 p-6 pt-0 xl:p-0 xl:-my-0 xl:grid xl:grid-cols-2 xl:max-h-screen">
         <TextDistortFilter>
         <div className="overflow-y-scroll md:px-20 xl:min-h-screen xl:max-h-screen xl:pt-54 xl:py-24 xl:px-30 scrollbar-hide">
@@ -127,15 +126,10 @@ const viewFullShootButton = (
               />
             ) : null}
           </div>
-          <div className="block xl:hidden">{viewFullShootButton}</div>
+          <div className="hidden md:block xl:hidden">{viewFullShootButton}</div>
         </div>
         </TextDistortFilter>
-        
-        {/* <TextDistortFilter>
-
-        </TextDistortFilter> */}
-
-       <div className="md:flex md:flex-col md:justify-between xl:pl-24 md:h-[75vh] xl:h-[100vh]">
+        <div className="hidden md:flex md:flex-col md:justify-between xl:pl-24 md:h-[75vh] xl:h-[100vh]">
         {firstImage?.asset?.url && (
           <Link href={`/folio/gallery/${folio.slug}/full`} className="block group flex-1 flex justify-center items-center">
             <div className="relative w-full flex justify-center items-center">
@@ -147,19 +141,20 @@ const viewFullShootButton = (
                 className="object-contain w-auto md:max-h-[50vh]"
               />
             </div>
+              {firstImage?.credit && (
+                <p className="text-sm text-gray-500 mt-2">{firstImage.credit}</p>
+              )}
           </Link>
         )}
-
-        {firstImage?.credit && (
-          <p className="text-sm text-gray-500 mt-2">{firstImage.credit}</p>
-        )}
-
-        {/* <TextDistortFilter>
-          <div className="hidden xl:block xl:mb-5">{viewFullShootButton}</div>
-        </TextDistortFilter> */}
+  
       </div>
 
       </div>
+        <div className="mb-16 md:hidden">
+          {folio.images?.length ? (
+            <Gallery images={folio.images} title={folio.title} />
+          ) : null}
+        </div>
     </>
   )
 }
