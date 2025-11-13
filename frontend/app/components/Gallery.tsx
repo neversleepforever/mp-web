@@ -4,7 +4,8 @@ import { useState, useEffect, useRef } from "react"
 import { usePathname } from "next/navigation"
 import Image from "next/image"
 import { urlFor } from "@/sanity/lib/imageBuilder"
-interface GalleryImage {
+
+export interface GalleryImage {
   asset: {
     _id: string
     metadata?: {

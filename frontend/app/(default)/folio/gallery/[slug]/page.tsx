@@ -4,10 +4,11 @@ import { PortableText, type PortableTextComponents } from "next-sanity"
 import { sanityFetch } from "@/sanity/lib/live"
 import { folioPagesSlugs, folioQuery } from "@/sanity/lib/queries"
 import { resolveOpenGraphImage } from "@/sanity/lib/utils"
+import { urlFor } from "@/sanity/lib/imageBuilder"
 import Link from "next/link"
 import Image from "next/image"
 import TextDistortFilter from "@/app/components/TextFilter"
-import Gallery from "@/app/components/Gallery"
+import Gallery, { GalleryImage } from "@/app/components/Gallery"
 
 const portableTextComponents: PortableTextComponents = {
   block: {
@@ -26,11 +27,7 @@ export interface Folio {
   date?: string
   slug: string
   description?: any[]
-  images?: {
-    asset?: { url: string }
-    alt?: string
-    credit?: string
-  }[]
+  images?: GalleryImage[]
 }
 
 export async function generateStaticParams() {
@@ -130,14 +127,16 @@ const viewFullShootButton = (
         </div>
         </TextDistortFilter>
         <div className="hidden md:flex md:flex-col md:justify-between xl:pl-24 md:h-[75vh] xl:h-[100vh]">
-        {firstImage?.asset?.url && (
+        {firstImage?.asset && (
           <Link href={`/folio/gallery/${folio.slug}/full`} className="block group flex-1 flex justify-center items-center">
             <div className="relative w-full flex justify-center items-center">
               <Image
-                src={firstImage.asset.url}
+                src={urlFor(firstImage.asset).width(1200).quality(80).url()}
                 alt={firstImage.alt || folio.title || ""}
-                width={800}
-                height={600}
+                width={firstImage.asset.metadata?.dimensions?.width || 1200}
+                height={firstImage.asset.metadata?.dimensions?.height || 800}
+                placeholder="blur"
+                blurDataURL={firstImage.asset.metadata?.lqip}
                 className="object-contain w-auto md:max-h-[50vh]"
               />
             </div>
