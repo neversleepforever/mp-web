@@ -19,7 +19,7 @@ export default function Footer() {
   const backHref = isFolioPage ? "/folio" : null
 
   return (
-    <footer className="fixed bottom-0 left-0 right-0 py-4 px-7 w-full">
+    <footer className="fixed bottom-0 left-0 right-0 py-4 px-7 w-full z-40">
       <TextDistortFilter>
         <div className="flex items-center justify-between w-full mix-blend-exclusion">
           <div className="flex-1 flex justify-start">
