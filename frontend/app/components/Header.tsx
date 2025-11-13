@@ -43,18 +43,25 @@ export default function Header() {
                   
                 </Link>
               </li>
-            {links.map(({ href, label }) => (
-              <li key={href}>
-                <Link
-                  href={href}
-                  className={`hover:line-through ${
-                    pathname === href ? "line-through" : ""
-                  }`}
-                >
-                  {label}
-                </Link>
-              </li>
-            ))}
+           {links.map(({ href, label }) => {
+              const isExternal = href.startsWith("http")
+              return (
+                <li key={href}>
+                  <Link
+                    href={href}
+                    className={`hover:line-through ${
+                      pathname === href ? "line-through" : ""
+                    }`}
+                    {...(isExternal && {
+                      target: "_blank",
+                      rel: "noopener noreferrer",
+                    })}
+                  >
+                    {label}
+                  </Link>
+                </li>
+              )
+            })}
           </ul>
            </TextDistortFilter>
         </nav>

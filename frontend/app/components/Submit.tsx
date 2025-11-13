@@ -3,6 +3,7 @@
 import { useEffect } from "react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
+import TextDistortFilter from "./TextFilter"
 
 export default function Submit() {
   const pathname = usePathname()
@@ -33,12 +34,14 @@ export default function Submit() {
         xl:items-center xl:px-8 xl:font-nav xl:pointer-events-none 
       "
     >
-      <Link
-        href={basePath || "/"}
-        className="pointer-events-auto text-[14px] cursor-pointer uppercase hover:underline"
-      >
-        Submit
-      </Link>
+      <TextDistortFilter>
+        <Link
+          href={basePath || "/"}
+          className="pointer-events-auto text-[14px] cursor-pointer uppercase hover:underline"
+        >
+          Submit
+        </Link>
+      </TextDistortFilter>
     </div>
   )
 }
