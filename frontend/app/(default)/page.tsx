@@ -3,6 +3,7 @@ import {sanityFetch} from '@/sanity/lib/live'
 import Image from 'next/image'
 import { homeQuery } from "@/sanity/lib/queries"
 import Link from 'next/link'
+import TextDistortFilter from '../components/TextFilter'
 
 export default async function Page() {
   const {data: home} = await sanityFetch({
@@ -13,6 +14,7 @@ export default async function Page() {
 
   return (
     <>
+    <TextDistortFilter>
       <div className="relative grid grid-rows-4 md:grid-rows-5 xl:grid-rows-1 grid-cols-6 xl:grid-cols-4 h-screen w-screen pt-20 md:pt-8 xl:pt-16 pb-16 overflow-hidden">
         <div className='xl:flex xl:items-center xl:justify-center col-span-4 xl:col-span-1 row-start-1 col-start-1 xl:col-start-1 xl:row-start-1'>
           <Link href={home.image1.link || '/'}>
@@ -59,6 +61,7 @@ export default async function Page() {
           </Link>
         </div>
       </div>
+      </TextDistortFilter>
     </>
   )
 }
