@@ -135,12 +135,22 @@ export const folioQuery: string = defineQuery(`
     description,
     "slug": slug.current,
     images[]{
-      asset->{ url },
       alt,
-      credit
+      credit,
+      asset->{
+        _id,
+        metadata {
+          lqip,
+          dimensions {
+            width,
+            height
+          }
+        }
+      }
     }
   }
 `)
+
 
 export const allFoliosQuery = `
   *[_type in ["gallery", "journal", "video"]] | order(date desc) {
@@ -177,7 +187,14 @@ export const galleryQuery = `
     date,
     "slug": slug.current,
     description,
-    images[]{ asset->{url}, credit }
+    images[]{
+      alt,
+      credit,
+      asset->{
+        _id,
+        metadata{ lqip, dimensions }
+      }
+    }
   }
 `
 
@@ -191,7 +208,20 @@ export const journalQuery = `
     date,
     "slug": slug.current,
     description,
-    images[]{ asset->{url}, credit }
+    images[]{
+      alt,
+      credit,
+      asset->{
+        _id,
+        metadata {
+          lqip,
+          dimensions {
+            width,
+            height
+          }
+        }
+      }
+    }
   }
 `
 

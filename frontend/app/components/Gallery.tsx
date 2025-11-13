@@ -3,9 +3,19 @@
 import { useState, useEffect, useRef } from "react"
 import { usePathname } from "next/navigation"
 import Image from "next/image"
+import { urlFor } from "@/sanity/lib/imageBuilder"
 
-interface GalleryImage {
-  asset?: { url: string }
+export interface GalleryImage {
+  asset: {
+    _id: string
+    metadata?: {
+      lqip?: string
+      dimensions?: {
+        width: number
+        height: number
+      }
+    }
+  }
   alt?: string
   credit?: string
 }
@@ -153,6 +163,20 @@ useEffect(() => {
     }
   }, [selectedIndex])
 
+    useEffect(() => {
+    if (!images?.length) return;
+
+    images.forEach((img) => {
+      if (!img?.asset) return;
+      const preload = new window.Image();
+      preload.src = urlFor(img.asset)
+        .width(1600)   
+        .quality(60)
+        .fit("max")
+        .url();
+    });
+  }, [images]);
+
   if (!images?.length) return null
 
   const selected = images[selectedIndex]
@@ -161,22 +185,42 @@ useEffect(() => {
     <>
     <div className="relative w-full h-[calc(100vh-4rem)] flex flex-col lg:flex-row scrollbar-hide lg:gap-7.5 xl:pt-6 xl:h-[calc(100vh-4rem)]">
       <div className="flex-1 flex justify-center items-end lg:items-center overflow-hidden scrollbar-hide pt-12 p-6 md:px-20 lg:p-0">
-        {selected?.asset?.url && (
-          <figure className="relative w-full h-full flex flex-col justify-end lg:justify-center">
-            <Image
-              src={selected.asset.url}
-              alt={selected.alt || title || ""}
-              fill
-              className="object-contain object-bottom lg:object-top xl:object-center"
-              priority
-            />
-            {selected.credit && (
-              <figcaption className="text-sm text-gray-500 mt-2 text-center relative bg-black/50 text-white">
-                {selected.credit}
-              </figcaption>
-            )}
-          </figure>
-        )}
+        <figure className="relative w-full h-full">
+            {images.map((img, i) => {
+              const fullSrc = urlFor(img.asset).width(1600).quality(60).url()
+              const blurSrc = img.asset.metadata?.lqip
+
+              return (
+                <div
+                  key={i}
+                  className={`
+                    absolute inset-0 
+                    ${i === selectedIndex ? "opacity-100" : "opacity-0"}
+                  `}
+                >
+                  {/* Blur layer */}
+                  <img
+                    src={blurSrc}
+                    alt=""
+                    className="absolute inset-0 w-full h-full object-contain overflow-hidden"
+                    draggable={false}
+                  />
+
+                  {/* Full-res layer */}
+                  <img
+                    src={fullSrc}
+                    alt={img.alt || title || ""}
+                    className={`
+                      absolute inset-0 w-full h-full object-contain
+                      
+                      ${i === selectedIndex ? "opacity-100" : "opacity-0"}
+                    `}
+                    draggable={false}
+                  />
+                </div>
+              )
+            })}
+      </figure>
       </div>
       <div
           ref={containerRef}
@@ -186,29 +230,36 @@ useEffect(() => {
           "
         >
           {images.map((img, i) =>
-            img?.asset?.url ? (
+            img?.asset ? (
               <button
-                  key={i}
+                key={i}
                 ref={(el) => { thumbnailRefs.current[i] = el }}
                 onClick={() => setSelectedIndex(i)}
-                className={`relative flex-shrink-0 overflow-hidden
-                  ${i === images.length - 1 ? "lg:mb-12" : ""} 
+                className={`
+                  relative flex-shrink-0 overflow-hidden
+                  h-20 w-auto lg:w-full lg:h-auto
+                  ${i === images.length - 1 ? "lg:mb-12" : ""}
                   ${i === selectedIndex
                     ? "outline outline-2 outline-white outline-offset-[-2px]"
                     : "outline-none"
                   }
-                  h-20 w-auto lg:w-full lg:h-auto
                 `}
                 aria-label={`Select image ${i + 1}`}
               >
-                <Image
-                  src={img.asset.url}
-                  alt={img.alt || title || ""}
-                  width={200}
-                  height={200}
-                  className="h-full w-auto lg:w-full lg:h-auto object-contain snap-center"
-                />
-              </button>
+              <Image
+                src={urlFor(img.asset)
+                  .width(400)
+                  .auto("format")
+                  .quality(75)
+                  .url()}
+                alt={img.alt || title || ""}
+                width={img.asset.metadata?.dimensions?.width || 400}
+                height={img.asset.metadata?.dimensions?.height || 400}
+                placeholder="blur"
+                blurDataURL={img.asset.metadata?.lqip}
+                className="h-full w-auto lg:w-full lg:h-auto object-contain snap-center"
+              />
+            </button>
             ) : null
           )}
         </div>

@@ -9,8 +9,6 @@ export default async function Page() {
     query: homeQuery,
   })
 
-  console.log('Home data:', home);
-
   if (!home) return null
 
   return (
