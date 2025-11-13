@@ -191,8 +191,12 @@ useEffect(() => {
                   key={i}
                 ref={(el) => { thumbnailRefs.current[i] = el }}
                 onClick={() => setSelectedIndex(i)}
-                className={`relative flex-shrink-0 overflow-hidden outline-none
+                className={`relative flex-shrink-0 overflow-hidden
                   ${i === images.length - 1 ? "lg:mb-12" : ""} 
+                  ${i === selectedIndex
+                    ? "outline outline-2 outline-white outline-offset-[-2px]"
+                    : "outline-none"
+                  }
                   h-20 w-auto lg:w-full lg:h-auto
                 `}
                 aria-label={`Select image ${i + 1}`}
