@@ -125,7 +125,7 @@ export default async function ContactPage() {
                         href={link.href}
                         target={link.openInNewTab ? "_blank" : "_self"}
                         rel={link.openInNewTab ? "noopener noreferrer" : undefined}
-                        className="text-[37px] leading-[1.1] transition-colors"
+                        className="text-[37px] leading-[1.1] transition-colors hover:line-through"
                       >
                         {link.displayTitle}
                       </Link>
@@ -144,7 +144,7 @@ export default async function ContactPage() {
                         href={link.href}
                         target={link.openInNewTab ? "_blank" : "_self"}
                         rel={link.openInNewTab ? "noopener noreferrer" : undefined}
-                        className="text-[37px] leading-[1.1] transition-colors"
+                        className="text-[37px] leading-[1.1] transition-colors hover:line-through"
                       >
                         {link.displayTitle}
                       </Link>
