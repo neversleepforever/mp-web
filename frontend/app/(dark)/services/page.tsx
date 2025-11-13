@@ -144,7 +144,7 @@ export default async function ServicesPage() {
         <p className="font-display uppercase pl-[210px]">🍑 Adults Only 🍑</p>
       </div> */}
       </TextDistortFilter>
-      <Image src="/images/band.png" alt="Adults Only" width={200} height={200} className="fixed bottom-[-10px] right-[-10px]" />
+      <Image src="/images/band.png" alt="Adults Only" width={200} height={200} className="fixed bottom-[-10px] right-[-10px] z-50" />
     </>
   )
 }
