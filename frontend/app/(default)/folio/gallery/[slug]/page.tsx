@@ -78,7 +78,6 @@ export default async function FolioPage({
   if (!folio?._id) return notFound()
 
   const firstImage = folio.images?.[0]
-  console.log("heyyy", folio.images)
 
 const viewFullShootButton = (
   <Link href={`/folio/gallery/${folio.slug}/full`}>

@@ -4,9 +4,7 @@ import { PortableText, type PortableTextComponents } from "next-sanity"
 import { sanityFetch } from "@/sanity/lib/live"
 import { journalSlugsQuery, journalQuery } from "@/sanity/lib/queries"
 import { resolveOpenGraphImage } from "@/sanity/lib/utils"
-import Link from "next/link"
-import Gallery from "../../../../components/Gallery"
-import Submit from "@/app/components/Submit"
+import Gallery, { GalleryImage } from "../../../../components/Gallery"
 
 export interface Journal {
   _id: string
@@ -16,11 +14,7 @@ export interface Journal {
   date?: string
   slug: string
   description?: any[]
-  images?: {
-    asset?: { url: string }
-    alt?: string
-    credit?: string
-  }[]
+  images?: GalleryImage[]
 }
 
 export async function generateStaticParams() {

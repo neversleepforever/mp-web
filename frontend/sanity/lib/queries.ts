@@ -208,7 +208,20 @@ export const journalQuery = `
     date,
     "slug": slug.current,
     description,
-    images[]{ asset->{url}, credit }
+    images[]{
+      alt,
+      credit,
+      asset->{
+        _id,
+        metadata {
+          lqip,
+          dimensions {
+            width,
+            height
+          }
+        }
+      }
+    }
   }
 `
 
