@@ -3,6 +3,19 @@ import Image from "next/image"
 import { sanityFetch } from "@/sanity/lib/live"
 import { allFoliosQuery } from "@/sanity/lib/queries"
 import TextDistortFilter from "@/app/components/TextFilter"
+import { urlFor } from "@/sanity/lib/imageBuilder"
+import FadeInImage from "@/app/components/FadeInImage"
+
+type ImageAsset = {
+  _id: string
+  metadata?: {
+    lqip?: string
+    dimensions?: {
+      width: number
+      height: number
+    }
+  }
+}
 
 type FolioListItem = {
   _id: string
@@ -13,13 +26,16 @@ type FolioListItem = {
   date?: string
   slug: string
   displayTitle: string
+
   images?: {
-    asset?: { url: string }
-    credit?: string
-  }[]
-  displayImage?: {
-    asset?: { url: string }
     alt?: string
+    credit?: string
+    asset?: ImageAsset
+  }[]
+
+  displayImage?: {
+    alt?: string
+    asset?: ImageAsset
   }
 }
 
@@ -35,66 +51,72 @@ export default async function FolioIndexPage() {
   }
 
   return (
-  <div
-  className="
-    h-[100vh] px-6 py-12 
-    overflow-y-auto overflow-x-hidden 
-    md:overflow-x-auto md:overflow-y-hidden md:pt-16
-    xl:overflow-x-hidden xl:overflow-y-auto xl:pb-0
-  "
-  >
-  <div
-     className="
+    <div
+      className="
+        h-[100vh] px-6 py-12 
+        overflow-y-auto overflow-x-hidden 
+        md:overflow-x-auto md:overflow-y-hidden md:pt-16
+        xl:overflow-x-hidden xl:overflow-y-auto xl:pb-0
+      "
+    >
+      <div
+        className="
           grid gap-3 grid-cols-1 auto-rows-max scrollbar-hide
           md:grid-cols-none md:grid-rows-2 md:auto-cols-max md:grid-flow-col md:snap-x md:snap-mandatory md:h-full 
           xl:grid-rows-none xl:grid-flow-row xl:grid-cols-5 xl:grid-rows-[repeat(2,_minmax(0,_1fr))] xl:grid-flow-row xl:overflow-y-auto xl:pb-16 
         "
-  >
-      {folios.map((folio) => {
-      const previewImage =
-        folio._type === "video"
-          ? folio.displayImage?.asset?.url
-          : folio.images?.[0]?.asset?.url
+      >
+        {folios.map((folio) => {
+          const firstImg =
+            folio._type === "video"
+              ? folio.displayImage
+              : folio.images?.[0]
 
-      return (
-        <Link
-          key={folio._id}
-          href={`/folio/${folio._type}/${folio.slug}`}
-          className="flex flex-col h-full "
-        >
-          {previewImage ? (
-            <div className="relative w-full aspect-[4/5] md:h-[421px] md:w-[300px] xl:w-auto xl:h-auto overflow-hidden">
-              <Image
-                src={previewImage}
-                alt={folio.title || ""}
-                fill
-                className="object-cover object-center "
-              />
-            </div>
-          ) : (
-            <div className="flex-1 flex items-center justify-center bg-gray-200">
-              <span className="text-gray-600 italic">{folio._type}</span>
-            </div>
-          )}
-          <TextDistortFilter>
-          <div className="mt-2 font-nav text-[12px] uppercase">
-            <h2>{folio.displayTitle ?? "Untitled"}</h2>
-            {folio.date && (
-              <p>
-                {new Date(folio.date).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </p>
-            )}
-          </div>
-          </TextDistortFilter>
-        </Link>
-      )
-    })}
-  </div>
-</div>
+          const asset = firstImg?.asset
+          const alt = firstImg?.alt || folio.title || ""
+          const previewImage = asset ? urlFor(asset).width(1200).fit("max").url() : null
 
+          return (
+            <Link
+              key={folio._id}
+              href={`/folio/${folio._type}/${folio.slug}`}
+              className="flex flex-col h-full"
+            >
+              {previewImage ? (
+                <div className="relative w-full aspect-[4/5] md:h-[421px] md:w-[300px] xl:w-auto xl:h-auto overflow-hidden">
+                  <FadeInImage
+                    src={previewImage}
+                    alt={alt}
+                    fill
+                    placeholder={asset?.metadata?.lqip ? "blur" : "empty"}
+                    blurDataURL={asset?.metadata?.lqip}
+                    className="object-cover object-center"
+                  />
+                </div>
+              ) : (
+                <div className="flex-1 flex items-center justify-center bg-gray-200">
+                  <span className="text-gray-600 italic">{folio._type}</span>
+                </div>
+              )}
+
+              <TextDistortFilter>
+                <div className="mt-2 font-nav text-[12px] uppercase">
+                  <h2>{folio.displayTitle ?? "Untitled"}</h2>
+                  {folio.date && (
+                    <p>
+                      {new Date(folio.date).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                    </p>
+                  )}
+                </div>
+              </TextDistortFilter>
+            </Link>
+          )
+        })}
+      </div>
+    </div>
   )
 }

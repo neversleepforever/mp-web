@@ -151,7 +151,6 @@ export const folioQuery: string = defineQuery(`
   }
 `)
 
-
 export const allFoliosQuery = `
   *[_type in ["gallery", "journal", "video"]] | order(date desc) {
     _id,
@@ -162,16 +161,37 @@ export const allFoliosQuery = `
     photographer,
     date,
     "slug": slug.current,
+
     _type in ["gallery", "journal"] => {
       images[]{
-        asset->{ url },
-        credit
+        alt,
+        credit,
+        asset->{
+          _id,
+          metadata {
+            lqip,
+            dimensions {
+              width,
+              height
+            }
+          }
+        }
       }
     },
+
     _type == "video" => {
       displayImage{
-        asset->{ url },
-        alt
+        alt,
+        asset->{
+          _id,
+          metadata {
+            lqip,
+            dimensions {
+              width,
+              height
+            }
+          }
+        }
       }
     }
   }
@@ -247,7 +267,6 @@ export const videoQuery = defineQuery(`
 }
 `)
 
-
 export const allGalleryQuery = defineQuery(`
   *[_type == "gallery" && defined(slug.current)] | order(date desc, _updatedAt desc) {
     _id,
@@ -258,13 +277,22 @@ export const allGalleryQuery = defineQuery(`
     date,
     "slug": slug.current,
     images[]{
+      alt,
+      credit,
       asset->{
-        url
-      },
-      credit
+        _id,
+        metadata {
+          lqip,
+          dimensions {
+            width,
+            height
+          }
+        }
+      }
     }
   }
 `)
+
 
 export const servicesQuery = defineQuery(`
   *[_type == "services"][0]{
@@ -273,9 +301,14 @@ export const servicesQuery = defineQuery(`
       _type == "image" => {
         ...,
         "asset": asset->{
-          url
+          _id,
+          metadata {
+            lqip,
+            dimensions { width, height }
+          }
         }
       },
+
       _type == "servicesSection" => {
         ...,
         body[]{
@@ -283,11 +316,16 @@ export const servicesQuery = defineQuery(`
           _type == "image" => {
             ...,
             "asset": asset->{
-              url
+              _id,
+              metadata {
+                lqip,
+                dimensions { width, height }
+              }
             }
           }
         }
       },
+
       _type == "ratesSection" => {
         ...,
         rates[]{
@@ -295,11 +333,16 @@ export const servicesQuery = defineQuery(`
           _type == "image" => {
             ...,
             "asset": asset->{
-              url
+              _id,
+              metadata {
+                lqip,
+                dimensions { width, height }
+              }
             }
           }
         }
       },
+
       _type == "outcallSection" => {
         ...,
         body[]{
@@ -307,11 +350,16 @@ export const servicesQuery = defineQuery(`
           _type == "image" => {
             ...,
             "asset": asset->{
-              url
+              _id,
+              metadata {
+                lqip,
+                dimensions { width, height }
+              }
             }
           }
         }
       },
+
       _type == "virtualSection" => {
         ...,
         body[]{
@@ -319,7 +367,11 @@ export const servicesQuery = defineQuery(`
           _type == "image" => {
             ...,
             "asset": asset->{
-              url
+              _id,
+              metadata {
+                lqip,
+                dimensions { width, height }
+              }
             }
           }
         }
@@ -329,17 +381,21 @@ export const servicesQuery = defineQuery(`
 `)
 
 
+
 export const aboutQuery = defineQuery(`
   *[_type == "about"][0]{
     _id,
     content[]{
       ...,
       _type == "image" => {
+        alt,
         asset->{
-          url,
-          metadata { dimensions }
-        },
-        alt
+          _id,
+          metadata {
+            lqip,
+            dimensions { width, height }
+          }
+        }
       }
     }
   }

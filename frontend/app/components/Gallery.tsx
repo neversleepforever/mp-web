@@ -33,6 +33,9 @@ export default function Gallery({
   enableKeyboard = true,
   showControls = false,
 }: Props) {
+  const [loaded, setLoaded] = useState<boolean[]>(() =>
+    new Array(images.length).fill(false)
+  )
   const [selectedIndex, setSelectedIndex] = useState(0)
   const pathname = usePathname()
   const containerRef = useRef<HTMLDivElement>(null)
@@ -44,6 +47,14 @@ export default function Gallery({
   const goNext = () =>
     setSelectedIndex((i) => (i + 1) % images.length)
 
+  const handleLoad = (index: number) => {
+  setLoaded((prev) => {
+    const updated = [...prev]
+    updated[index] = true
+    return updated
+  })
+}
+  const hideArrows = pathname.includes("/journal")
   const isFullGallery = pathname?.endsWith("/full")
   const basePath = pathname?.endsWith("/full")
     ? pathname.replace(/\/full$/, "")
@@ -69,8 +80,10 @@ export default function Gallery({
 
   useEffect(() => {
   const mediaQuery = window.matchMedia("(min-width: 1280px)")
+  if (!mediaQuery.matches) return
 
-  if (!mediaQuery.matches) return 
+  const container = mainImageRef.current
+  if (!container) return
 
   let scrollTimeout: NodeJS.Timeout | null = null
   let scrollAccumulated = 0
@@ -78,6 +91,9 @@ export default function Gallery({
   const COOLDOWN_MS = 200
 
   const handleWheel = (e: WheelEvent) => {
+    // Ignore scrolling outside the gallery container
+    if (!container.contains(e.target as Node)) return
+
     scrollAccumulated += e.deltaY
 
     if (Math.abs(scrollAccumulated) > SCROLL_THRESHOLD) {
@@ -99,7 +115,8 @@ export default function Gallery({
     window.removeEventListener("wheel", handleWheel)
     if (scrollTimeout) clearTimeout(scrollTimeout)
   }
-}, [images.length])
+}, [images.length, selectedIndex])
+
 
 useEffect(() => {
   const container = containerRef.current
@@ -180,11 +197,12 @@ useEffect(() => {
   if (!images?.length) return null
 
   const selected = images[selectedIndex]
+  const mainImageRef = useRef<HTMLDivElement>(null)
 
   return (
     <>
     <div className="relative w-full h-[calc(100vh-4rem)] flex flex-col lg:flex-row scrollbar-hide lg:gap-7.5 xl:pt-6 xl:h-[calc(100vh-4rem)]">
-      <div className="flex-1 flex justify-center items-end lg:items-center overflow-hidden scrollbar-hide pt-12 p-6 md:px-20 lg:p-0">
+      <div ref={mainImageRef} className="flex-1 flex justify-center items-end lg:items-center overflow-hidden scrollbar-hide pt-12 p-6 md:px-20 lg:p-0">
         <figure className="relative w-full h-full">
             {images.map((img, i) => {
               const fullSrc = urlFor(img.asset).width(1600).quality(60).url()
@@ -199,19 +217,20 @@ useEffect(() => {
                   `}
                 >
                   {/* Blur layer */}
-                  <img
+                  {/* <img
                     src={blurSrc}
                     alt=""
                     className="absolute inset-0 w-full h-full object-contain overflow-hidden"
                     draggable={false}
-                  />
+                  /> */}
 
                   {/* Full-res layer */}
                   <img
                     src={fullSrc}
                     alt={img.alt || title || ""}
+                    onLoad={() => handleLoad(i)}
                     className={`
-                      absolute inset-0 w-full h-full object-contain
+                      absolute inset-0 w-full h-full object-contain transition-opacity duration-300
                       
                       ${i === selectedIndex ? "opacity-100" : "opacity-0"}
                     `}
@@ -264,7 +283,7 @@ useEffect(() => {
           )}
         </div>
       </div>
-            
+    {!hideArrows && (
       <div className="
         hidden xl:fixed xl:bottom-0 xl:left-0 xl:right-0
         xl:h-16 xl:flex xl:flex-row xl:justify-between xl:z-50
@@ -284,7 +303,7 @@ useEffect(() => {
         >
           Up
         </button>
-      </div>
+      </div> )}
     </>
   )
 }

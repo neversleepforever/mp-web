@@ -5,6 +5,7 @@ import { sanityFetch } from "@/sanity/lib/live"
 import { journalSlugsQuery, journalQuery } from "@/sanity/lib/queries"
 import { resolveOpenGraphImage } from "@/sanity/lib/utils"
 import Gallery, { GalleryImage } from "../../../../components/Gallery"
+import TextDistortFilter from "@/app/components/TextFilter"
 
 export interface Journal {
   _id: string
@@ -68,13 +69,15 @@ export default async function JournalPage({
   return (
     <>    
       <div className="mt-12 mb-12 md:mb-16 p-6 md:p-0 pt-0 xl:p-0 xl:-my-0 xl:grid xl:grid-cols-2 xl:h-screen">
-          <div className="overflow-y-scroll md:px-20 lg:pb-16 xl:min-h-screen xl:pt-54 xl:py-24 lg:px-30 scrollbar-hide">
+  
+          <div className="overflow-y-scroll md:px-20 lg:pb-16 xl:min-h-screen xl:pt-[33vh] xl:py-24 lg:px-30 scrollbar-hide">
+                  <TextDistortFilter>
           <header className="mb-6">
             <h1 className="heading-1 text-justify">
               {journal.title ?? "Untitled"}
             </h1>
             {journal.subtitle && (
-              <p className="text-lg text-gray-600 mt-2">{journal.subtitle}</p>
+              <p className="heading-3 mt-2">{journal.subtitle}</p>
             )}
               <div className="mt-8 text-[18px] font-extrabold mb-3">
               {journal.date && (
@@ -98,12 +101,14 @@ export default async function JournalPage({
               }} />
             ) : null}
           </div>
+          </TextDistortFilter>
         </div>
-        <div className="lg:px-30 xl:pl-30 xl:pt-20 xl:pr-7.5 lg:flex lg:flex-col lg:justify-center xl:max-h-screen">
+        <div className="lg:px-30 xl:pl-30 xl:pt-20 xl:pb-20 xl:pr-7.5 lg:flex lg:flex-col lg:justify-center xl:max-h-screen">
           {journal.images?.length ? (
             <Gallery images={journal.images} title={journal.title} />
            ) : null}
         </div>
+      
       </div>
     </>
 
