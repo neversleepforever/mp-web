@@ -55,7 +55,7 @@ export default async function ServicesPage() {
 
   return (
     <>
-      <TextDistortFilter>
+
       <div className="md:grid md:grid-cols-2 dark:text-white bg-[#454545]">
         <div className="relative w-full h-full mix-blend-screen">
           <Image
@@ -67,7 +67,9 @@ export default async function ServicesPage() {
             className="object-cover object-center pointer-events-none select-none"
           />
         </div>
+
         <div className="bg-[url('/images/scantexture.jpg')] md:grayscale bg-cover bg-center mix-blend-plus-lighter md:col-start-2 pt-8 pb-12 px-6 md:py-12 md:pl-4 md:pr-6 md:h-screen md:overflow-y-scroll xl:px-26">
+          <TextDistortFilter>
           {services.content?.length ? (
             <PortableText
               value={services.content}
@@ -137,13 +139,9 @@ export default async function ServicesPage() {
           ) : (
             <p>No content added yet.</p>
           )}
+          </TextDistortFilter>
         </div>
       </div>
-
-      {/* <div className="fixed bottom-[-30px] left-[-150px] w-[200%] h-[60px] -rotate-45 bg-black text-white flex items-center justify-center shadow-lg overflow-hidden">
-        <p className="font-display uppercase pl-[210px]">🍑 Adults Only 🍑</p>
-      </div> */}
-      </TextDistortFilter>
       <Image src="/images/band.png" alt="Adults Only" width={200} height={200} className="fixed bottom-[-10px] right-[-10px] z-50" />
     </>
   )
