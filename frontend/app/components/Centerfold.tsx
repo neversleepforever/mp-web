@@ -10,9 +10,10 @@ export default function Centerfold() {
 
   return (
    <>
-     <div className="fixed inset-0 md:hidden pointer-events-none z-50">
+     {/* <div className="fixed inset-0 md:hidden pointer-events-none z-50">
         <div className="w-full h-full bg-[url('/images/mobilestaples.png')] bg-no-repeat bg-center mix-blend-exclusion" />
-    </div>
+    </div> */}
+    <div className="fixed top-0 left-0 w-full h-[100vh] md:hidden pointer-events-none z-50 bg-[url('/images/mobilestaples.png')] bg-no-repeat bg-center mix-blend-exclusion" />
       <div className="fixed z-50 inset-0 mix-blend-exclusion pointer-events-none">
         <Image
           src="/images/shadow.png"

@@ -245,7 +245,7 @@ useEffect(() => {
       <div
           ref={containerRef}
           className="
-            flex overflow-x-auto overflow-visible snap-x pl-[50vw] pr-[50vw] scrollbar-hide
+            flex overflow-x-auto overflow-visible snap-mandatory snap-x pl-[50vw] pr-[50vw] scrollbar-hide
             lg:w-[59px] lg:h-full lg:overflow-y-auto lg:flex-col lg:px-0 lg:pb-0 lg:mx-0 lg:pt-0
           "
         >
@@ -256,7 +256,7 @@ useEffect(() => {
                 ref={(el) => { thumbnailRefs.current[i] = el }}
                 onClick={() => setSelectedIndex(i)}
                 className={`
-                  relative flex-shrink-0 overflow-hidden
+                  relative flex-shrink-0 snap-start overflow-hidden
                   h-20 w-auto lg:w-full lg:h-auto
                   ${i === images.length - 1 ? "lg:mb-12" : ""}
                   ${i === selectedIndex
