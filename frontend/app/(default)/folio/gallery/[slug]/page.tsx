@@ -9,6 +9,7 @@ import Link from "next/link"
 import Image from "next/image"
 import TextDistortFilter from "@/app/components/TextFilter"
 import Gallery, { GalleryImage } from "@/app/components/Gallery"
+import FadeInImage from "@/app/components/FadeInImage"
 
 const portableTextComponents: PortableTextComponents = {
   block: {
@@ -125,11 +126,11 @@ const viewFullShootButton = (
           <div className="hidden md:block xl:hidden">{viewFullShootButton}</div>
         </div>
         </TextDistortFilter>
-        <div className="hidden md:flex md:flex-col md:justify-between xl:pl-24 md:h-[75vh] xl:h-[100vh]">
+        <div className="hidden md:flex md:flex-col md:justify-between md:my-24 xl:my-0 md:h-[75vh] xl:h-[100vh]">
         {firstImage?.asset && (
           <Link href={`/folio/gallery/${folio.slug}/full`} className="block group flex-1 flex justify-center items-center">
             <div className="relative w-full flex justify-center items-center">
-              <Image
+              <FadeInImage
                 src={urlFor(firstImage.asset).width(1200).quality(80).url()}
                 alt={firstImage.alt || folio.title || ""}
                 width={firstImage.asset.metadata?.dimensions?.width || 1200}
