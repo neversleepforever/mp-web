@@ -91,7 +91,7 @@ const viewFullShootButton = (
     <>
       <div className="my-12 p-6 pt-0 xl:p-0 xl:-my-0 xl:grid xl:grid-cols-2 xl:max-h-screen">
         <TextDistortFilter>
-        <div className="overflow-y-scroll md:px-20 xl:min-h-screen xl:max-h-screen xl:pt-[33vh] xl:py-24 xl:px-30 scrollbar-hide">
+        <div className="overflow-y-scroll md:px-20 xl:min-h-screen xl:max-h-screen xl:pt-54 xl:py-24 xl:px-30 scrollbar-hide">
           <header className="md:pb-6">
             <h1 className="heading-1 text-justify">
               {folio.title ?? "Untitled"}

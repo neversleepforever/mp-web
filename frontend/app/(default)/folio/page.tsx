@@ -54,15 +54,15 @@ export default async function FolioIndexPage() {
     <div
       className="
         h-[100vh] px-6 py-12 
-        overflow-y-auto overflow-x-hidden 
-        md:overflow-x-auto md:overflow-y-hidden md:pt-16
+        overflow-y-auto overflow-x-hidden scrollbar-hide
+        md:overflow-x-auto md:overflow-y-hidden md:py-16
         xl:overflow-x-hidden xl:overflow-y-auto xl:pb-0
       "
     >
       <div
         className="
           grid gap-3 grid-cols-1 auto-rows-max scrollbar-hide
-          md:grid-cols-none md:grid-rows-2 md:auto-cols-max md:grid-flow-col md:snap-x md:snap-mandatory md:h-full 
+          md:grid-cols-none md:grid-rows-2 md:auto-cols-max md:grid-flow-col md:snap-x md:snap-mandatory md:h-full
           xl:grid-rows-none xl:grid-flow-row xl:grid-cols-5 xl:grid-rows-[repeat(2,_minmax(0,_1fr))] xl:grid-flow-row xl:overflow-y-auto xl:pb-16 
         "
       >
@@ -116,6 +116,7 @@ export default async function FolioIndexPage() {
             </Link>
           )
         })}
+        <div className="hidden md:block w-6 xl:hidden" />
       </div>
     </div>
   )

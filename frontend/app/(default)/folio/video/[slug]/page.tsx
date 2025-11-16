@@ -88,7 +88,7 @@ export default async function VideoPage({
 
   return (
       <>
-      <div className="my-12 px-6 md:px-21 py-0 xl:p-0 xl:-my-0 xl:grid xl:grid-cols-2 h-screen">
+      <div className="my-12 px-6 md:my-16 md:px-21 py-0 xl:p-0 xl:-my-0 xl:grid xl:grid-cols-2 h-screen">
         <div className="xl:min-h-screen lg:pt-54 xl:pb-24 xl:px-30 xl:overflow-y-scroll scrollbar-hide ">
           <TextDistortFilter>
           <header className="pb-6">
