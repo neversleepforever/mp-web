@@ -245,7 +245,7 @@ useEffect(() => {
       <div
           ref={containerRef}
           className="
-            flex overflow-x-auto overflow-visible snap-mandatory snap-x pl-[50vw] pr-[50vw] scrollbar-hide
+            flex overflow-x-auto overflow-visible snap-x pl-[50vw] pr-[50vw] scrollbar-hide
             lg:w-[59px] lg:h-full lg:overflow-y-auto lg:flex-col lg:px-0 lg:pb-0 lg:mx-0 lg:pt-0
           "
         >
