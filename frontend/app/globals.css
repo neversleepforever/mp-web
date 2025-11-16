@@ -123,3 +123,9 @@
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
+
+.scrollable-container {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling */
+  overscroll-behavior: contain;      /* Prevent bounce */
+}
