@@ -34,15 +34,15 @@ export default async function BaseLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable}`}
+      className={`${inter.variable} overscroll-none`}
     >
-      <body className={`${theme === "dark" ? "dark" : "" } bg-white dark:bg-black` }>
+      <body className={`${theme === "dark" ? "dark" : "" } bg-white dark:bg-black overscroll-none` }>
         <Centerfold />
         <AgeCheck>
-          <section className="min-h-screen">
+          <section className="min-h-screen overscroll-none">
             <SanityLive onError={handleError} />
             <Header />
-            <main>{children}</main>
+            <main className="overscroll-none">{children}</main>
             <Footer />
           </section>
         </AgeCheck>
