@@ -6,6 +6,7 @@ import Image from "next/image"
 import Link from "next/link"
 import Filter from "@/app/components/Filter"
 import TextDistortFilter from "@/app/components/TextFilter"
+import FadeInImage from "@/app/components/FadeInImage"
 
 interface SocialLink {
   displayTitle: string
@@ -91,7 +92,7 @@ export default async function ContactPage() {
       {/* Contact content */}
 
       <div className="absolute inset-0 md:hidden">
-        <Image
+        <FadeInImage
           src="/images/linkspage.png"
           alt="Links Page Illustration"
           fill
@@ -101,7 +102,7 @@ export default async function ContactPage() {
       </div>
 
       <div className="hidden md:block md:absolute inset-y-0 left-0 w-1/2">
-        <Image
+        <FadeInImage
           src="/images/fenceblack.png"
           alt=""
           fill
@@ -156,7 +157,7 @@ export default async function ContactPage() {
           </div>
 
           <div className="hidden md:block md:flex md:items-center md:justify-end md:p-6 md:overflow-hidden">
-            <Image
+            <FadeInImage
               src="/images/linkspage.png"
               alt="Links Page Illustration"
               width={283}

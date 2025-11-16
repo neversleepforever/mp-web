@@ -1,3 +1,4 @@
+import FadeInImage from "@/app/components/FadeInImage"
 import Filter from "@/app/components/Filter"
 import PixelateOverlay from "@/app/components/PixelateOverlay"
 import Rates from "@/app/components/Rates"
@@ -24,11 +25,12 @@ const portableTextComponents: PortableTextComponents = {
     image: ({ value }) =>
       value?.asset?.url ? (
         <figure className="my-6">
-          <Image
+          <FadeInImage
             src={value.asset.url}
             alt={value.caption || ""}
             width={800}
             height={600}
+            blurDataURL={value.asset.metadata?.lqip}
             className="w-full h-auto object-contain"
           />
           {value.caption && (
@@ -58,7 +60,7 @@ export default async function ServicesPage() {
 
       <div className="md:grid md:grid-cols-2 dark:text-white bg-[#454545]">
         <div className="relative w-full h-full mix-blend-screen">
-          <Image
+          <FadeInImage
             src="/images/servicesbg.jpg"
             alt="Background"
             fill
@@ -68,7 +70,7 @@ export default async function ServicesPage() {
           />
         </div>
 
-        <div className="bg-[url('/images/scantexture.jpg')] md:grayscale bg-cover bg-center mix-blend-plus-lighter md:col-start-2 pt-8 pb-12 px-6 md:py-12 md:pl-4 md:pr-6 md:h-screen md:overflow-y-scroll xl:px-26">
+        <div className="scrollbar-hide bg-[url('/images/scantexture.jpg')] md:grayscale bg-cover bg-center mix-blend-plus-lighter md:col-start-2 pt-8 pb-12 px-6 md:py-12 md:pl-4 md:pr-6 md:h-screen md:overflow-y-scroll xl:px-26">
           <TextDistortFilter>
           {services.content?.length ? (
             <PortableText
@@ -121,11 +123,12 @@ export default async function ServicesPage() {
                   image: ({ value }) =>
                     value?.asset?.url ? (
                       <figure className="my-4">
-                        <Image
+                        <FadeInImage
                           src={value.asset.url}
                           alt={value.caption || ""}
                           width={800}
                           height={600}
+                          blurDataURL={value.asset.metadata?.lqip}
                           className="w-full h-auto object-contain md:grayscale border-white border-1"
                         />
                         {value.caption && (
@@ -142,7 +145,7 @@ export default async function ServicesPage() {
           </TextDistortFilter>
         </div>
       </div>
-      <Image src="/images/band.png" alt="Adults Only" width={200} height={200} className="fixed bottom-[-10px] right-[-10px] z-50" />
+      <FadeInImage src="/images/band.png" alt="Adults Only" width={200} height={200} className="fixed bottom-[-10px] right-[-10px] z-50" />
     </>
   )
 }

@@ -1,9 +1,9 @@
-import Filter from "@/app/components/Filter"
+import FadeInImage from "@/app/components/FadeInImage"
+import Image from "next/image"
 import TextDistortFilter from "@/app/components/TextFilter"
 import { sanityFetch } from "@/sanity/lib/live"
 import { aboutQuery } from "@/sanity/lib/queries"
 import { PortableText, type PortableTextBlock } from "next-sanity"
-import Image from "next/image"
 
 interface AboutData {
   _id: string
@@ -12,15 +12,21 @@ interface AboutData {
 
 export default async function AboutPage() {
   const { data } = await sanityFetch({ query: aboutQuery })
-  const about = data as AboutData | null   // ← cast result
+  const about = data as AboutData | null 
 
   if (!about) return <p>No About content found. Add it in Sanity Studio.</p>
 
   return (
     <>    
       <div className=" md:grid md:grid-cols-2 dark:text-white bg-black ">
-        <div className="bg-[url('/images/about.jpg')] bg-cover bg-top mix-blend-exclusion"></div>
-
+        <div className="relative">
+          <FadeInImage
+            src="/images/about.jpg"
+            alt="About background"
+            fill
+            className="object-cover object-top mix-blend-exclusion"
+          />
+        </div>
   <div className="bg-[url('/images/fence.png')] bg-cover bg-center md:col-start-2 pt-12 pb-16 px-6 md:pt-16 md:h-screen md:overflow-y-scroll lg:px-26 ">
   <TextDistortFilter>
       <div className="border-1 p-6 bg-black">
@@ -36,16 +42,18 @@ export default async function AboutPage() {
               },
               types: {
                 image: ({ value }) => {
-                  const url = value.asset?.url
-                  const dims = value.asset?.metadata?.dimensions
-                  if (!url || !dims) return null
+                  if (!value?.asset?.url) return null
+                  const url = value.asset.url
+                  const width = value.asset.metadata?.dimensions?.width || 800
+                  const height = value.asset.metadata?.dimensions?.height || 600
                   return (
                     <div className="mt-6 mix-blend-difference md:grayscale md:contrast-200">
-                      <Image
+                      <FadeInImage
                         src={url}
                         alt={value.alt || ""}
-                        width={dims.width}
-                        height={dims.height}
+                        width={width}
+                        height={height}
+                        blurDataURL={value.asset.metadata?.lqip}
                         className="border-white border-1"
                       />
                     </div>
@@ -61,14 +69,6 @@ export default async function AboutPage() {
         </TextDistortFilter>
       </div>
       </div>
-    {/* <div className="fixed inset-0 z-10 md:hidden pointer-events-none">
-      <div className="w-full h-full bg-[url('/images/centerfoldmobile.png')] bg-cover bg-center" />
-    </div>
-    <div className="fixed inset-0 -z-10 md:hidden pointer-events-none">
-      <div className="w-full h-full bg-[url('/images/fence.png')] bg-cover bg-center" />
-    </div> */}
-    {/* <Filter> */}
-    {/* </Filter> */}
     </>
   )
 }

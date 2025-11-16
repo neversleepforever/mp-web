@@ -201,7 +201,7 @@ useEffect(() => {
 
   return (
     <>
-    <div className="relative w-full h-[calc(100vh-4rem)] flex flex-col lg:flex-row scrollbar-hide lg:gap-7.5 xl:pt-6 xl:h-[calc(100vh-4rem)]">
+    <div className="relative w-full h-[calc(100vh-4rem)] flex flex-col lg:flex-row bar-hide lg:gap-7.5 xl:pt-6 xl:h-[calc(100vh-4rem)]">
       <div ref={mainImageRef} className="flex-1 flex justify-center items-end lg:items-center overflow-hidden scrollbar-hide pt-12 p-6 md:px-20 lg:p-0">
         <figure className="relative w-full h-full">
             {images.map((img, i) => {
