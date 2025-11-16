@@ -91,14 +91,15 @@ const viewFullShootButton = (
   return (
     <>
       <div className="my-12 p-6 pt-0 xl:p-0 xl:-my-0 xl:grid xl:grid-cols-2 xl:max-h-screen">
-        <TextDistortFilter>
+        
         <div className="overflow-y-scroll md:px-20 xl:min-h-screen xl:max-h-screen xl:pt-54 xl:py-24 xl:px-30 scrollbar-hide">
+          <TextDistortFilter>
           <header className="md:pb-6">
             <h1 className="heading-1 text-justify">
               {folio.title ?? "Untitled"}
             </h1>
             {folio.subtitle && (
-              <p className="text-lg text-gray-600 mt-2">{folio.subtitle}</p>
+              <p className="heading-3 mt-2">{folio.subtitle}</p>
             )}
             <div className="mt-12 text-[18px] font-extrabold mb-3">
                   {folio.date && (
@@ -124,8 +125,8 @@ const viewFullShootButton = (
             ) : null}
           </div>
           <div className="hidden md:block xl:hidden">{viewFullShootButton}</div>
+          </TextDistortFilter>
         </div>
-        </TextDistortFilter>
         <div className="hidden md:flex md:flex-col md:justify-between md:my-24 xl:my-0 md:h-[75vh] xl:h-[100vh]">
         {firstImage?.asset && (
           <Link href={`/folio/gallery/${folio.slug}/full`} className="block group flex-1 flex justify-center items-center">
