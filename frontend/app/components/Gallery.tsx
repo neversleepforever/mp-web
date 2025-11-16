@@ -40,6 +40,7 @@ export default function Gallery({
   const pathname = usePathname()
   const containerRef = useRef<HTMLDivElement>(null)
   const thumbnailRefs = useRef<(HTMLButtonElement | null)[]>([])
+    const mainImageRef = useRef<HTMLDivElement>(null)
 
   const goPrev = () =>
     setSelectedIndex((i) => (i - 1 + images.length) % images.length)
@@ -197,7 +198,7 @@ useEffect(() => {
   if (!images?.length) return null
 
   const selected = images[selectedIndex]
-  const mainImageRef = useRef<HTMLDivElement>(null)
+
 
   return (
     <>
