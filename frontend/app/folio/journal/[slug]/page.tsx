@@ -4,7 +4,7 @@ import { PortableText, type PortableTextComponents } from "next-sanity"
 import { sanityFetch } from "@/sanity/lib/live"
 import { journalSlugsQuery, journalQuery } from "@/sanity/lib/queries"
 import { resolveOpenGraphImage } from "@/sanity/lib/utils"
-import Gallery, { GalleryImage } from "../../../../components/Gallery"
+import Gallery, { GalleryImage } from "../../../components/Gallery"
 import TextDistortFilter from "@/app/components/TextFilter"
 
 export interface Journal {

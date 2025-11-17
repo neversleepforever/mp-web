@@ -130,3 +130,16 @@
   -webkit-overflow-scrolling: touch; /* Smooth scrolling */
   overscroll-behavior: contain;      /* Prevent bounce */
 }
+
+body {
+  transition-property: opacity, transform, filter, background;
+  transition-timing-function: ease-in-out;
+  transition-duration: 500ms;
+}
+
+.page-transition {
+  opacity: 0;
+  /* background: black; */
+  /* transform: translateY(40px); */
+  filter: blur(12px);
+}

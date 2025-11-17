@@ -3,8 +3,8 @@ import {sanityFetch} from '@/sanity/lib/live'
 import Image from 'next/image'
 import { homeQuery } from "@/sanity/lib/queries"
 import Link from 'next/link'
-import TextDistortFilter from '../components/TextFilter'
-import FadeInImage from '../components/FadeInImage'
+import TextDistortFilter from './components/TextFilter'
+import FadeInImage from './components/FadeInImage'
 
 export default async function Page() {
   const {data: home} = await sanityFetch({

@@ -27,7 +27,7 @@ export default async function AboutPage() {
             className="object-cover object-top mix-blend-exclusion"
           />
         </div>
-  <div className="bg-[url('/images/fence.png')] bg-cover bg-center md:col-start-2 pt-12 pb-16 px-6 md:pt-16 md:h-screen md:overflow-y-scroll lg:px-26 ">
+  <div className="scrollbar-hide bg-[url('/images/fence.png')] bg-cover bg-center md:col-start-2 pt-12 pb-16 px-6 md:pt-16 md:h-screen md:overflow-y-scroll lg:px-26 ">
   <TextDistortFilter>
       <div className="border-1 p-6 bg-black">
       {about.content?.length ? (
