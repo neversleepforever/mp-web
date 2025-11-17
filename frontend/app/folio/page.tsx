@@ -5,6 +5,7 @@ import { allFoliosQuery } from "@/sanity/lib/queries"
 import TextDistortFilter from "@/app/components/TextFilter"
 import { urlFor } from "@/sanity/lib/imageBuilder"
 import FadeInImage from "@/app/components/FadeInImage"
+import { TransitionLink } from "../components/TransitionLink"
 
 type ImageAsset = {
   _id: string
@@ -77,7 +78,7 @@ export default async function FolioIndexPage() {
           const previewImage = asset ? urlFor(asset).width(1200).fit("max").url() : null
 
           return (
-            <Link
+            <TransitionLink
               key={folio._id}
               href={`/folio/${folio._type}/${folio.slug}`}
               className="flex flex-col h-full"
@@ -113,7 +114,7 @@ export default async function FolioIndexPage() {
                   )}
                 </div>
               </TextDistortFilter>
-            </Link>
+            </TransitionLink>
           )
         })}
         <div className="hidden md:block w-6 xl:hidden" />
