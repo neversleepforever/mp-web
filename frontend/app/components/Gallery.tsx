@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react"
 import { usePathname } from "next/navigation"
 import Image from "next/image"
 import { urlFor } from "@/sanity/lib/imageBuilder"
+import TextDistortFilter from "./TextFilter"
 
 export interface GalleryImage {
   asset: {
@@ -285,26 +286,31 @@ useEffect(() => {
         </div>
       </div>
     {!hideArrows && (
-      <div className="
-        hidden xl:fixed xl:bottom-0 xl:left-0 xl:right-0
-        xl:h-16 xl:flex xl:flex-row xl:justify-between xl:z-50
-        xl:items-center xl:px-8 xl:font-nav xl:pointer-events-none 
-      ">
-        <button
-          type="button"
-          onClick={goNext}
-          className="pointer-events-auto text-[14px] cursor-pointer uppercase hover:underline"
-        >
-          Down
-        </button>
-        <button
-          type="button"
-          onClick={goPrev}
-          className="pointer-events-auto text-[14px] cursor-pointer uppercase hover:underline"
-        >
-          Up
-        </button>
-      </div> )}
+        <div className="
+          hidden xl:fixed xl:bottom-0 xl:left-0 xl:right-0
+          xl:h-16 xl:flex xl:flex-row xl:justify-between xl:z-50
+          xl:items-center xl:px-8 xl:font-nav xl:pointer-events-none 
+        ">
+          <TextDistortFilter>
+            <button
+              type="button"
+              onClick={goNext}
+              className="pointer-events-auto text-[14px] cursor-pointer uppercase hover:underline"
+            >
+              Down
+            </button>
+             </TextDistortFilter>
+             <TextDistortFilter>
+            <button
+              type="button"
+              onClick={goPrev}
+              className="pointer-events-auto text-[14px] cursor-pointer uppercase hover:underline"
+            >
+              Up
+            </button>
+          </TextDistortFilter>
+        </div>
+       )}
     </>
   )
 }

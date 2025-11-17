@@ -112,6 +112,7 @@
   .fade-in[data-loaded="true"] {
     @apply opacity-100;
   }
+
 }
 /* Hide scrollbar for Webkit browsers */
 .scrollbar-hide::-webkit-scrollbar {
