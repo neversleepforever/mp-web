@@ -4,6 +4,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import Image from "next/image"
 import TextDistortFilter from "./TextFilter"
+import { TransitionLink } from "./TransitionLink"
 
 export default function Header() {
   const pathname = usePathname()
@@ -29,7 +30,7 @@ export default function Header() {
             <TextDistortFilter>
           <ul className="flex w-full justify-between text-xs sm:text-base tracking-tight font-nav uppercase">
               <li key={"/"} className="hidden lg:block">
-                <Link
+                <TransitionLink
                   href={"/"}
                 >
                   
@@ -41,13 +42,13 @@ export default function Header() {
                       className="object-contain dark:invert"
                     />
                   
-                </Link>
+                </TransitionLink>
               </li>
            {links.map(({ href, label }) => {
               const isExternal = href.startsWith("http")
               return (
                 <li key={href}>
-                  <Link
+                  <TransitionLink
                     href={href}
                     className={`hover:line-through ${
                       pathname === href ? "line-through" : ""
@@ -58,7 +59,7 @@ export default function Header() {
                     })}
                   >
                     {label}
-                  </Link>
+                  </TransitionLink>
                 </li>
               )
             })}
