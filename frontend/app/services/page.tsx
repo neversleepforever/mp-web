@@ -145,7 +145,7 @@ export default async function ServicesPage() {
           </TextDistortFilter>
         </div>
       </div>
-      <FadeInImage src="/images/band.png" alt="Adults Only" width={200} height={200} className="fixed bottom-[-10px] right-[-10px] z-50" />
+      <FadeInImage src="/images/band.png" alt="Adults Only" width={200} height={200} className="fixed box-content bottom-[0px] right-[0px] z-50 overflow-hidden" />
     </>
   )
 }
