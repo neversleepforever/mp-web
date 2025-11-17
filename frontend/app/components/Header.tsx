@@ -45,7 +45,7 @@ export default function Header() {
                 </TransitionLink>
               </li>
            {links.map(({ href, label }) => {
-              const isExternal = href.startsWith("http")
+          
               return (
                 <li key={href}>
                   <TransitionLink
@@ -53,10 +53,6 @@ export default function Header() {
                     className={`hover:line-through ${
                       pathname === href ? "line-through" : ""
                     }`}
-                    {...(isExternal && {
-                      target: "_blank",
-                      rel: "noopener noreferrer",
-                    })}
                   >
                     {label}
                   </TransitionLink>

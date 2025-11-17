@@ -18,24 +18,38 @@ export const TransitionLink: React.FC<TransitionLinkProps> = ({
   ...props
 }) => {
   const router = useRouter();
+  const isExternal =
+    href.startsWith("http://") ||
+    href.startsWith("https://") ||
+    href.startsWith("//");
 
   const handleTransition = async (
-    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+    e: React.MouseEvent<HTMLAnchorElement>
   ) => {
-    e.preventDefault();
-    const body = document.querySelector("body");
+    // Skip transitions for external links!
+    if (isExternal) return;
 
-    body?.classList.add("page-transition");
+    e.preventDefault();
+
+    document.body.classList.add("page-transition");
 
     await sleep(500);
     router.push(href);
     await sleep(500);
 
-    body?.classList.remove("page-transition");
+    document.body.classList.remove("page-transition");
   };
 
   return (
-    <Link {...props} href={href} onClick={handleTransition}>
+    <Link
+      href={href}
+      {...props}
+      onClick={handleTransition}
+      {...(isExternal && {
+        target: "_blank",
+        rel: "noopener noreferrer",
+      })}
+    >
       {children}
     </Link>
   );
