@@ -4,6 +4,7 @@ import { useEffect } from "react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import TextDistortFilter from "./TextFilter"
+import { TransitionLink } from "./TransitionLink"
 
 export default function Submit() {
   const pathname = usePathname()
@@ -35,12 +36,12 @@ export default function Submit() {
       "
     >
       <TextDistortFilter>
-        <Link
+        <TransitionLink
           href={basePath || "/"}
           className="pointer-events-auto text-[14px] cursor-pointer uppercase hover:underline"
         >
           Submit
-        </Link>
+        </TransitionLink>
       </TextDistortFilter>
     </div>
   )
