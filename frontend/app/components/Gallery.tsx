@@ -160,26 +160,26 @@ useEffect(() => {
   }
 }, [images.length])
 
-  useEffect(() => {
-    const container = containerRef.current
-    const selectedThumb = thumbnailRefs.current[selectedIndex]
-    if (container && selectedThumb) {
-      const containerRect = container.getBoundingClientRect()
-      const thumbRect = selectedThumb.getBoundingClientRect()
+  // useEffect(() => {
+  //   const container = containerRef.current
+  //   const selectedThumb = thumbnailRefs.current[selectedIndex]
+  //   if (container && selectedThumb) {
+  //     const containerRect = container.getBoundingClientRect()
+  //     const thumbRect = selectedThumb.getBoundingClientRect()
 
-      const scrollAmount =
-        thumbRect.left -
-        containerRect.left -
-        containerRect.width / 2 +
-        thumbRect.width / 2
+  //     const scrollAmount =
+  //       thumbRect.left -
+  //       containerRect.left -
+  //       containerRect.width / 2 +
+  //       thumbRect.width / 2
 
-      container.scrollBy({
-        left: scrollAmount,
-        top: 0,
-        behavior: "smooth",
-      })
-    }
-  }, [selectedIndex])
+  //     container.scrollBy({
+  //       left: scrollAmount,
+  //       top: 0,
+  //       behavior: "smooth",
+  //     })
+  //   }
+  // }, [selectedIndex])
 
     useEffect(() => {
     if (!images?.length) return;
