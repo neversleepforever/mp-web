@@ -256,7 +256,7 @@ useEffect(() => {
                 ref={(el) => { thumbnailRefs.current[i] = el }}
                 onClick={() => setSelectedIndex(i)}
                 className={`
-                  relative snap-start flex-shrink-0 overflow-hidden
+                  relative snap-center flex-shrink-0 overflow-hidden
                   h-20 w-auto lg:w-full lg:h-auto
                   ${i === images.length - 1 ? "lg:mb-12" : ""}
                   ${i === selectedIndex
