@@ -6,8 +6,8 @@ export default function AgeCheck({ children }: { children: React.ReactNode }) {
   const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
-    const isVerified = localStorage.getItem("age-verified")
-    if (isVerified === "true") setVerified(true)
+    // const isVerified = localStorage.getItem("age-verified")
+    // if (isVerified === "true") setVerified(true)
     setLoaded(true)
   }, [])
 
