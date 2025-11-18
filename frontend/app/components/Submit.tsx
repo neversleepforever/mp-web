@@ -30,9 +30,9 @@ export default function Submit() {
   return (
     <div
       className="
-        hidden xl:fixed xl:top-0 xl:left-0 xl:right-0
-        xl:h-16 xl:flex xl:flex-row xl:justify-between xl:z-50
-        xl:items-center xl:px-8 xl:font-nav xl:pointer-events-none 
+        hidden md:fixed md:top-0 md:left-0 md:right-0
+        md:h-16 md:flex md:flex-row md:justify-between md:z-50
+        md:items-center md:px-8 md:font-nav md:pointer-events-none 
       "
     >
       <TextDistortFilter>
