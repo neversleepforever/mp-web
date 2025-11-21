@@ -94,7 +94,7 @@ export default async function ServicesPage() {
                     <div className="border">
                       <Rates title={value.title} />
                       <Link href={`mailto:"missmaggiepeach@gmail.com"`}>
-                        <div className="flex justify-center font-display bg-white text-black text-[12px] py-[10px] px-16 text-center">
+                        <div className="flex justify-center font-display bg-white text-black text-[12px] py-[10px] px-16 text-center lg:font-extrabold lg:px-4 lg:[&_br]:hidden">
                           <PortableText
                             value={value.Banner}
                             components={portableTextComponents}
