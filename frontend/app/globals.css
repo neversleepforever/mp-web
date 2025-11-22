@@ -12,7 +12,7 @@
 @font-face {
   font-family: "Univers LT Std";
   src: 
-       url("/fonts/universltstd.woff") format("woff");
+       url("/fonts/UniversPro55Roman.woff") format("woff");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -22,7 +22,7 @@
 @font-face {
   font-family: "Univers LT Std";
   src: 
-       url("/fonts/universltstd-bold.woff") format("woff");
+       url("/fonts/UniversBold.woff") format("woff");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -32,7 +32,7 @@
 @font-face {
   font-family: "Univers LT Std";
   src: 
-       url("/fonts/universltstd-boldex.woff") format("woff");
+       url("/fonts/UniversBoldEx.woff") format("woff");
   font-weight: 800;
   font-style: normal;
   font-display: swap;
@@ -41,7 +41,7 @@
 @font-face {
   font-family: "Futura Std";
   src: url("/fonts/futurastd-extrabold.woff") format("woff");
-  font-weight: 750;
+  font-weight: 800;
   font-style: normal;
   font-display: swap;
 }
@@ -57,6 +57,7 @@
 @layer base {
   body {
     font-family: "Univers LT Std";
+    font-weight: 400;
     line-height: 1.2;
   }
 
@@ -100,8 +101,11 @@
   .heading-2 {
     @apply text-[22px] font-display uppercase leading-[1.1];
   }
-    .heading-3 {
+  .heading-3 {
     @apply text-[20px] font-display uppercase leading-[1.1];
+  }
+  .heading-4 {
+    @apply text-[12px] font-display font-extrabold! uppercase leading-[1.1] tracking-tighter;
   }
 }
 

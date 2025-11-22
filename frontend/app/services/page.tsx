@@ -19,6 +19,7 @@ const portableTextComponents: PortableTextComponents = {
     h1: ({ children }) => <h1 className="heading-1">{children}</h1>,
     h2: ({ children }) => <h2 className="heading-2">{children}</h2>,
     h3: ({ children }) => <h3 className="heading-3">{children}</h3>,
+    h4: ({ children }) => <h4 className="heading-4 text-black">{children}</h4>,
     normal: ({ children }) => <p className="mt-6 font-sans">{children}</p>,
   },
   types: {
@@ -70,7 +71,7 @@ export default async function ServicesPage() {
           />
         </div>
 
-        <div className="scrollbar-hide bg-[url('/images/scantexture.jpg')] md:grayscale bg-cover bg-center mix-blend-plus-lighter md:col-start-2 pt-8 pb-12 px-6 md:py-12 md:pl-4 md:pr-6 md:h-screen md:overflow-y-scroll xl:px-26">
+        <div className="relative scrollbar-hide bg-[url('/images/scantexture.jpg')] bg-cover bg-center mix-blend-plus-lighter md:col-start-2 pt-8 pb-12 px-6 md:py-12 md:pl-4 md:pr-6 md:h-screen md:overflow-y-scroll xl:px-26">
           <TextDistortFilter>
           {services.content?.length ? (
             <PortableText
@@ -94,11 +95,11 @@ export default async function ServicesPage() {
                     <div className="border">
                       <Rates title={value.title} />
                       <Link href={`mailto:"missmaggiepeach@gmail.com"`}>
-                        <div className="flex justify-center font-display bg-white text-black text-[12px] py-[10px] px-16 text-center lg:font-extrabold lg:px-4 lg:[&_br]:hidden">
+                        <div className="mix-blend-plus-darker flex justify-center bg-white text-[12px] py-[10px] px-16 text-center lg:px-4 lg:[&_br]:hidden">
                           <PortableText
                             value={value.Banner}
                             components={portableTextComponents}
-                          />
+                          /> 
                         </div>
                       </Link>
                       <div className="p-4 text-center [&_ul]:mt-6 text-[20px]">

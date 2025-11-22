@@ -11,7 +11,7 @@ export default function Rates({ title }: RatesProps) {
     grid grid-rows-4 grid-cols-8 gap-0 font-display py-5
     xl:flex xl:flex-row xl:items-center xl:justify-center xl:gap-4
     w-full overflow-hidden max-w-[300px] xl:max-w-full
-    mx-auto place-items-center
+    mx-auto place-items-center md:grayscale
   "
 >
   {/* Left cards */}
