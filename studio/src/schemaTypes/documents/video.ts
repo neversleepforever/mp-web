@@ -27,7 +27,7 @@ export const video = defineType({
     }),
     defineField({
       name: 'photographer',
-      title: 'Photographer/Collaborator',
+      title: 'Photographer or Collaborator',
       type: 'string',
       description: "Name of the photographer or collaborator for video or photoshoot.",
     }),
@@ -35,6 +35,7 @@ export const video = defineType({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
+      description: "URL-friendly version of the title.",
       validation: (Rule) => Rule.required(),
       options: {
         source: 'title',
@@ -45,6 +46,7 @@ export const video = defineType({
       name: 'date',
       title: 'Date',
       type: 'date',
+      description: "Date of the photoshoot or project. This will be used for the order on the Folio index page.",
       options: {
         dateFormat: 'YYYY-MM-DD',
       },

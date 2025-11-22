@@ -27,13 +27,15 @@ export const gallery = defineType({
     }),
     defineField({
       name: 'photographer',
-      title: 'Photographer',
+      title: 'Photographer or Collaborator',
+      description: "Title for photographer. Example: 'Shot by John Doe'",
       type: 'string',
     }),
     defineField({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
+      description: "URL-friendly version of the title.",
       validation: (Rule) => Rule.required(),
       options: {
         source: 'title',
@@ -44,6 +46,7 @@ export const gallery = defineType({
       name: 'date',
       title: 'Date',
       type: 'date',
+      description: "Date of the photoshoot or project. This will be used for the order on the Folio index page.",
       options: {
         dateFormat: 'YYYY-MM-DD',
       },
