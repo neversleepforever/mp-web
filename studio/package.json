@@ -8,11 +8,9 @@
   "license": "UNLICENSED",
   "main": "package.json",
   "scripts": {
-    "prebuild": "npm run extract-types",
     "build": "sanity build",
     "deploy": "sanity deploy",
     "dev": "sanity dev",
-    "extract-types": "sanity schema extract --enforce-required-fields",
     "start": "sanity start",
     "type-check": "tsc --noEmit"
   },
