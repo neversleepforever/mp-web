@@ -34,8 +34,10 @@
   },
   "dependencies": {
     "@mux/mux-player-react": "^3.6.0",
+    "@mux/mux-video": "^0.28.1",
     "@sanity/image-url": "^1.2.0",
     "react-fast-marquee": "^1.6.5",
     "sanity-plugin-mux-input": "^2.9.0"
-  }
+  },
+  "packageManager": "yarn@4.12.0"
 }
