@@ -43,6 +43,7 @@ export const TransitionLink: React.FC<TransitionLinkProps> = ({
 
   return (
     <Link
+      draggable={false}
       href={href}
       {...props}
       onClick={handleTransition}

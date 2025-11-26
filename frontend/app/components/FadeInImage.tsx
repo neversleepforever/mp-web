@@ -20,6 +20,7 @@ export default function FadeInImage({
       {...props}
       placeholder={blurDataURL ? "blur" : "empty"}
       blurDataURL={blurDataURL}
+      draggable={false}
       className={`${className} transition-opacity duration-500 ${
         loaded ? "opacity-100" : "opacity-0"
       }`}
