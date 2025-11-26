@@ -5,27 +5,56 @@ import { sanityFetch } from "@/sanity/lib/live"
 import { aboutQuery } from "@/sanity/lib/queries"
 import { PortableText, type PortableTextBlock } from "next-sanity"
 
+type ImageAsset = {
+  _id: string
+  url?: string
+  metadata?: {
+    lqip?: string
+    dimensions?: {
+      width: number
+      height: number
+    }
+  }
+}
+
+interface AboutImage {
+  alt?: string
+  credit?: string
+  asset?: ImageAsset
+}
+
 interface AboutData {
   _id: string
   content?: PortableTextBlock[]
+  image?: AboutImage
 }
+
 
 export default async function AboutPage() {
   const { data } = await sanityFetch({ query: aboutQuery })
   const about = data as AboutData | null 
 
+
   if (!about) return <p>No About content found. Add it in Sanity Studio.</p>
+
+  const heroImage = about.image;
+  const heroAsset = heroImage?.asset;
 
   return (
     <>    
       <div className=" md:grid md:grid-cols-2 dark:text-white bg-black ">
         <div className="relative">
+           {heroAsset?.url ? (
           <FadeInImage
-            src="/images/about.jpg"
-            alt="About background"
+            src={heroAsset.url}
+            alt={heroImage?.alt || "Cover Image"}
+            blurDataURL={heroAsset.metadata?.lqip}
             fill
             className="object-cover object-top mix-blend-exclusion"
           />
+        ) : (
+          <div className="w-full h-full" />
+        )}
         </div>
   <div className="scrollbar-hide bg-[url('/images/fence.png')] bg-cover bg-center md:col-start-2 pt-12 pb-16 px-6 md:pt-16 md:h-screen md:overflow-y-scroll lg:px-26 ">
   <TextDistortFilter>

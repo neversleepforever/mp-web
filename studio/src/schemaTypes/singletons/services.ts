@@ -1,10 +1,19 @@
 import { defineType, defineField } from "sanity"
+import { ImageIcon } from "@sanity/icons"
 
 export const services = defineType({
   name: "services",
   title: "Services",
   type: "document",
   fields: [
+      defineField({
+          name: "image",
+          title: "Image",
+          type: "image",
+          description: "Main image for the left side of the Services page.",
+          icon: ImageIcon,
+          options: { hotspot: true },
+        }),
     defineField({
       name: "content",
       title: "Content",

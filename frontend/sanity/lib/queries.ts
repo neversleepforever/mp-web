@@ -352,12 +352,25 @@ export const allGalleryQuery = defineQuery(`
 
 export const servicesQuery = defineQuery(`
   *[_type == "services"][0]{
+      image{
+        alt,
+        asset->{
+          _id,
+          url,
+          metadata{
+            lqip,
+            dimensions { width, height }
+          }
+        }
+      },
+
     content[]{
       ...,
       _type == "image" => {
         ...,
         "asset": asset->{
           _id,
+          url,
           metadata {
             lqip,
             dimensions { width, height }
@@ -373,6 +386,7 @@ export const servicesQuery = defineQuery(`
             ...,
             "asset": asset->{
               _id,
+              url,
               metadata {
                 lqip,
                 dimensions { width, height }
@@ -390,6 +404,7 @@ export const servicesQuery = defineQuery(`
             ...,
             "asset": asset->{
               _id,
+              url,
               metadata {
                 lqip,
                 dimensions { width, height }
@@ -407,6 +422,7 @@ export const servicesQuery = defineQuery(`
             ...,
             "asset": asset->{
               _id,
+              url,
               metadata {
                 lqip,
                 dimensions { width, height }
@@ -424,6 +440,7 @@ export const servicesQuery = defineQuery(`
             ...,
             "asset": asset->{
               _id,
+              url,
               metadata {
                 lqip,
                 dimensions { width, height }
@@ -441,6 +458,17 @@ export const servicesQuery = defineQuery(`
 export const aboutQuery = defineQuery(`
   *[_type == "about"][0]{
     _id,
+      image{
+        alt,
+        asset->{
+          _id,
+          url,
+          metadata{
+            lqip,
+            dimensions { width, height }
+          }
+        }
+      },
     content[]{
       ...,
       _type == "image" => {

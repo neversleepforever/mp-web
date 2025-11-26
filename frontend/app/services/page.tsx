@@ -9,9 +9,29 @@ import { PortableText, type PortableTextComponents, type PortableTextBlock } fro
 import Image from "next/image"
 import Link from "next/link"
 
+
+type ImageAsset = {
+  _id: string
+  url?: string
+  metadata?: {
+    lqip?: string
+    dimensions?: {
+      width: number
+      height: number
+    }
+  }
+}
+
+interface ServicesImage {
+  alt?: string
+  credit?: string
+  asset?: ImageAsset
+}
+
 interface ServicesData {
   _id: string
   content?: PortableTextBlock[]
+    image?: ServicesImage
 }
 
 const portableTextComponents: PortableTextComponents = {
@@ -56,19 +76,27 @@ export default async function ServicesPage() {
     return <p>No Services content found. Add it in Sanity Studio.</p>
   }
 
+    if (!services) return <p>No Services content found. Add it in Sanity Studio.</p>
+
+  const heroImage = services.image;
+  const heroAsset = heroImage?.asset;
+
   return (
     <>
 
       <div className="md:grid md:grid-cols-2 dark:text-white bg-[#454545]">
         <div className="relative w-full h-full mix-blend-screen">
-          <FadeInImage
-            src="/images/servicesbg.jpg"
-            alt="Background"
-            fill
-            priority
-            // placeholder="blur"
-            className="object-cover object-center pointer-events-none select-none"
-          />
+            {heroAsset?.url ? (
+                   <FadeInImage
+                     src={heroAsset.url}
+                     alt={heroImage?.alt || "Cover Image"}
+                     blurDataURL={heroAsset.metadata?.lqip}
+                     fill
+                     className="object-cover object-top mix-blend-exclusion"
+                   />
+                 ) : (
+                   <div className="w-full h-full" />
+                 )}
         </div>
 
         <div className="relative scrollbar-hide bg-[url('/images/scantexture.jpg')] bg-cover bg-center mix-blend-plus-lighter md:col-start-2 pt-8 pb-12 px-6 md:py-12 md:pl-4 md:pr-6 md:h-screen md:overflow-y-scroll xl:px-26">
@@ -121,22 +149,29 @@ export default async function ServicesPage() {
                       </div>
                     </div>
                   ),
-                  image: ({ value }) =>
-                    value?.asset?.url ? (
-                      <figure className="my-4">
-                        <FadeInImage
-                          src={value.asset.url}
-                          alt={value.caption || ""}
-                          width={800}
-                          height={600}
-                          blurDataURL={value.asset.metadata?.lqip}
-                          className="w-full h-auto object-contain md:grayscale border-white border-1"
-                        />
-                        {value.caption && (
-                          <figcaption className="heading-1 text-justify break-normal pt-4">{value.caption}</figcaption>
-                        )}
-                      </figure>
-                    ) : null,
+                  image: ({ value }) => {
+                    console.log("value", value)
+                                    if (!value?.asset?.url) return null
+                                  
+                                    const url = value.asset.url
+                                    const width = value.asset.metadata?.dimensions?.width || 800
+                                    const height = value.asset.metadata?.dimensions?.height || 600
+                                    return (
+                                      <div className="mt-4 mix-blend-difference md:grayscale md:contrast-200">
+                                        <FadeInImage
+                                          src={url}
+                                          alt={value.alt || ""}
+                                          width={width}
+                                          height={height}
+                                          blurDataURL={value.asset.metadata?.lqip}
+                                          className="border-white border-1"
+                                        />
+                                    {value.caption && (
+                                      <figcaption className="heading-1 text-justify break-normal pt-4">{value.caption}</figcaption>
+                                    )}
+                                      </div>
+                                    )
+                                  },
                 },
               }}
             />
