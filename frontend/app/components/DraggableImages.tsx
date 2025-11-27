@@ -1,9 +1,8 @@
 "use client"
 
 import { useRef, useState } from "react"
-import Draggable from "react-draggable"
-import FadeInImage from './FadeInImage'
-import { TransitionLink } from './TransitionLink'
+import FadeInImage from "./FadeInImage"
+import { TransitionLink } from "./TransitionLink"
 
 interface DraggableImageProps {
   image: any
@@ -11,47 +10,87 @@ interface DraggableImageProps {
 }
 
 function DraggableImage({ image, className }: DraggableImageProps) {
-  const nodeRef = useRef<HTMLDivElement>(null)
+  const ref = useRef<HTMLDivElement>(null)
   const [dragging, setDragging] = useState(false)
-  const dragDistance = useRef({ x: 0, y: 0 })
-  const DRAG_THRESHOLD = 2
 
-  const handleDrag = (e: any, data: any) => {
-    dragDistance.current = { x: Math.abs(data.x), y: Math.abs(data.y) }
-    if (dragDistance.current.x > DRAG_THRESHOLD || dragDistance.current.y > DRAG_THRESHOLD) {
-      setDragging(true)
+  const startPos = useRef({ x: 0, y: 0 })
+  const currentPos = useRef({ x: 0, y: 0 })
+  const DRAG_THRESHOLD = 3
+
+  const handlePointerDown = (e: React.PointerEvent) => {
+    const el = ref.current
+    if (!el) return
+
+    el.setPointerCapture(e.pointerId)
+
+    startPos.current = {
+      x: e.clientX - currentPos.current.x,
+      y: e.clientY - currentPos.current.y,
     }
+
+    setDragging(false)
   }
 
-  const handleStop = () => {
-    setTimeout(() => {
-      setDragging(false)
-      dragDistance.current = { x: 0, y: 0 }
-    }, 0)
+  const handlePointerMove = (e: React.PointerEvent) => {
+    if (e.pressure === 0) return
+
+    const el = ref.current
+    if (!el) return
+
+    const x = e.clientX - startPos.current.x
+    const y = e.clientY - startPos.current.y
+
+    if (!dragging) {
+      if (
+        Math.abs(x - currentPos.current.x) > DRAG_THRESHOLD ||
+        Math.abs(y - currentPos.current.y) > DRAG_THRESHOLD
+      ) {
+        setDragging(true)
+      }
+    }
+
+    currentPos.current = { x, y }
+    el.style.transform = `translate(${x}px, ${y}px)`
   }
 
-  const handleClickCapture = (e: React.MouseEvent) => {
+  const handlePointerUp = (e: React.PointerEvent) => {
+    const el = ref.current
+    if (!el) return
+
+    el.releasePointerCapture(e.pointerId)
+
+    // Reset dragging next tick
+    requestAnimationFrame(() => setDragging(false))
+  }
+
+  const handleClick = (e: React.MouseEvent) => {
     if (dragging) {
-      e.stopPropagation()
       e.preventDefault()
+      e.stopPropagation()
     }
   }
 
   return (
-    <Draggable nodeRef={nodeRef} onDrag={handleDrag} onStop={handleStop}>
-      <div ref={nodeRef} className={`cursor-grab ${className}`} onClickCapture={handleClickCapture}>
-        <TransitionLink href={image.link || "/"}>
-          <FadeInImage
-            src={image.image.asset.url}
-            alt={image.alt || ""}
-            width={500}
-            height={500}
-            blurDataURL={image.image.asset.metadata?.lqip}
-            draggable={false}
-          />
-        </TransitionLink>
-      </div>
-    </Draggable>
+    <div
+      ref={ref}
+      className={`cursor-grab active:cursor-grabbing ${className}`}
+      style={{ touchAction: "none" }} 
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerUp}
+      onClick={handleClick}
+    >
+      <TransitionLink href={image.link || "/"}>
+        <FadeInImage
+          src={image.image.asset.url}
+          alt={image.alt || ""}
+          width={500}
+          height={500}
+          blurDataURL={image.image.asset.metadata?.lqip}
+          draggable={false}
+        />
+      </TransitionLink>
+    </div>
   )
 }
 
@@ -61,6 +100,7 @@ interface HomeData {
   image3: any
   image4: any
 }
+
 
 export default function DraggableImages({ home }: { home: HomeData }) {
   return (
