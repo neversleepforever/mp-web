@@ -11,6 +11,7 @@ interface DraggableImageProps {
 
 function DraggableImage({ image, className }: DraggableImageProps) {
   const ref = useRef<HTMLDivElement>(null)
+  const linkRef = useRef<HTMLAnchorElement>(null)
   const [dragging, setDragging] = useState(false)
 
   const startPos = useRef({ x: 0, y: 0 })
@@ -64,9 +65,13 @@ function DraggableImage({ image, className }: DraggableImageProps) {
   }
 
   const handleClick = (e: React.MouseEvent) => {
+    console.log("click", e, dragging);
     if (dragging) {
       e.preventDefault()
       e.stopPropagation()
+    } else {
+        const link = ref.current?.querySelector('a')
+        link?.click()
     }
   }
 
@@ -80,7 +85,7 @@ function DraggableImage({ image, className }: DraggableImageProps) {
       onPointerUp={handlePointerUp}
       onClick={handleClick}
     >
-      <TransitionLink href={image.link || "/"}>
+      <TransitionLink   href={image.link || "/"} >
         <FadeInImage
           src={image.image.asset.url}
           alt={image.alt || ""}
