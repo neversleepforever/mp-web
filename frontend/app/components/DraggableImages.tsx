@@ -11,12 +11,14 @@ interface DraggableImageProps {
 
 function DraggableImage({ image, className }: DraggableImageProps) {
   const ref = useRef<HTMLDivElement>(null)
-  const linkRef = useRef<HTMLAnchorElement>(null)
+  const linkRef = useRef<HTMLAnchorElement | null>(null)
   const [dragging, setDragging] = useState(false)
 
   const startPos = useRef({ x: 0, y: 0 })
   const currentPos = useRef({ x: 0, y: 0 })
+  const pointerDownAt = useRef({ x: 0, y: 0 }) // used for synchronous movement checks
   const DRAG_THRESHOLD = 3
+  const didDrag = useRef(false)
 
   const handlePointerDown = (e: React.PointerEvent) => {
     const el = ref.current
@@ -24,16 +26,22 @@ function DraggableImage({ image, className }: DraggableImageProps) {
 
     el.setPointerCapture(e.pointerId)
 
+    // store the raw down coords for synchronous checks
+    pointerDownAt.current = { x: e.clientX, y: e.clientY }
+
     startPos.current = {
       x: e.clientX - currentPos.current.x,
       y: e.clientY - currentPos.current.y,
     }
 
+    // reset flags
     setDragging(false)
+    didDrag.current = false
   }
 
   const handlePointerMove = (e: React.PointerEvent) => {
-    if (e.pressure === 0) return
+    // do NOT use e.pressure (Safari unreliable). For mouse require button pressed.
+    if (e.pointerType === "mouse" && e.buttons === 0) return
 
     const el = ref.current
     if (!el) return
@@ -41,13 +49,12 @@ function DraggableImage({ image, className }: DraggableImageProps) {
     const x = e.clientX - startPos.current.x
     const y = e.clientY - startPos.current.y
 
-    if (!dragging) {
-      if (
-        Math.abs(x - currentPos.current.x) > DRAG_THRESHOLD ||
-        Math.abs(y - currentPos.current.y) > DRAG_THRESHOLD
-      ) {
-        setDragging(true)
-      }
+    // synchronous movement detection using pointerDownAt
+    const dx = e.clientX - pointerDownAt.current.x
+    const dy = e.clientY - pointerDownAt.current.y
+    if (!didDrag.current && (Math.abs(dx) > DRAG_THRESHOLD || Math.abs(dy) > DRAG_THRESHOLD)) {
+      didDrag.current = true
+      setDragging(true)
     }
 
     currentPos.current = { x, y }
@@ -60,32 +67,55 @@ function DraggableImage({ image, className }: DraggableImageProps) {
 
     el.releasePointerCapture(e.pointerId)
 
-    // Reset dragging next tick
-    requestAnimationFrame(() => setDragging(false))
+    // find anchor inside wrapper (TransitionLink renders an <a>)
+    const link = el.querySelector("a") as HTMLAnchorElement | null
+
+    if (didDrag.current) {
+      // If we did drag, prevent the synthetic click that Safari may create.
+      e.preventDefault()
+      // don't trigger navigation
+    } else {
+      // No drag -> trigger the link immediately and synchronously.
+      // Prevent default so Safari/other browsers don't also synthesize a second click.
+      e.preventDefault()
+
+      if (link) {
+        // Dispatch a real MouseEvent so listeners (including TransitionLink's onClick)
+        // see it as a user gesture.
+        link.dispatchEvent(
+          new MouseEvent("click", {
+            bubbles: true,
+            cancelable: true,
+            view: window,
+          })
+        )
+      }
+    }
+
+    // Reset dragging next tick (keeps UI state updates after pointer events)
+    requestAnimationFrame(() => {
+      setDragging(false)
+      didDrag.current = false
+    })
   }
 
+  // block all native clicks so Safari cannot navigate via ghost clicks
   const handleClick = (e: React.MouseEvent) => {
-    console.log("click", e, dragging);
-    if (dragging) {
-      e.preventDefault()
-      e.stopPropagation()
-    } else {
-        const link = ref.current?.querySelector('a')
-        link?.click()
-    }
+    e.preventDefault()
+    e.stopPropagation()
   }
 
   return (
     <div
       ref={ref}
-      className={`cursor-grab active:cursor-grabbing ${className}`}
-      style={{ touchAction: "none" }} 
+      className={`cursor-grab active:cursor-grabbing will-change-transform transform-gpu ${className}`}
+      style={{ touchAction: "none" }}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
-      onClick={handleClick}
+      onClick={handleClick} // completely block click events from reaching the anchor naturally
     >
-      <TransitionLink   href={image.link || "/"} >
+      <TransitionLink href={image.link || "/"} className="pointer-events-none cursor-inherit">
         <FadeInImage
           src={image.image.asset.url}
           alt={image.alt || ""}
@@ -93,6 +123,7 @@ function DraggableImage({ image, className }: DraggableImageProps) {
           height={500}
           blurDataURL={image.image.asset.metadata?.lqip}
           draggable={false}
+          className="pointer-events-none"
         />
       </TransitionLink>
     </div>
@@ -105,7 +136,6 @@ interface HomeData {
   image3: any
   image4: any
 }
-
 
 export default function DraggableImages({ home }: { home: HomeData }) {
   return (
