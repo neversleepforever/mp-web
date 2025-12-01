@@ -47,11 +47,11 @@ export default async function ContactPage() {
   }
 
   return (
-    <div className="grid grid-cols-2 grid-rows-1 w-screen overflow-hidden" style={{ height: "100dvh" }}>
+    <div className="grid grid-cols-2 grid-rows-1 w-screen overflow-hidden" style={{ height: "100svh" }}>
       {/* Mirrored About content (md+ only) */}
       {about?.content?.length ? (
         <div className="pointer-events-none hidden md:block md:col-start-1 md:row-start-1 md:col-span-1 md:row-span-1 -z-10 overflow-hidden">
-          <div className="w-full p-6 scale-x-[-1] opacity-15 text-white overflow-hidden" style={{ height: "100dvh" }}>
+          <div className="w-full p-6 scale-x-[-1] opacity-15 text-white overflow-hidden" style={{ height: "100svh" }}>
 
             <TextDistortFilter>
               <PortableText
@@ -111,7 +111,7 @@ export default async function ContactPage() {
         />
       </div>
  
-      <section style={{ height: "100dvh" }} className="overflow-hidden pointer-events-none w-full col-start-1 row-start-1 col-span-2 row-span-1 flex flex-1 items-center justify-center z-40 md:pr-0 dark:text-white ">
+      <section style={{ height: "100svh" }} className="overflow-hidden pointer-events-none w-full col-start-1 row-start-1 col-span-2 row-span-1 flex flex-1 items-center justify-center z-40 md:pr-0 dark:text-white ">
      <TextDistortFilter>
         <div className="pointer-events-auto md:bg-black min-w-[calc(100vw-4rem)] md:min-w-auto h-auto md:w-[670px] md:h-[470px] border p-4 md:grid md:grid-cols-2 md:grid-rows-1">
           <div className="flex-1">
