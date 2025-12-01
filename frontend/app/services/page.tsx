@@ -1,12 +1,9 @@
 import FadeInImage from "@/app/components/FadeInImage"
-import Filter from "@/app/components/Filter"
-import PixelateOverlay from "@/app/components/PixelateOverlay"
 import Rates from "@/app/components/Rates"
 import TextDistortFilter from "@/app/components/TextFilter"
 import { sanityFetch } from "@/sanity/lib/live"
 import { servicesQuery } from "@/sanity/lib/queries"
 import { PortableText, type PortableTextComponents, type PortableTextBlock } from "next-sanity"
-import Image from "next/image"
 import Link from "next/link"
 
 
