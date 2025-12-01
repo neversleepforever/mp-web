@@ -125,41 +125,35 @@ useEffect(() => {
   if (!container) return
 
   const mediaQuery = window.matchMedia("(min-width: 1280px)")
-  if (mediaQuery.matches) return 
-
-  let scrollTimeout: NodeJS.Timeout | null = null
+  if (mediaQuery.matches) return // Only run on mobile/tablet
 
   const handleScroll = () => {
-    if (scrollTimeout) clearTimeout(scrollTimeout)
-    scrollTimeout = setTimeout(() => {
-      const containerRect = container.getBoundingClientRect()
-      const containerCenter = containerRect.left + containerRect.width / 2
+    const containerRect = container.getBoundingClientRect()
+    const containerCenter = containerRect.left + containerRect.width / 2
 
-      let closestIndex = 0
-      let closestDistance = Infinity
+    let closestIndex = 0
+    let closestDistance = Infinity
 
-      thumbnailRefs.current.forEach((thumb, i) => {
-        if (!thumb) return
-        const thumbRect = thumb.getBoundingClientRect()
-        const thumbCenter = thumbRect.left + thumbRect.width / 2
-        const distance = Math.abs(containerCenter - thumbCenter)
+    thumbnailRefs.current.forEach((thumb, i) => {
+      if (!thumb) return
+      const thumbRect = thumb.getBoundingClientRect()
+      const thumbCenter = thumbRect.left + thumbRect.width / 2
+      const distance = Math.abs(containerCenter - thumbCenter)
 
-        if (distance < closestDistance) {
-          closestDistance = distance
-          closestIndex = i
-        }
-      })
+      if (distance < closestDistance) {
+        closestDistance = distance
+        closestIndex = i
+      }
+    })
 
-      setSelectedIndex(closestIndex)
-    }, 80) 
+    // 🔥 Instantly change selected image
+    setSelectedIndex(closestIndex)
   }
 
   container.addEventListener("scroll", handleScroll, { passive: true })
-  return () => {
-    container.removeEventListener("scroll", handleScroll)
-    if (scrollTimeout) clearTimeout(scrollTimeout)
-  }
+  return () => container.removeEventListener("scroll", handleScroll)
 }, [images.length])
+
 
   // useEffect(() => {
   //   const container = containerRef.current
@@ -246,7 +240,7 @@ useEffect(() => {
       <div
           ref={containerRef}
           className="
-            flex overflow-x-auto overflow-visible snap-x pl-[50vw] pr-[50vw] scrollbar-hide snap-x snap-mandatory
+            flex overflow-x-auto overflow-visible snap-x pl-[50vw] pr-[50vw] scrollbar-hide snap-x snap-proximity
             lg:w-[59px] lg:h-full lg:overflow-y-auto lg:flex-col lg:px-0 lg:pb-0 lg:mx-0 lg:pt-0
           "
         >
