@@ -9,7 +9,7 @@ export default async function Page() {
 
   return (
     <TextDistortFilter className='overscroll-none'>
-      <div className="overscroll-none relative grid grid-rows-4 md:grid-rows-5 xl:grid-rows-1 grid-cols-6 xl:grid-cols-4 h-[100vh] max-h-[100vh] w-screen pt-20 md:pt-8 xl:pt-16 pb-16 overflow-hidden">
+      <div className="overscroll-none relative grid grid-rows-4 md:grid-rows-5 lg:grid-rows-5 xl:grid-rows-1 grid-cols-6 xl:grid-cols-4 h-[100vh] max-h-[100vh] w-screen pt-20 md:pt-8 lg:pt-36 pb-16 overflow-hidden">
         <DraggableImages home={home} />
       </div>
     </TextDistortFilter>
