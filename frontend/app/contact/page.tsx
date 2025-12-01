@@ -51,7 +51,7 @@ export default async function ContactPage() {
       {/* Mirrored About content (md+ only) */}
       {about?.content?.length ? (
         <div className="pointer-events-none hidden md:block md:col-start-1 md:row-start-1 md:col-span-1 md:row-span-1 -z-10 overflow-hidden">
-          <div className="h-screen w-full p-6 scale-x-[-1] opacity-15 text-white">
+          <div className="w-full p-6 scale-x-[-1] opacity-15 text-white" style={{ height: "100dvh" }}>
 
             <TextDistortFilter>
               <PortableText
