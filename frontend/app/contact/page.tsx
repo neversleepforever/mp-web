@@ -91,12 +91,12 @@ export default async function ContactPage() {
 
       {/* Contact content */}
 
-      <div className="absolute inset-0 md:hidden">
+      <div className="absolute inset-0 opacity-30 md:hidden">
         <FadeInImage
           src="/images/linkspage.png"
           alt="Links Page Illustration"
           fill
-          className="object-cover object-center opacity-20"
+          className="object-cover object-center opacity-70"
           priority
         />
       </div>
@@ -111,9 +111,9 @@ export default async function ContactPage() {
         />
       </div>
  
-      <section className="pointer-events-none col-start-1 row-start-1 col-span-2 row-span-1 flex flex-1 items-center justify-center z-40 md:pr-0 dark:text-white ">
+      <section className="pointer-events-none w-full col-start-1 row-start-1 col-span-2 row-span-1 flex flex-1 items-center justify-center z-40 md:pr-0 dark:text-white ">
      <TextDistortFilter>
-        <div className="pointer-events-auto md:bg-black w-full h-auto md:w-[670px] md:h-[470px] border p-4 md:grid md:grid-cols-2 md:grid-rows-1">
+        <div className="pointer-events-auto md:bg-black min-w-[calc(100vw-4rem)] md:min-w-auto h-auto md:w-[670px] md:h-[470px] border p-4 md:grid md:grid-cols-2 md:grid-rows-1">
           <div className="flex-1">
             <h1 className="heading-1 mb-8">Contact</h1>
 

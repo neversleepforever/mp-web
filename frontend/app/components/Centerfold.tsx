@@ -6,7 +6,7 @@ import FadeInImage from "./FadeInImage"
 
 export default function Centerfold() {
   const pathname = usePathname()
-  if (pathname === "/") return null
+  if (pathname === "/" || pathname === "/folio") return null
 
   return (
     <>
@@ -32,12 +32,13 @@ export default function Centerfold() {
 
       {/* Desktop staples */}
       <div className="md:fixed md:inset-0 md:pointer-events-none z-50">
-        <div className="md:w-auto md:mt-16 md:h-[calc(100vh-8rem)] md:bg-center md:bg-no-repeat md:bg-contain md:mix-blend-difference">
+        <div className="hidden md:h-full md:py-16 md:flex md:items-center md:justify-center">
           <FadeInImage
             src="/images/staples.png"
             alt=""
-            fill
-            className="object-contain"
+            width={1000}
+            height={2000}     
+            className="max-h-full max-w-full object-contain"
           />
         </div>
       </div>

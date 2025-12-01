@@ -53,8 +53,9 @@ const handleVerify = () => {
       {!verified && (
         <>
         <div className="fixed inset-0 h-full w-full flex items-center justify-center backdrop-blur-lg z-[800]">
+          <TextDistortFilter>
           <div className="bg-black text-white text-center w-full py-5 px-1 font-display uppercase">
-            <TextDistortFilter>
+            
               <div className="grid place-items-center relative">
               {isXL && (
                 <Marquee
@@ -88,8 +89,9 @@ const handleVerify = () => {
                   <div className="bg-black mask-r-from-30% z-[800] w-[30px]" />
                 </div>
               </div>
-          </TextDistortFilter>
+  
           </div>
+        </TextDistortFilter>
         </div>
         <div className="flex items-center justify-center font-sans font-extrabold text-[18px] uppercase h-[60px] text-white bg-black fixed top-0 left-0 right-0 z-[9999] lg:hidden">
           <TextDistortFilter><Marquee direction="right" gradient={false} speed={75}>{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}</Marquee></TextDistortFilter>
