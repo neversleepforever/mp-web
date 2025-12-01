@@ -51,7 +51,7 @@ export default async function ContactPage() {
       {/* Mirrored About content (md+ only) */}
       {about?.content?.length ? (
         <div className="pointer-events-none hidden md:block md:col-start-1 md:row-start-1 md:col-span-1 md:row-span-1 -z-10 overflow-hidden">
-          <div className="w-full p-6 scale-x-[-1] opacity-15 text-white" style={{ height: "100dvh" }}>
+          <div className="w-full p-6 scale-x-[-1] opacity-15 text-white overflow-hidden" style={{ height: "100dvh" }}>
 
             <TextDistortFilter>
               <PortableText
@@ -101,7 +101,7 @@ export default async function ContactPage() {
         />
       </div>
 
-      <div className="hidden md:block md:absolute inset-y-0 left-0 w-1/2">
+      <div className="hidden overflow-hidden md:block md:absolute inset-y-0 left-0 w-1/2">
         <FadeInImage
           src="/images/fenceblack.png"
           alt=""
