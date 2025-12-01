@@ -31,17 +31,17 @@ export default function Centerfold() {
       </div>
 
       {/* Desktop staples */}
-      <div className="md:fixed md:inset-0 md:pointer-events-none z-50 will-change-transform transform-gpu">
-        <div className="hidden md:h-[100dvh] md:py-16 md:flex md:items-center md:justify-center ">
-          <FadeInImage
-            src="/images/staples.png"
-            alt=""
-            width={1000}
-            height={2000}     
-            className="max-h-full max-w-full object-contain"
-          />
-        </div>
-      </div>
+<div className="md:fixed md:top-0 md:left-0 md:w-full md:h-[100vh] md:pointer-events-none z-50">
+  <div className="hidden md:flex md:h-full md:items-center md:justify-center">
+    <FadeInImage
+      src="/images/staples.png"
+      alt=""
+      width={1000}
+      height={2000}
+      className="max-h-full max-w-full object-contain"
+    />
+  </div>
+</div>
     </>
   )
 }
