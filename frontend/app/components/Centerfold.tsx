@@ -11,7 +11,7 @@ export default function Centerfold() {
   return (
     <>
       {/* Mobile staples */}
-      <div className="fixed top-0 left-0 w-full h-[100vh] md:hidden pointer-events-none z-50">
+      <div className="fixed top-0 left-0 w-full h-[100vh] md:hidden pointer-events-none z-50 will-change-transform transform-gpu">
         <FadeInImage
           src="/images/mobilestaples.png"
           alt=""
@@ -21,7 +21,7 @@ export default function Centerfold() {
       </div>
 
       {/* Shadow overlay */}
-      <div className="fixed z-50 inset-0 mix-blend-exclusion pointer-events-none">
+      <div className="fixed z-50 inset-0 mix-blend-exclusion pointer-events-none will-change-transform transform-gpu">
         <FadeInImage
           src="/images/shadow.png"
           alt=""
@@ -31,8 +31,8 @@ export default function Centerfold() {
       </div>
 
       {/* Desktop staples */}
-      <div className="md:fixed md:inset-0 md:pointer-events-none z-50">
-        <div className="hidden md:h-full md:py-16 md:flex md:items-center md:justify-center">
+      <div className="md:fixed md:inset-0 md:pointer-events-none z-50 will-change-transform transform-gpu">
+        <div className="hidden md:h-full md:py-16 md:flex md:items-center md:justify-center ">
           <FadeInImage
             src="/images/staples.png"
             alt=""
