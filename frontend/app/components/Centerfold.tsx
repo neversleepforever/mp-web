@@ -32,13 +32,13 @@ export default function Centerfold() {
 
       {/* Desktop staples */}
 <div className="md:fixed md:top-0 md:left-0 md:w-full md:h-[100dvh] md:pointer-events-none z-50">
-  <div className="hidden md:flex md:h-full md:items-center md:justify-center">
+  <div className="hidden md:flex md:h-[100dvh] md:items-center md:justify-center">
     <FadeInImage
       src="/images/staples.png"
       alt=""
       width={1000}
       height={2000}
-      className="max-h-full max-w-full object-contain"
+      className="max-h-[100dvh] max-w-full object-contain"
     />
   </div>
 </div>
