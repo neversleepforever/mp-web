@@ -11,7 +11,7 @@ export default function Centerfold() {
   return (
     <>
       {/* Mobile staples */}
-      <div className="fixed top-0 left-0 w-full h-[100vh] md:hidden pointer-events-none z-50 will-change-transform transform-gpu">
+      <div className="fixed top-0 left-0 w-full h-[100dvh] md:hidden pointer-events-none z-50 overscroll-contain">
         <FadeInImage
           src="/images/mobilestaples.png"
           alt=""
@@ -32,7 +32,7 @@ export default function Centerfold() {
 
       {/* Desktop staples */}
       <div className="md:fixed md:inset-0 md:pointer-events-none z-50 will-change-transform transform-gpu">
-        <div className="hidden md:h-full md:py-16 md:flex md:items-center md:justify-center ">
+        <div className="hidden md:h-[100dvh] md:py-16 md:flex md:items-center md:justify-center ">
           <FadeInImage
             src="/images/staples.png"
             alt=""
