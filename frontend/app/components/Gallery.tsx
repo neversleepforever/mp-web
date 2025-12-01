@@ -154,28 +154,6 @@ useEffect(() => {
   return () => container.removeEventListener("scroll", handleScroll)
 }, [images.length])
 
-
-  // useEffect(() => {
-  //   const container = containerRef.current
-  //   const selectedThumb = thumbnailRefs.current[selectedIndex]
-  //   if (container && selectedThumb) {
-  //     const containerRect = container.getBoundingClientRect()
-  //     const thumbRect = selectedThumb.getBoundingClientRect()
-
-  //     const scrollAmount =
-  //       thumbRect.left -
-  //       containerRect.left -
-  //       containerRect.width / 2 +
-  //       thumbRect.width / 2
-
-  //     container.scrollBy({
-  //       left: scrollAmount,
-  //       top: 0,
-  //       behavior: "smooth",
-  //     })
-  //   }
-  // }, [selectedIndex])
-
     useEffect(() => {
     if (!images?.length) return;
 
@@ -240,7 +218,7 @@ useEffect(() => {
       <div
           ref={containerRef}
           className="
-            flex overflow-x-auto overflow-visible snap-x pl-[50vw] pr-[50vw] scrollbar-hide snap-x snap-proximity
+            flex overflow-x-auto overflow-visible snap-x pl-[50vw] pr-[50vw] scrollbar-hide snap-x snap-mandatory
             lg:w-[59px] lg:h-full lg:overflow-y-auto lg:flex-col lg:px-0 lg:pb-0 lg:mx-0 lg:pt-0
           "
         >
