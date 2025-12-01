@@ -1,16 +1,6 @@
-/**
- * This component uses Portable Text to render a post body.
- *
- * You can learn more about Portable Text on:
- * https://www.sanity.io/docs/block-content
- * https://github.com/portabletext/react-portabletext
- * https://portabletext.org/
- *
- */
-
 import {PortableText, type PortableTextComponents, type PortableTextBlock} from 'next-sanity'
 
-import ResolvedLink from '@/app/components/ResolvedLink'
+import ResolvedLink from './ResolvedLink'
 
 export default function CustomPortableText({
   className,
@@ -20,7 +10,7 @@ export default function CustomPortableText({
   value: PortableTextBlock[]
 }) {
   const components: PortableTextComponents = {
-    block: {
+    block: { 
       h1: ({children, value}) => (
         // Add an anchor to the h1
         <h1 className="group relative">
