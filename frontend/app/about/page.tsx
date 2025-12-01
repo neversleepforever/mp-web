@@ -1,5 +1,4 @@
 import FadeInImage from "@/app/components/FadeInImage"
-import Image from "next/image"
 import TextDistortFilter from "@/app/components/TextFilter"
 import { sanityFetch } from "@/sanity/lib/live"
 import { aboutQuery } from "@/sanity/lib/queries"
@@ -43,7 +42,7 @@ export default async function AboutPage() {
   return (
     <>    
       <div className=" md:grid md:grid-cols-2 dark:text-white bg-black ">
-        <div className="relative">
+        <div className="relative overflow-hidden">
            {heroAsset?.url ? (
           <FadeInImage
             src={heroAsset.url}
@@ -56,7 +55,7 @@ export default async function AboutPage() {
           <div className="w-full h-full" />
         )}
         </div>
-  <div className="scrollbar-hide bg-[url('/images/fence.png')] bg-cover bg-center md:col-start-2 pt-12 pb-16 px-6 md:pt-16 md:h-screen md:overflow-y-scroll xl:px-26 ">
+  <div className="scrollbar-hide bg-[url('/images/fence.png')] bg-cover bg-center md:col-start-2 pt-12 pb-16 px-6 md:pt-16 md:h-[100dvh] md:overflow-y-scroll xl:px-26 ">
   <TextDistortFilter>
       <div className="border-1 p-6 bg-black">
       {about.content?.length ? (
