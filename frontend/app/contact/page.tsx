@@ -106,12 +106,12 @@ export default async function ContactPage() {
           src="/images/fenceblack.png"
           alt=""
           fill
-          className="object-cover object-center opacity-70"
+          className="object-cover object-center opacity-70 overflow-hidden"
           priority
         />
       </div>
  
-      <section className="pointer-events-none w-full col-start-1 row-start-1 col-span-2 row-span-1 flex flex-1 items-center justify-center z-40 md:pr-0 dark:text-white ">
+      <section style={{ height: "100dvh" }} className="overflow-hidden pointer-events-none w-full col-start-1 row-start-1 col-span-2 row-span-1 flex flex-1 items-center justify-center z-40 md:pr-0 dark:text-white ">
      <TextDistortFilter>
         <div className="pointer-events-auto md:bg-black min-w-[calc(100vw-4rem)] md:min-w-auto h-auto md:w-[670px] md:h-[470px] border p-4 md:grid md:grid-cols-2 md:grid-rows-1">
           <div className="flex-1">
