@@ -47,7 +47,7 @@ export default async function ContactPage() {
   }
 
   return (
-    <div className="grid grid-cols-2 grid-rows-1 h-screen w-screen overflow-hidden">
+    <div className="grid grid-cols-2 grid-rows-1 w-screen overflow-hidden" style={{ height: "100dvh" }}>
       {/* Mirrored About content (md+ only) */}
       {about?.content?.length ? (
         <div className="pointer-events-none hidden md:block md:col-start-1 md:row-start-1 md:col-span-1 md:row-span-1 -z-10 overflow-hidden">
