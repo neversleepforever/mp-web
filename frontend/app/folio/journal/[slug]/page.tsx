@@ -103,7 +103,7 @@ export default async function JournalPage({
           </TextDistortFilter>
         </div>
 
-        <div className="overscroll-none overflow-hidden -ml-6 -mr-6 lg:ml-0 lg:mr-0 lg:px-30 xl:pl-30 xl:pt-20 xl:pb-20 xl:pr-7.5 lg:flex lg:flex-col lg:justify-center xl:max-h-screen">
+        <div className="w-screen overscroll-none overflow-hidden lg:ml-0 lg:mr-0 lg:w-full lg:px-30 xl:pl-30 xl:pt-20 xl:pb-20 xl:pr-7.5 lg:flex lg:flex-col lg:justify-center xl:max-h-screen">
           {journal.images?.length ? (
             <Gallery images={journal.images} title={journal.title} />
            ) : null}

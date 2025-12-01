@@ -54,7 +54,7 @@ export default async function FolioIndexPage() {
   return (
     <div
       className="
-        h-[100vh] px-6 py-12 
+        h-[100vh] px-6 pt-12 pb-16 
         overflow-y-auto overflow-x-hidden scrollbar-hide
         md:overflow-x-auto md:overflow-y-hidden md:py-16
         xl:overflow-x-hidden xl:overflow-y-auto xl:pb-0
