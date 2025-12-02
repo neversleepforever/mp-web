@@ -83,17 +83,14 @@ export default async function ServicesPage() {
 
       <div className="md:grid md:grid-cols-2 dark:text-white bg-[#454545]">
         <div className="relative w-full h-full mix-blend-screen">
-            {heroAsset?.url ? (
                    <FadeInImage
-                     src={heroAsset.url}
+                     src={heroAsset?.url || ""}
                      alt={heroImage?.alt || "Cover Image"}
-                     blurDataURL={heroAsset.metadata?.lqip}
+                     blurDataURL={heroAsset?.metadata?.lqip}
                      fill
                      className="object-cover object-top mix-blend-exclusion"
                    />
-                 ) : (
-                   <div className="w-full h-full" />
-                 )}
+          
         </div>
 
 <div className="relative scrollbar-hide bg-[url('/images/scantexture.jpg')] bg-cover bg-center mix-blend-plus-lighter md:col-start-2 pt-8 pb-12 px-6 md:py-12 md:pl-4 md:pr-6 md:h-[100dvh] md:overflow-y-scroll xl:px-26">

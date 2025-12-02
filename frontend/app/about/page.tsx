@@ -43,17 +43,13 @@ export default async function AboutPage() {
     <>    
       <div className=" md:grid md:grid-cols-2 dark:text-white bg-black ">
         <div className="relative overflow-hidden">
-           {heroAsset?.url ? (
           <FadeInImage
-            src={heroAsset.url}
+            src={heroAsset?.url || ""}
             alt={heroImage?.alt || "Cover Image"}
-            blurDataURL={heroAsset.metadata?.lqip}
+            blurDataURL={heroAsset?.metadata?.lqip}
             fill
             className="object-cover object-top mix-blend-exclusion"
           />
-        ) : (
-          <div className="w-full h-full" />
-        )}
         </div>
   <div className="scrollbar-hide bg-[url('/images/fence.png')] bg-cover bg-center md:col-start-2 pt-12 pb-16 px-6 md:pt-16 md:h-[100dvh] md:overflow-y-scroll xl:px-26 ">
   <TextDistortFilter>

@@ -16,12 +16,12 @@ export default function Centerfold() {
           src="/images/mobilestaples.png"
           alt=""
           fill
-          className="object-contain mix-blend-exclusion"
+          className="object-contain"
         />
       </div>
 
       {/* Shadow overlay */}
-      <div className="fixed z-50 inset-0 mix-blend-exclusion pointer-events-none will-change-transform transform-gpu">
+      <div className="fixed z-50 inset-0 mix-blend-exclusion pointer-events-none">
         <FadeInImage
           src="/images/shadow.png"
           alt=""

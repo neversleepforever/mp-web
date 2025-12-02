@@ -234,7 +234,7 @@ export default function Gallery({
 
         <div
           ref={containerRef}
-          className="flex overflow-x-auto overflow-visible snap-x pl-[50vw] pr-[50vw] scrollbar-hide snap-x snap-mandatory lg:w-[59px] lg:h-full lg:overflow-y-auto lg:flex-col lg:px-0 lg:pb-0 lg:mx-0 lg:pt-0"
+          className="flex overflow-x-auto overflow-visible snap-x pl-[50vw] pr-[50vw] scrollbar-hide snap-x snap-mandatory lg:w-[59px] lg:h-full lg:overflow-y-auto lg:flex-col lg:px-0 lg:pb-0 lg:mx-0 lg:pt-0 lg:justify-center xl:justify-start"
         >
           {images.map((img, i) =>
             img?.asset ? (
