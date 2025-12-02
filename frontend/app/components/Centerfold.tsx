@@ -30,14 +30,15 @@ export default function Centerfold() {
         />
       </div>
 
-      <div className="fixed inset-0 pointer-events-none">
-        <FadeInImage
-          src="/images/shadow.png"
-          alt=""
-          fill
-          className="object-cover "
-        />
-      </div>
+<div className="fixed top-0 left-0 w-screen h-screen pointer-events-none z-40">
+  <FadeInImage
+    src="/images/shadow.png"
+    alt=""
+    width={1000}
+    height={1000} 
+    className="w-full h-full object-cover opacity-50"
+  />
+</div>
 
       {/* Desktop staples */}
 <div className="md:fixed md:top-0 md:left-0 md:w-full md:h-[100dvh] md:pointer-events-none z-50">

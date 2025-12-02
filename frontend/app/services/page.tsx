@@ -93,8 +93,8 @@ export default async function ServicesPage() {
           
         </div>
 
-<div className="relative scrollbar-hide bg-[url('/images/scantexture.jpg')] bg-cover bg-center mix-blend-plus-lighter md:col-start-2 pt-8 pb-12 px-6 md:py-12 md:pl-4 md:pr-6 md:h-[100dvh] md:overflow-y-scroll xl:px-26">
-          <TextDistortFilter>
+      <div className="relative scrollbar-hide bg-[url('/images/scantexture.jpg')] bg-cover bg-center mix-blend-plus-lighter md:col-start-2 pt-8 pb-12 px-6 md:py-12 md:pl-4 md:pr-6 md:h-[100dvh] md:overflow-y-scroll xl:px-26">
+        <TextDistortFilter>
           {services.content?.length ? (
             <PortableText
               value={services.content}
