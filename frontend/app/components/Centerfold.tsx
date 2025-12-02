@@ -50,15 +50,16 @@ export default function Centerfold() {
   </div>
 
 </div> */}
-
-  <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-50">
-    <FadeInImage
-      src="/images/staples.png"
-      alt=""
-      className="max-h-full max-w-full object-contain"
-    />
-  </div>
-
+{/* Desktop */}
+<div className="hidden md:flex md:fixed md:inset-0 md:pointer-events-none z-50 items-center justify-center">
+  <FadeInImage
+    src="/images/staples.png"
+    alt=""
+    width={1200}
+    height={2400}
+    className="h-[90vh] w-auto object-contain"
+  />
+</div>
     </>
   )
 }
