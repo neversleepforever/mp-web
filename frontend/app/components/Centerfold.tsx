@@ -30,13 +30,12 @@ export default function Centerfold() {
         />
       </div>
 
-<div className="fixed top-0 left-0 w-screen h-screen pointer-events-none z-40">
+<div className="fixed top-0 left-0 w-full h-[100dvh] pointer-events-none z-40 relative">
   <FadeInImage
     src="/images/shadow.png"
-    alt=""
-    width={1000}
-    height={1000} 
-    className="w-full h-full object-cover opacity-50"
+    alt="Shadow overlay"
+    fill
+    className="object-cover"
   />
 </div>
 
