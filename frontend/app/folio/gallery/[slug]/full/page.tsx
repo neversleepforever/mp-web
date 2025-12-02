@@ -39,7 +39,7 @@ export default async function FullShootPage({
   return (
     <>
     <Submit />
-    <div className="relative h-[100dvh] lg:pt-6 xl:pt-0 lg:pl-20 lg:pr-5">
+    <div className="relative h-full lg:pt-6 xl:pt-0 lg:pl-20 lg:pr-5">
       <div className="">
         {folio.images?.length ? (
           <Gallery images={folio.images} title={folio.title} />
