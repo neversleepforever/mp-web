@@ -26,7 +26,16 @@ export default function Centerfold() {
           src="/images/shadow.png"
           alt=""
           fill
-          className="object-cover"
+          className="object-cover mix-blend-exclusion"
+        />
+      </div>
+
+      <div className="fixed inset-0 pointer-events-none">
+        <FadeInImage
+          src="/images/shadow.png"
+          alt=""
+          fill
+          className="object-cover "
         />
       </div>
 
