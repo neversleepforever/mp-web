@@ -6,7 +6,7 @@ export default function TextDistortFilter({
   children,
   className = "",
   scale = 3,
-  blur = 0.3,
+  blur = 0.2,
 }: {
   children: React.ReactNode
   className?: string
