@@ -29,15 +29,7 @@ export default function Centerfold() {
           className="object-cover mix-blend-exclusion"
         />
       </div>
-
-      <div className="fixed inset-0 pointer-events-none z-30">
-  <img
-    src="/images/shadow.png"
-    alt="Shadow overlay"
-    className="w-full h-full object-cover pointer-events-none"
-  />
-</div>
-
+      
       {/* Desktop staples */}
 <div className="md:fixed md:top-0 md:left-0 md:w-full md:h-[100dvh] md:pointer-events-none z-50">
   <div className="hidden md:flex md:h-[100dvh] md:items-center md:justify-center">
