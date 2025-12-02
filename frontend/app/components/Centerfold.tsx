@@ -21,15 +21,18 @@ export default function Centerfold() {
       </div>
 
       {/* Shadow overlay */}
-      <div className="fixed z-40 inset-0 mix-blend-exclusion pointer-events-none">
-        <FadeInImage
-          src="/images/shadow.png"
-          alt=""
-          fill
-          className="object-cover mix-blend-exclusion"
-        />
+      <div className="fixed z-40 inset-0 pointer-events-none">
+        <div className="absolute top-1/2 left-1/2 w-[80%] h-[80%] -translate-x-1/2 -translate-y-1/2">
+          <FadeInImage
+            src="/images/shadow.png"
+            alt=""
+            fill
+            className="object-contain mix-blend-exclusion"
+          />
+        </div>
       </div>
-      
+
+
       {/* Desktop staples */}
 <div className="md:fixed md:top-0 md:left-0 md:w-full md:h-[100dvh] md:pointer-events-none z-50">
   <div className="hidden md:flex md:h-[100dvh] md:items-center md:justify-center">
