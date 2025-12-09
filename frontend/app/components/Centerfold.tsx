@@ -19,7 +19,6 @@ export default function Centerfold() {
           className="object-contain mix-blend-exclusion"
         />
       </div>
-
       {/* Shadow overlay */}
       <div className="fixed inset-0 mix-blend-exclusion pointer-events-none">
         <FadeInImage
