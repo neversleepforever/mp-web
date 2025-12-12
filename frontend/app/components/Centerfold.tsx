@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation"
 export default function Centerfold() {
   const pathname = usePathname();
    if (pathname === "/") return null;
+   if (pathname === "/folio") return null;
 
   return (
    <>
@@ -16,7 +17,7 @@ export default function Centerfold() {
     <div className="fixed top-0 left-0 w-full h-[100vh] md:hidden pointer-events-none z-50 bg-[url('/images/mobilestaples.png')] bg-no-repeat bg-center mix-blend-exclusion" />
       <div className="fixed z-50 inset-0 mix-blend-exclusion pointer-events-none">
         <Image
-          src="/images/shadow2.png"
+          src="/images/Shadow2.png"
           alt=""
           fill
           className="object-cover"
