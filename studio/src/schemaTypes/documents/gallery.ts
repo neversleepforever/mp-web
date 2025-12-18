@@ -74,10 +74,11 @@ export const gallery = defineType({
       ],
     }),
     defineField({
-      name: "Landing Image",
+      name: "landingImage",
       title: "Landing Image",
       type: "image",
-      description: "Image to be used as the landing image on the landing page for a gallery. If not set, the first image from the full gallery will be used.",
+      description:
+        "Image to be used as the landing image on the landing page for a gallery. If not set, the first image from the full gallery will be used.",
       options: { hotspot: true },
       fields: [
         defineField({
