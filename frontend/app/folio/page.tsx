@@ -68,11 +68,7 @@ export default async function FolioIndexPage() {
         "
       >
         {folios.map((folio) => {
-          const firstImg =
-            folio._type === "video"
-              ? folio.displayImage
-              : folio.images?.[0]
-
+          const firstImg = folio.displayImage
           const asset = firstImg?.asset
           const alt = firstImg?.alt || folio.title || ""
           const previewImage = asset ? urlFor(asset).width(1200).fit("max").url() : null

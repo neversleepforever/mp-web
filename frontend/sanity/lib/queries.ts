@@ -218,24 +218,7 @@ export const allFoliosQuery = `
     date,
     "slug": slug.current,
 
-    _type in ["gallery", "journal"] => {
-      images[]{
-        alt,
-        credit,
-        asset->{
-          _id,
-          metadata {
-            lqip,
-            dimensions {
-              width,
-              height
-            }
-          }
-        }
-      }
-    },
-
-    _type == "video" => {
+    _type in ["gallery", "journal", "video"] => {
       displayImage{
         alt,
         asset->{
@@ -263,6 +246,19 @@ export const galleryQuery = `
     date,
     "slug": slug.current,
     description,
+    landingImage{
+        alt,
+        asset->{
+          _id,
+          metadata {
+            lqip,
+            dimensions {
+              width,
+              height
+            }
+          }
+        }
+      }
     images[]{
       alt,
       credit,

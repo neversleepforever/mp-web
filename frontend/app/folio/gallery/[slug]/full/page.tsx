@@ -3,7 +3,7 @@ import { sanityFetch } from "@/sanity/lib/live"
 import { folioQuery, folioPagesSlugs } from "@/sanity/lib/queries"
 import Gallery from "../../../../components/Gallery"
 import Submit from "@/app/components/Submit"
-import { GalleryImage } from "@/app/components/Gallery"
+import {  } from "@/app/components/Gallery"
 
 export interface Folio {
   _id: string

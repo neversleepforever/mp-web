@@ -40,6 +40,7 @@ export interface Folio {
   slug: string
   description?: any[]
   images?: GalleryImage[]
+  landingImage?: GalleryImage
 }
 
 export async function generateStaticParams() {
@@ -89,7 +90,7 @@ export default async function FolioPage({
   const folio = data as Folio | null
   if (!folio?._id) return notFound()
 
-  const firstImage = folio.images?.[0]
+  const firstImage = folio.landingImage ? folio.landingImage : folio.images?.[0]
 
 const viewFullShootButton = (
   <Link href={`/folio/gallery/${folio.slug}/full`}>

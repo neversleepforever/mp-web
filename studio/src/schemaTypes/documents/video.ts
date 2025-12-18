@@ -73,7 +73,9 @@ export const video = defineType({
       name: "displayImage",
       title: "Display Image (Thumbnail)",
       type: "image",
+      description: "Display image for the folio index page.",
       options: { hotspot: true },
+      validation: (Rule) => Rule.required(),
       fields: [
         defineField({
           name: "alt",

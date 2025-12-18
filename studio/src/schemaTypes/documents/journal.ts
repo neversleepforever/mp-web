@@ -58,6 +58,21 @@ export const journal = defineType({
       type: 'array',
       of: [{type: 'block'}],
     }),
+     defineField({
+      name: "displayImage",
+      title: "Display Image (Thumbnail)",
+      type: "image",
+      description: "Display image for the folio index page.",
+      options: { hotspot: true },
+      validation: (Rule) => Rule.required(),
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Alt text",
+          type: "string",
+        }),
+      ],
+    }),
     defineField({
       name: 'images',
       title: 'Images',

@@ -58,6 +58,35 @@ export const gallery = defineType({
       type: 'array',
       of: [{type: 'block'}],
     }),
+     defineField({
+      name: "displayImage",
+      title: "Display Image (Thumbnail)",
+      type: "image",
+      description: "Display image for the folio index page.",
+      options: { hotspot: true },
+      validation: (Rule) => Rule.required(),
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Alt text",
+          type: "string",
+        }),
+      ],
+    }),
+    defineField({
+      name: "Landing Image",
+      title: "Landing Image",
+      type: "image",
+      description: "Image to be used as the landing image on the landing page for a gallery. If not set, the first image from the full gallery will be used.",
+      options: { hotspot: true },
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Alt text",
+          type: "string",
+        }),
+      ],
+    }),
     defineField({
       name: 'images',
       title: 'Images',
