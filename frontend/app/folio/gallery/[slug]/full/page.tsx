@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation"
 import { sanityFetch } from "@/sanity/lib/live"
 import { folioQuery, folioPagesSlugs } from "@/sanity/lib/queries"
-import Gallery from "../../../../components/Gallery"
+import Gallery, {GalleryImage} from "../../../../components/Gallery"
 import Submit from "@/app/components/Submit"
 import {  } from "@/app/components/Gallery"
 
