@@ -190,6 +190,20 @@ export const folioQuery: string = defineQuery(`
     date,
     description,
     "slug": slug.current,
+    landingImage{
+      alt,
+      credit,
+      asset->{
+        _id,
+        metadata{
+          lqip,
+          dimensions{
+            width,
+            height
+          }
+        }
+      }
+    },
     images[]{
       alt,
       credit,
@@ -247,18 +261,19 @@ export const galleryQuery = `
     "slug": slug.current,
     description,
     landingImage{
-        alt,
-        asset->{
-          _id,
-          metadata {
-            lqip,
-            dimensions {
-              width,
-              height
-            }
+      alt,
+      credit,
+      asset->{
+        _id,
+        metadata{
+          lqip,
+          dimensions{
+            width,
+            height
           }
         }
       }
+    },
     images[]{
       alt,
       credit,
