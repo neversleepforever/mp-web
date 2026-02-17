@@ -14,6 +14,12 @@ export const services = defineType({
           icon: ImageIcon,
           options: { hotspot: true },
         }),
+        defineField({
+          name: "bannerEmail",
+          title: "Banner Email",
+          type: "string",
+          validation: (Rule) => Rule.required().email(),
+        }),
     defineField({
       name: "content",
       title: "Content",
@@ -49,12 +55,7 @@ export const services = defineType({
             }),
           ],
         },
-        defineField({
-          name: "bannerEmail",
-          title: "Banner Email",
-          type: "string",
-          validation: (Rule) => Rule.required().email(),
-        }),
+
         {
           type: "object",
           name: "servicesSection",
