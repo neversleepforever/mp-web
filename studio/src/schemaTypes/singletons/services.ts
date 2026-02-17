@@ -50,12 +50,10 @@ export const services = defineType({
           ],
         },
         defineField({
-          name: "email",
+          name: "bannerEmail",
           title: "Banner Email",
           type: "string",
-          description: "Email address for the banner.",
-          validation: (Rule) =>
-            Rule.required().email().error("Please enter a valid email address"),
+          validation: (Rule) => Rule.required().email(),
         }),
         {
           type: "object",

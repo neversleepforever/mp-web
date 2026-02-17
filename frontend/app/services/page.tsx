@@ -27,6 +27,7 @@ interface ServicesImage {
 
 interface ServicesData {
   _id: string
+  bannerEmail?: string
   content?: PortableTextBlock[]
     image?: ServicesImage
 }
@@ -116,7 +117,7 @@ export default async function ServicesPage() {
                   ratesSection: ({ value }) => (
                     <div className="border">
                       <Rates title={value.title} />
-                      <Link href={`mailto:"missmaggiepeach@gmail.com"`}>
+                      <Link href={`mailto:"${services.bannerEmail}"`}>
                         <div className="mix-blend-plus-darker flex justify-center bg-white text-[12px] py-[10px] px-16 text-center lg:px-4 lg:[&_br]:hidden">
                           <PortableText
                             value={value.Banner}

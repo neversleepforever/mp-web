@@ -374,7 +374,7 @@ export const servicesQuery = defineQuery(`
           }
         }
       },
-    email,
+    bannerEmail,
     content[]{
       ...,
       _type == "image" => {
