@@ -87,7 +87,7 @@ export default async function FolioIndexPage() {
                     fill
                     placeholder={asset?.metadata?.lqip ? "blur" : "empty"}
                     blurDataURL={asset?.metadata?.lqip}
-                    className="object-cover object-center"
+                    className="object-cover object-center "
                   />
                 </div>
               ) : (

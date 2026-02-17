@@ -122,12 +122,12 @@ export default async function VideoPage({
       </div>
 
       {video.muxVideo?.asset?.playbackId ? (
-        <div className="relative w-full pt-16 pb-16 lg:mt-0 md:h-[75vh] xl:h-[100vh] xl:px-16 xl:px-30 flex flex-col items-center justify-center">
+        <div className="relative w-full pt-16 pb-16 lg:mt-0 md:h-[75vh] xl:h-[100vh] xl:p-16 xl:p-30 flex flex-col items-center justify-center">
           <MuxPlayer
             playbackId={video.muxVideo.asset.playbackId}
             streamType="on-demand"
             autoPlay={false}
-            className="w-full object-contain"
+            className="w-full object-contain max-h-[80vh]"
           />
         
           {video.caption && (
