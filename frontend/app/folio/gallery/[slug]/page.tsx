@@ -43,6 +43,8 @@ export interface Folio {
   landingImage?: GalleryImage
 }
 
+export const revalidate = 60
+
 export async function generateStaticParams() {
   const { data } = await sanityFetch({
     query: folioPagesSlugs,

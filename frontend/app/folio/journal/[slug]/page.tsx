@@ -18,6 +18,8 @@ export interface Journal {
   images?: GalleryImage[]
 }
 
+export const revalidate = 60 
+
 export async function generateStaticParams() {
   const { data } = await sanityFetch({
     query: journalSlugsQuery,

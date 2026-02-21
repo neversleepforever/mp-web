@@ -28,6 +28,8 @@ export interface Video {
   caption?: string
 }
 
+export const revalidate = 60
+
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
   const { data } = await sanityFetch({
     query: videoSlugsQuery,
