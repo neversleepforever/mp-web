@@ -35,7 +35,7 @@ export default function Header() {
                 >
                   
                     <Image
-                      src="/images/logo.png"
+                      src="/images/logo/mistress-maggie-peach-1-line-black.svg"
                       alt="Logo"
                       width={225}
                       height={30}
