@@ -96,9 +96,9 @@ const handleVerify = () => {
         </TextDistortFilter>
         </div>
         <div className="flex items-center justify-center font-sans font-extrabold text-[18px] uppercase h-[60px] text-white bg-black fixed top-0 left-0 right-0 z-[9999] lg:hidden">
-          <TextDistortFilter><Marquee direction="right" gradient={false} speed={75}><TextDistortFilter>{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}</TextDistortFilter></Marquee></TextDistortFilter>
+          <TextDistortFilter><Marquee direction="right" gradient={false} speed={75}>{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}</Marquee></TextDistortFilter>
         </div>
-        <div className="flex items-center justify-centerfont-sans font-extrabold text-[18px] uppercase h-[60px] text-white bg-black fixed bottom-0 left-0 right-0 z-[9999] lg:hidden">
+        <div className="flex items-center justify-center font-sans font-extrabold text-[18px] uppercase h-[60px] text-white bg-black fixed bottom-0 left-0 right-0 z-[9999] lg:hidden">
           <TextDistortFilter><Marquee direction="right" gradient={false} speed={75}>{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}</Marquee></TextDistortFilter>
         </div>
         </>
