@@ -71,7 +71,7 @@ export default async function JournalPage({
   return (
     <>    
       <div className="my-12 md:my-16 p-6 md:p-0 pt-0 xl:p-0 xl:-my-0 xl:grid xl:grid-cols-2 xl:h-screen overscroll-none">
-        <div className="overflow-y-scroll md:px-20 lg:pb-16 xl:min-h-screen xl:pt-54 xl:py-24 lg:px-30 overscroll-none scrollbar-hide">
+        <div className="overflow-y-scroll md:px-20 lg:pb-16 xl:min-h-screen xl:pt-54 xl:py-24 lg:px-30 lg:overscroll-none scrollbar-hide">
           <TextDistortFilter>
           <header className="mb-6">
             <h1 className="heading-1 text-justify">
@@ -105,11 +105,13 @@ export default async function JournalPage({
           </TextDistortFilter>
         </div>
 
-        <div className="w-screen overscroll-none overflow-hidden lg:ml-0 lg:mr-0 lg:w-full lg:px-30 xl:pl-30 xl:pt-20 xl:pb-20 xl:pr-7.5 lg:flex lg:flex-col lg:justify-center xl:max-h-screen">
+        
           {journal.images?.length ? (
-            <Gallery images={journal.images} title={journal.title} />
+            <div className="w-screen overscroll-none overflow-hidden lg:ml-0 lg:mr-0 lg:w-full lg:px-30 xl:pl-30 xl:pt-20 xl:pb-20 xl:pr-7.5 lg:flex lg:flex-col lg:justify-center xl:max-h-screen">
+              <Gallery images={journal.images} title={journal.title} />
+            </div>
            ) : null}
-        </div>
+
       </div>
 
     </>
