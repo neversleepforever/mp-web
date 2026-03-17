@@ -20,15 +20,17 @@ export default function TextDistortFilter({
   scale?: number
   blur?: number
 }) {
-  const [activeBlur, setActiveBlur] = useState(blur)
+  const [safari, setSafari] = useState(false)
 
   useEffect(() => {
-    setActiveBlur(isSafari() ? 0.0 : blur)
-  }, [blur])
+    setSafari(isSafari())
+  }, [])
+
+  const filterId = safari ? "text-distort-safari" : "text-distort"
 
   return (
     <>
-      <div style={{ filter: `url(#text-distort)` }} className={className}>
+      <div style={{ filter: `url(#${filterId})` }} className={className}>
         {children}
       </div>
 
@@ -39,6 +41,7 @@ export default function TextDistortFilter({
         style={{ position: "absolute" }}
       >
         <defs>
+          {/* Standard filter */}
           <filter id="text-distort">
             <feTurbulence
               type="fractalNoise"
@@ -52,7 +55,22 @@ export default function TextDistortFilter({
               scale={scale}
               result="displaced"
             />
-            <feGaussianBlur in="displaced" stdDeviation={activeBlur} />
+            <feGaussianBlur in="displaced" stdDeviation={blur} />
+          </filter>
+
+          {/* Safari filter */}
+          <filter id="text-distort-safari">
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="1 1"
+              numOctaves="1"
+              result="turbulence"
+            />
+            <feDisplacementMap
+              in="SourceGraphic"
+              in2="turbulence"
+              scale={scale}
+            />
           </filter>
         </defs>
       </svg>
