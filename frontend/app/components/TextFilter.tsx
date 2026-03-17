@@ -1,6 +1,13 @@
 "use client"
 
-import React from "react"
+import React, { useEffect, useState } from "react"
+
+function isSafari() {
+  return (
+    typeof window !== "undefined" &&
+    /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
+  )
+}
 
 export default function TextDistortFilter({
   children,
@@ -13,14 +20,18 @@ export default function TextDistortFilter({
   scale?: number
   blur?: number
 }) {
+  const [activeBlur, setActiveBlur] = useState(blur)
+
+  useEffect(() => {
+    setActiveBlur(isSafari() ? 0.0 : blur)
+  }, [blur])
+
   return (
     <>
-      {/* Wrapper applying the SVG filter */}
       <div style={{ filter: `url(#text-distort)` }} className={className}>
         {children}
       </div>
 
-      {/* Hidden SVG definition */}
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="0"
@@ -29,22 +40,19 @@ export default function TextDistortFilter({
       >
         <defs>
           <filter id="text-distort">
-            {/* Noise for distortion */}
             <feTurbulence
               type="fractalNoise"
               baseFrequency="1 1"
               numOctaves="1"
               result="turbulence"
             />
-            {/* Apply displacement */}
             <feDisplacementMap
               in="SourceGraphic"
               in2="turbulence"
               scale={scale}
               result="displaced"
             />
-            {/* Add slight blur */}
-            <feGaussianBlur in="displaced" stdDeviation={blur} />
+            <feGaussianBlur in="displaced" stdDeviation={activeBlur} />
           </filter>
         </defs>
       </svg>
