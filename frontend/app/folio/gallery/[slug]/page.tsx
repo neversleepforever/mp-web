@@ -103,8 +103,8 @@ const viewFullShootButton = (
 )
 
   return (
-    <div className="my-12 md:my-16 p-6 md:p-0 pt-0 xl:p-0 xl:-my-0 xl:grid xl:grid-cols-2 xl:h-screen overscroll-none">
-        <div className="overflow-y-scroll md:px-20 lg:pb-16 xl:min-h-screen xl:pt-54 xl:py-24 lg:px-30 overscroll-none scrollbar-hide">
+    <div className="overflow-hidden lg:overflow-visible my-12 md:my-16 p-6 md:p-0 pt-0 xl:p-0 xl:-my-0 xl:grid xl:grid-cols-2 xl:h-screen lg:overscroll-none">
+        <div className="overflow-y-scroll md:px-20 lg:pb-16 xl:min-h-screen xl:pt-54 xl:py-24 lg:px-30 lg:overscroll-none scrollbar-hide">
           <TextDistortFilter>
           <header className="md:pb-6">
             <h1 className="heading-1 text-justify">
@@ -159,7 +159,7 @@ const viewFullShootButton = (
           </TransitionLink>
         )}
       </div>
-              <div className="overscroll-none overflow-hidden -ml-6 -mr-6 md:hidden">
+              <div className="overscroll-none overflow-x-hidden -ml-6 -mr-6 md:hidden">
           {folio.images?.length ? (
             <Gallery images={folio.images} title={folio.title} />
           ) : null}
