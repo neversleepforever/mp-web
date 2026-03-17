@@ -89,19 +89,19 @@ export default async function VideoPage({
   if (!video?._id) return notFound()
 
   return (
-      <>
-      <div className="my-12 px-6 md:my-16 md:px-21 py-0 xl:p-0 xl:-my-0 xl:grid xl:grid-cols-2 h-screen">
-        <div className="xl:min-h-screen lg:pt-54 xl:pb-24 xl:px-30 xl:overflow-y-scroll scrollbar-hide ">
+    <>
+      <div className="my-12 md:my-16 p-6 md:p-0 pt-0 xl:p-0 xl:-my-0 xl:grid xl:grid-cols-2 xl:h-screen">
+  <div className="md:px-20 lg:px-30 pb-8 xl:min-h-screen xl:pt-54 xl:py-24 xl:overflow-y-scroll scrollbar-hide">
           <TextDistortFilter>
-          <header className="pb-6">
-            <h1 className="heading-1 text-justify">
-              {video.title ?? "Untitled"}
-            </h1>
-            {video.subtitle && (
-              <p className="text-lg text-gray-600">{video.subtitle}</p>
-            )}
-            <div className="mt-8 text-[18px] font-extrabold mb-3">
-              {video.date && (
+            <header className="pb-6">
+              <h1 className="heading-1 text-justify">
+                {video.title ?? "Untitled"}
+              </h1>
+              {video.subtitle && (
+                <p className="text-lg text-gray-600">{video.subtitle}</p>
+              )}
+              <div className="mt-8 text-[18px] font-extrabold mb-3">
+                {video.date && (
                   <p className="uppercase font-sans text-[18px]">
                     {new Date(video.date).toLocaleDateString("en-US", {
                       year: "numeric",
@@ -110,52 +110,41 @@ export default async function VideoPage({
                     })}
                   </p>
                 )}
-              {video.photographer && (
-                <div className="uppercase font-nav text-[12px]">{video.photographer}</div>
-              )}
+                {video.photographer && (
+                  <div className="uppercase font-nav text-[12px]">{video.photographer}</div>
+                )}
+              </div>
+            </header>
+            <div className="text-[22px]">
+              {video.description?.length ? (
+                <PortableText value={video.description} />
+              ) : null}
             </div>
-          </header>
-        <div className="text-[22px]">
-          {video.description?.length ? (
-            <PortableText value={video.description} />
-          ) : null}
+          </TextDistortFilter>
         </div>
+
+       {video.muxVideo?.asset?.playbackId ? (
+  <div className="w-full xl:h-[100vh] md:px-20 lg:px-30 xl:p-30 flex flex-col items-center justify-center">
+    <MuxPlayer
+      playbackId={video.muxVideo.asset.playbackId}
+      streamType="on-demand"
+      autoPlay={false}
+      className="w-full object-contain xl:max-h-[80vh]"
+    />
+    {video.caption && (
+      <div className="w-full pb-12 xl:pb-0">
+        <TextDistortFilter>
+          <p className="mt-7 font-sans w-full text-left">
+            {video.caption}
+          </p>
         </TextDistortFilter>
       </div>
-
-      {video.muxVideo?.asset?.playbackId ? (
-        <div className="relative w-full pt-16 pb-16 lg:mt-0 md:h-[75vh] xl:h-[100vh] xl:p-16 xl:p-30 flex flex-col items-center justify-center">
-          <MuxPlayer
-            playbackId={video.muxVideo.asset.playbackId}
-            streamType="on-demand"
-            autoPlay={false}
-            className="w-full object-contain max-h-[80vh]"
-          />
-        
-          {video.caption && (
-  
-              <div className="w-full">
-                <TextDistortFilter>
-                  <p className="mt-7 font-sans w-full text-left">
-                    {video.caption}
-                  </p>
-                </TextDistortFilter>
-              </div>
-          )}
-
-        </div>
-      ) 
-      // : video.videoUrl ? (
-      //   <video
-      //     src={video.videoUrl}
-      //     controls
-      //     className="w-full object-contain"
-      //   />
-      // ) 
-      : (
-        <p className="text-gray-500 italic">No video available</p>
-      )}
-    </div>
+    )}
+  </div>
+) : (
+  <p className="text-gray-500 italic">No video available</p>
+)}
+      </div>
     </>
   )
 }
