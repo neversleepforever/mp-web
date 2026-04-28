@@ -222,7 +222,7 @@ export const folioQuery: string = defineQuery(`
 `)
 
 export const allFoliosQuery = `
-  *[_type in ["gallery", "journal", "video"]] | order(date desc) {
+  *[_type in ["gallery", "journal", "video"]] | order(coalesce(date, _updatedAt) desc) {
     _id,
     _type,
     title,
@@ -231,18 +231,15 @@ export const allFoliosQuery = `
     photographer,
     date,
     "slug": slug.current,
-
-    _type in ["gallery", "journal", "video"] => {
-      displayImage{
-        alt,
-        asset->{
-          _id,
-          metadata {
-            lqip,
-            dimensions {
-              width,
-              height
-            }
+    displayImage{
+      alt,
+      asset->{
+        _id,
+        metadata {
+          lqip,
+          dimensions {
+            width,
+            height
           }
         }
       }

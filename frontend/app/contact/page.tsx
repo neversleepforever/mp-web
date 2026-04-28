@@ -111,7 +111,7 @@ export default async function ContactPage() {
         />
       </div>
  
-      <section style={{ height: "100svh" }} className="overflow-hidden pointer-events-none w-full col-start-1 row-start-1 col-span-2 row-span-1 flex flex-1 items-center justify-center z-40 md:pr-0 dark:text-white ">
+      <section style={{ height: "100svh" }} className="overflow-hidden pointer-events-none w-full col-start-1 row-start-1 col-span-2 row-span-1 flex flex-1 pt-16 md:pt-0 md:items-center justify-center z-40 md:pr-0 dark:text-white ">
      <TextDistortFilter>
         <div className="pointer-events-auto md:bg-black min-w-[calc(100vw-4rem)] md:min-w-auto h-auto md:w-[670px] md:h-[470px] border p-4 md:grid md:grid-cols-2 md:grid-rows-1">
           <div className="flex-1">
@@ -163,6 +163,13 @@ export default async function ContactPage() {
               width={283}
               height={400}
             />
+          </div>
+        </div>
+        <div className="mt-4 border p-4">
+          <h1 className="heading-3">Site Credits</h1>
+          <div className="mt-2 font-sans">
+            <p>Art Direction & Design: Neversleepforever</p>
+            <p className="pt-1">Development: Daniel Fernandes</p>
           </div>
         </div>
     </TextDistortFilter>
