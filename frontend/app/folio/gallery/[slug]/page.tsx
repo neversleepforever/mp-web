@@ -139,7 +139,7 @@ const viewFullShootButton = (
           <div className="hidden md:block xl:hidden">{viewFullShootButton}</div>
           </TextDistortFilter>
         </div>
-        <div className="hidden md:flex md:flex-col md:justify-between md:my-24 xl:my-0 md:h-[75vh] xl:h-[100vh]">
+        <div className="hidden md:flex md:flex-col md:justify-between mx-4 md:my-24 xl:my-0 md:h-[75vh] xl:h-[100vh] px-8 xl:px-12">
         {firstImage?.asset && (
           <TransitionLink href={`/folio/gallery/${folio.slug}/full`} className="block group flex-1 flex justify-center items-center">
             <div className="relative w-full flex justify-center items-center">
