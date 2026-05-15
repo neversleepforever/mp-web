@@ -1,3 +1,4 @@
+import React from "react"
 import FadeInImage from "@/app/components/FadeInImage"
 import Rates from "@/app/components/Rates"
 import TextDistortFilter from "@/app/components/TextFilter"
@@ -32,13 +33,27 @@ interface ServicesData {
     image?: ServicesImage
 }
 
+const replaceEmoji = (children: React.ReactNode): React.ReactNode => {
+  return React.Children.map(children, (child) => {
+    if (typeof child === "string" && child.includes("🍑")) {
+      return child.split("🍑").flatMap((part, i, arr) =>
+        i < arr.length - 1
+          ? [part, <img key={i} src="peachvector.png" alt="peach" className="inline w-4 h-4 mx-3" />]
+          : [part]
+      )
+    }
+    return child
+  })
+}
+
+
 const portableTextComponents: PortableTextComponents = {
   block: {
-    h1: ({ children }) => <h1 className="heading-1">{children}</h1>,
-    h2: ({ children }) => <h2 className="heading-2">{children}</h2>,
-    h3: ({ children }) => <h3 className="heading-3">{children}</h3>,
-    h4: ({ children }) => <h4 className="heading-4 text-black">{children}</h4>,
-    normal: ({ children }) => <p className="mt-6 font-sans">{children}</p>,
+    h1: ({ children }) => <h1 className="heading-1 flex justify-center items-center flex-wrap">{replaceEmoji(children)}</h1>,
+    h2: ({ children }) => <h2 className="heading-2 flex justify-center items-center flex-wrap">{replaceEmoji(children)}</h2>,
+    h3: ({ children }) => <h3 className="heading-3 flex justify-center items-center flex-wrap">{replaceEmoji(children)}</h3>,
+    h4: ({ children }) => <h4 className="heading-4 flex justify-center items-center flex-wrap text-black">{replaceEmoji(children)}</h4>,
+    normal: ({ children }) => <p className="mt-6 font-sans">{replaceEmoji(children)}</p>,
   },
   types: {
     image: ({ value }) =>
