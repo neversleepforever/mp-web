@@ -9,4 +9,4 @@ export default async function AgeCheckServer({ children }: { children: React.Rea
     perspective: "published",
   })
 
-  return <AgeCheck content={data}>{children}</AgeCheck> }
+  return <AgeCheck content={data ?? undefined}>{children}</AgeCheck> }
