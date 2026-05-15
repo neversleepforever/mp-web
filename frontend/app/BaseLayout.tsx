@@ -1,12 +1,11 @@
-// app/BaseLayout.tsx — keep "use client" here
 "use client"
 
 import "./globals.css"
 import Footer from "@/app/components/Footer"
 import Header from "@/app/components/Header"
-import AgeCheck from "./components/AgeCheck"
 import Centerfold from "./components/Centerfold"
 import { usePathname } from "next/navigation"
+import { useEffect } from "react"
 
 export default function BaseLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
@@ -16,18 +15,15 @@ export default function BaseLayout({ children }: { children: React.ReactNode }) 
     pathname?.startsWith("/contact") ||
     pathname?.startsWith("/services")
 
+  useEffect(() => {
+    document.body.classList.toggle("dark", isDark)
+  }, [isDark])
+
   return (
-    <html lang="en" className="overscroll-none">
-      <body className={`${isDark ? "dark" : ""} bg-white dark:bg-black overscroll-none`}>
-        <Centerfold />
-        <AgeCheck>
-          <section className="flex flex-col min-h-[100dvh] overflow-hidden">
-            <Header />
-            <main className="flex-1 overflow-hidden">{children}</main>
-            <Footer />
-          </section>
-        </AgeCheck>
-      </body>
-    </html>
+    <section className="flex flex-col min-h-[100dvh] overflow-hidden">
+      <Header />
+      <main className="flex-1 overflow-hidden">{children}</main>
+      <Footer />
+    </section>
   )
 }

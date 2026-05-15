@@ -493,3 +493,10 @@ export const aboutQuery = defineQuery(`
     }
   }
 `)
+
+export const ageCheckQuery = defineQuery(`
+*[_type == "ageCheck"][0] {
+  marqueeText,
+  bodyText,
+  buttonText
+}`)

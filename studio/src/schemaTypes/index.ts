@@ -14,6 +14,7 @@ import {settings} from './singletons/settings'
 import {link} from './objects/link'
 import {blockContent} from './objects/blockContent'
 import { portableText } from "./objects/portableText"
+import agecheck from './singletons/agecheck'
 
 export const schemaTypes = [
   // Singletons
@@ -22,6 +23,7 @@ export const schemaTypes = [
   contact,
   about,
   home,
+  agecheck,
   // Documents
   page,
   post,

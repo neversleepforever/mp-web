@@ -3,7 +3,22 @@ import { useState, useEffect } from "react"
 import Marquee from "react-fast-marquee";
 import TextDistortFilter from "./TextFilter";
 
-export default function AgeCheck({ children }: { children: React.ReactNode }) {
+type AgeCheckContent = {
+  marqueeText?: string
+  bodyText?: string
+  buttonText?: string
+}
+
+export default function AgeCheck({
+    children,
+    content,
+  }: {
+    children: React.ReactNode
+    content?: AgeCheckContent
+  }) {
+  const marqueeLabel = content?.marqueeText ?? "For Adults Only 🍑"
+  const bodyLabel    = content?.bodyText    ?? "The following content is for 18+ adults only —"
+  const buttonLabel  = content?.buttonText  ?? "Proceed"
   const [verified, setVerified] = useState(false)
   const [loaded, setLoaded] = useState(false)
   const [isXL, setIsXL] = useState(false);
@@ -80,12 +95,12 @@ const handleVerify = () => {
                 <div className="text-xl col-start-1 row-start-1 z-[800] text-center px-8 flex flex-row">
                   <div className="bg-black mask-l-from-30% z-[800] w-[30px]" />
                     <h2 className="bg-black"> 
-                      The following content is for 18+ adults only —{" "}
+                      {bodyLabel}{" "}
                       <button
                         onClick={handleVerify}
                         className="uppercase underline decoration-1 hover:decoration-2 transition-all cursor-pointer"
                       >
-                        Proceed
+                        {buttonLabel}
                       </button>
                     </h2>
                   <div className="bg-black mask-r-from-30% z-[800] w-[30px]" />
