@@ -21,6 +21,7 @@ export default function BaseLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <section className="flex flex-col min-h-[100dvh] overflow-hidden">
+      <Centerfold />
       <Header />
       <main className="flex-1 overflow-hidden">{children}</main>
       <Footer />

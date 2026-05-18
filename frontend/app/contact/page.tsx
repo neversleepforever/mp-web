@@ -4,7 +4,6 @@ import { aboutQuery } from "@/sanity/lib/queries"
 import { PortableText, type PortableTextBlock } from "next-sanity"
 import Image from "next/image"
 import Link from "next/link"
-import Filter from "@/app/components/Filter"
 import TextDistortFilter from "@/app/components/TextFilter"
 import FadeInImage from "@/app/components/FadeInImage"
 
@@ -47,7 +46,7 @@ export default async function ContactPage() {
   }
 
   return (
-    <div className="grid grid-cols-2 grid-rows-1 w-screen overflow-hidden" style={{ height: "100svh" }}>
+    <div className="dark:bg-black grid grid-cols-2 grid-rows-1 w-screen overflow-hidden" style={{ height: "100svh" }}>
       {/* Mirrored About content (md+ only) */}
       {about?.content?.length ? (
         <div className="pointer-events-none hidden md:block md:col-start-1 md:row-start-1 md:col-span-1 md:row-span-1 -z-10 overflow-hidden">
@@ -168,8 +167,9 @@ export default async function ContactPage() {
         <div className="mt-4 border p-4">
           <h1 className="heading-3">Site Credits</h1>
           <div className="mt-2 font-sans">
+            <p>Logo Design: Heather McDonell</p>
             <p>Art Direction & Design: Neversleepforever</p>
-            <p className="pt-1">Development: Daniel Fernandes</p>
+            {/* <p className="pt-1">Development: Daniel Fernandes</p> */}
           </div>
         </div>
     </TextDistortFilter>

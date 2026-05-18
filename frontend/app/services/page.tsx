@@ -109,7 +109,7 @@ export default async function ServicesPage() {
           
         </div>
 
-      <div className="relative scrollbar-hide bg-[url('/images/scantexture.jpg')] bg-cover bg-center mix-blend-plus-lighter md:col-start-2 pt-8 pb-12 px-6 md:py-12 md:pl-4 md:pr-6 md:h-[100dvh] md:overflow-y-scroll xl:px-26">
+      <div className="relative scrollbar-hide bg-[url('/images/scantexture.jpg')] bg-cover bg-center md:col-start-2 pt-8 pb-12 px-6 md:py-12 md:pl-4 md:pr-6 md:h-[100dvh] md:overflow-y-scroll xl:px-26">
         <TextDistortFilter>
           {services.content?.length ? (
             <PortableText
@@ -120,7 +120,7 @@ export default async function ServicesPage() {
                   ...portableTextComponents.types,
                   servicesSection: ({ value }) => (
                     <div className="border p-4 my-4">
-                      <h1 className="heading-1 mb-6">{value.title}</h1>
+                      <h1 className="heading-1 mb-6 flex justify-center items-center flex-wrap">{value.title}</h1>
                       <div className="[&_p]:text-justify text-[20px]">
                         <PortableText
                           value={value.body}
@@ -133,7 +133,7 @@ export default async function ServicesPage() {
                     <div className="border">
                       <Rates title={value.title} />
                       <Link href={`mailto:"${services.bannerEmail}"`}>
-                        <div className="mix-blend-plus-darker flex justify-center bg-white text-[12px] py-[10px] px-16 text-center lg:px-4 lg:[&_br]:hidden">
+                        <div className="flex justify-center bg-white text-[12px] py-[10px] px-16 text-center lg:px-4 lg:[&_br]:hidden">
                           <PortableText
                             value={value.Banner}
                             components={portableTextComponents}
