@@ -21,6 +21,43 @@ export const contact = defineType({
       description: "Social media links for second block",
       of: [{ type: "link" }],
     }),
+    defineField({
+      name: "siteCredits",
+      title: "Site Credits",
+      type: "array",
+      of: [
+        {
+          type: "block",
+          styles: [{ title: "Normal", value: "normal" }],
+          marks: {
+            decorators: [
+              { title: "Strong", value: "strong" },
+              { title: "Emphasis", value: "em" },
+            ],
+            annotations: [
+              {
+                name: "link",
+                type: "object",
+                title: "Link",
+                fields: [
+                  {
+                    name: "href",
+                    type: "url",
+                    title: "URL",
+                  },
+                  {
+                    name: "openInNewTab",
+                    type: "boolean",
+                    title: "Open in new tab",
+                    initialValue: true,
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      ],
+    }),
   ],
   preview: {
     prepare() {
