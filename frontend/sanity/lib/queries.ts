@@ -500,3 +500,20 @@ export const ageCheckQuery = defineQuery(`
   bodyText,
   buttonText
 }`)
+
+export const bookingsQuery = defineQuery(`
+  *[_type == "bookings"][0]{
+    _id,
+    image{
+      alt,
+      asset->{
+        _id,
+        url,
+        metadata{
+          lqip,
+          dimensions { width, height }
+        }
+      }
+    }
+  }
+`)

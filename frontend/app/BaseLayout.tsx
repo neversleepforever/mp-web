@@ -13,6 +13,7 @@ export default function BaseLayout({ children }: { children: React.ReactNode }) 
   const isDark =
     pathname?.startsWith("/about") ||
     pathname?.startsWith("/contact") ||
+    pathname?.startsWith("/bookings") ||
     pathname?.startsWith("/services")
 
   useEffect(() => {
