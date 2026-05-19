@@ -17,6 +17,7 @@ interface ContactData {
   _id: string
   socials1?: SocialLink[]
   socials2?: SocialLink[]
+  siteCredits?: PortableTextBlock[]
 }
 
 interface AboutData {
@@ -28,7 +29,8 @@ const contactQuery = defineQuery(`
   *[_type == "contact"][0]{
     _id,
     socials1[]{displayTitle, href, openInNewTab},
-    socials2[]{displayTitle, href, openInNewTab}
+    socials2[]{displayTitle, href, openInNewTab},
+    siteCredits
   }
 `)
 
@@ -167,14 +169,32 @@ export default async function ContactPage() {
         <div className="mt-4 border p-4">
           <h1 className="heading-3">Site Credits</h1>
           <div className="mt-2 font-sans">
-            <p>Logo Design: Heather McDonell</p>
-            <p>Art Direction & Design: Neversleepforever</p>
-            {/* <p className="pt-1">Development: Daniel Fernandes</p> */}
+            {contact.siteCredits?.length ? (
+              <PortableText
+                value={contact.siteCredits}
+                components={{
+                  block: {
+                    normal: ({ children }) => <p className="font-sans">{children}</p>,
+                  },
+                  marks: {
+                    link: ({ children, value }) => (
+                      <a
+                        href={value?.href}
+                        target={value?.openInNewTab ? "_blank" : "_self"}
+                        rel={value?.openInNewTab ? "noopener noreferrer" : undefined}
+                        className="underline hover:line-through"
+                      >
+                        {children}
+                      </a>
+                    ),
+                  },
+                }}
+              />
+            ) : null}
           </div>
         </div>
     </TextDistortFilter>
       </section>
-
     </div>
   )
 }
