@@ -51,9 +51,9 @@ export default async function ContactPage() {
     <div className="dark:bg-black bg-black grid grid-cols-2 grid-rows-1 w-screen overflow-hidden" style={{ height: "100svh" }}>
       {/* Mirrored About content (md+ only) */}
       {about?.content?.length ? (
-        <div className="pointer-events-none hidden md:block md:col-start-1 md:row-start-1 md:col-span-1 md:row-span-1 -z-10 overflow-hidden">
-          <div className="w-full p-6 scale-x-[-1] opacity-15 text-white overflow-hidden" style={{ height: "100svh" }}>
-
+        <div className="pointer-events-none hidden md:block md:col-start-1 md:row-start-1 md:col-span-1 md:row-span-1 z-0 overflow-hidden">
+          <div className="w-full p-6 md:px-16 md:pt-16 scale-x-[-1] opacity-15 text-white overflow-hidden" style={{ height: "100svh" }}>
+            <div className="border-1 p-6 bg-black">
             <TextDistortFilter>
               <PortableText
                 value={about.content}
@@ -85,7 +85,7 @@ export default async function ContactPage() {
                 }}
               />
             </TextDistortFilter>
-    
+  </div>
           </div>
         </div>
       ) : null}
@@ -119,7 +119,7 @@ export default async function ContactPage() {
             <h1 className="heading-1 mb-8">Contact</h1>
 
             {contact.socials1?.length ? (
-              <div className="mb-8">
+              <div className="mb-8 bg-black">
                 <ul>
                   {contact.socials1.map((link, i) => (
                     <li key={i}>
@@ -166,7 +166,7 @@ export default async function ContactPage() {
             />
           </div>
         </div>
-        <div className="mt-4 border p-4">
+        <div className="mt-4 border p-4 bg-black">
           <h1 className="heading-3">Site Credits</h1>
           <div className="mt-2 font-sans">
             {contact.siteCredits?.length ? (
