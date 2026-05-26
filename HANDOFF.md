@@ -96,30 +96,49 @@ Leave Terminal running while you work. Press `Ctrl + C` to stop.
 
 ### 4. Making and Deploying Changes
 
-Pushing to the `main` branch on GitHub triggers an automatic deploy on Vercel. There is no manual deploy step.
+> **Important: never commit directly to `main`.** The `main` branch is the live site. Always work on a separate branch and merge it in once you're happy with it.
 
-**Step-by-step:**
+**The full workflow:**
 
 ```bash
-# 1. Before starting work, pull the latest changes
+# 1. Make sure you're on main and have the latest code
+git checkout main
 git pull
 
-# 2. Make your changes in the code editor
+# 2. Create a new branch for your changes (give it a short descriptive name)
+git checkout -b my-branch-name
 
-# 3. Check what files you changed
+# 3. Make your changes in the code editor
+
+# 4. Check what files you changed
 git status
 
-# 4. Stage your changes
+# 5. Stage your changes
 git add .
 
-# 5. Commit with a short description
+# 6. Commit with a short description
 git commit -m "describe what you changed"
 
-# 6. Push — this triggers a live deploy on Vercel
-git push
+# 7. Push your branch to GitHub
+git push -u origin my-branch-name
 ```
 
-Vercel usually deploys in 1–2 minutes. To preview changes before they go live, push to a separate branch — Vercel will generate a preview URL automatically.
+After pushing, GitHub will show a link to **open a pull request**. A pull request (PR) is just a way of saying "I'd like to merge these changes into main" — it gives a chance to review before anything goes live. Open the PR on GitHub and tag Daniel to review and merge it.
+
+**Previewing your changes**
+
+When you push a branch, Vercel automatically builds it and posts a **preview URL** in the GitHub pull request (it looks like `https://mp-web-git-my-branch-name-xxx.vercel.app`). Use this to check that everything looks right before merging.
+
+**Checking for build errors before pushing**
+
+You won't have access to the Vercel dashboard, so run a build locally first to catch any errors that would cause the deployment to fail:
+
+```bash
+cd frontend
+npm run build
+```
+
+If it completes without errors, it should deploy cleanly. If it shows errors, fix them before pushing. Common issues are TypeScript type errors or missing required fields — the error output will tell you exactly what file and line to look at.
 
 ---
 
