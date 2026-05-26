@@ -111,6 +111,7 @@ export default async function ServicesPage() {
 
       <div className="relative scrollbar-hide bg-[url('/images/scantexture.jpg')] bg-cover bg-center md:col-start-2 pt-8 pb-12 px-6 md:py-12 md:pl-4 md:pr-6 md:h-[100dvh] md:overflow-y-scroll xl:px-26">
         <TextDistortFilter>
+          <div>
           {services.content?.length ? (
             <PortableText
               value={services.content}
@@ -185,10 +186,13 @@ export default async function ServicesPage() {
                 },
               }}
             />
+            
           ) : (
             <p>No content added yet.</p>
           )}
+          </div>
           </TextDistortFilter>
+          
         </div>
       </div>
       <FadeInImage src="/images/band.png" alt="Adults Only" width={200} height={200} className="fixed box-content bottom-[0px] right-[0px] z-50 overflow-hidden" />
