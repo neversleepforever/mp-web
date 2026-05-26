@@ -30,10 +30,6 @@ export default function TextDistortFilter({
 
   return (
     <>
-      <div style={{ filter: `url(#${filterId})` }} className={className}>
-        {children}
-      </div>
-
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="0"
@@ -41,7 +37,6 @@ export default function TextDistortFilter({
         style={{ position: "absolute" }}
       >
         <defs>
-          {/* Standard filter */}
           <filter id="text-distort">
             <feTurbulence
               type="fractalNoise"
@@ -58,7 +53,6 @@ export default function TextDistortFilter({
             <feGaussianBlur in="displaced" stdDeviation={blur} />
           </filter>
 
-          {/* Safari filter */}
           <filter id="text-distort-safari">
             <feTurbulence
               type="fractalNoise"
@@ -74,6 +68,10 @@ export default function TextDistortFilter({
           </filter>
         </defs>
       </svg>
+
+      <div style={{ filter: `url(#${filterId})` }} className={className}>
+        {children}
+      </div>
     </>
   )
 }
