@@ -119,7 +119,7 @@ export default async function ContactPage() {
             <h1 className="heading-1 mb-8">Contact</h1>
 
             {contact.socials1?.length ? (
-              <div className="mb-8 bg-black">
+              <div className="mb-8">
                 <ul>
                   {contact.socials1.map((link, i) => (
                     <li key={i}>
