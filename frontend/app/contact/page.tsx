@@ -166,7 +166,7 @@ export default async function ContactPage() {
             />
           </div>
         </div>
-        <div className="mt-4 border p-4 md:bg-black">
+        <div className="mt-4 border p-4 md:bg-black pointer-events-auto">
           <h1 className="heading-3">Site Credits</h1>
           <div className="mt-2 font-sans">
             {contact.siteCredits?.length ? (
@@ -182,7 +182,7 @@ export default async function ContactPage() {
                         href={value?.href}
                         target={value?.openInNewTab ? "_blank" : "_self"}
                         rel={value?.openInNewTab ? "noopener noreferrer" : undefined}
-                        className="underline hover:line-through"
+                        className="hover:line-through"
                       >
                         {children}
                       </a>
