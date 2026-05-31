@@ -98,7 +98,7 @@ export default async function ServicesPage() {
     <>
 
       <div className="md:grid md:grid-cols-2 dark:text-white bg-[#454545]">
-        <div className="relative w-full h-full mix-blend-screen">
+        <div className="relative w-full h-full bg-black">
                    <FadeInImage
                      src={heroAsset?.url || ""}
                      alt={heroImage?.alt || "Cover Image"}
