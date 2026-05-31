@@ -31,8 +31,8 @@ export default function Centerfold() {
     ? "linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.10) 42%, rgba(0,0,0,0.20) 50%, rgba(0,0,0,0.10) 58%, rgba(0,0,0,0) 100%)"
     : "linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.5) 40%, rgba(0,0,0,0.82) 50%, rgba(0,0,0,0.5) 60%, rgba(0,0,0,0) 100%)"
   const gutterMobile = isFolio
-    ? "linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.10) 42%, rgba(0,0,0,0.18) 50%, rgba(0,0,0,0.10) 58%, rgba(0,0,0,0) 100%)"
-    : "linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.45) 42%, rgba(0,0,0,0.7) 50%, rgba(0,0,0,0.45) 58%, rgba(0,0,0,0) 100%)"
+    ? "linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.06) 42%, rgba(0,0,0,0.12) 50%, rgba(0,0,0,0.06) 58%, rgba(0,0,0,0) 100%)"
+    : "linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 42%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.3) 58%, rgba(0,0,0,0) 100%)"
 
   return (
    <>
