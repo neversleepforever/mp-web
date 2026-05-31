@@ -110,16 +110,43 @@ export default async function ServicesPage() {
         </div>
 
       <div className="relative scrollbar-hide bg-[url('/images/scantexture.jpg')] bg-cover bg-center md:col-start-2 pt-8 pb-12 px-6 md:py-12 md:pl-4 md:pr-6 md:h-[100dvh] md:overflow-y-scroll xl:px-26">
-        <TextDistortFilter>
           <div>
           {services.content?.length ? (
             <PortableText
               value={services.content}
               components={{
                 ...portableTextComponents,
+                block: {
+                  h1: ({ children }) => (
+                    <TextDistortFilter>
+                      <h1 className="heading-1 flex justify-center items-center flex-wrap">{replaceEmoji(children)}</h1>
+                    </TextDistortFilter>
+                  ),
+                  h2: ({ children }) => (
+                    <TextDistortFilter>
+                      <h2 className="heading-2 flex justify-center items-center flex-wrap">{replaceEmoji(children)}</h2>
+                    </TextDistortFilter>
+                  ),
+                  h3: ({ children }) => (
+                    <TextDistortFilter>
+                      <h3 className="heading-3 flex justify-center items-center flex-wrap">{replaceEmoji(children)}</h3>
+                    </TextDistortFilter>
+                  ),
+                  h4: ({ children }) => (
+                    <TextDistortFilter>
+                      <h4 className="heading-4 flex justify-center items-center flex-wrap text-black">{replaceEmoji(children)}</h4>
+                    </TextDistortFilter>
+                  ),
+                  normal: ({ children }) => (
+                    <TextDistortFilter>
+                      <p className="mt-6 font-sans">{replaceEmoji(children)}</p>
+                    </TextDistortFilter>
+                  ),
+                },
                 types: {
                   ...portableTextComponents.types,
                   servicesSection: ({ value }) => (
+                    <TextDistortFilter>
                     <div className="border p-4 my-4">
                       <h1 className="heading-1 mb-6 flex justify-center items-center flex-wrap">{value.title}</h1>
                       <div className="[&_p]:text-justify text-[20px]">
@@ -129,8 +156,10 @@ export default async function ServicesPage() {
                         />
                       </div>
                     </div>
+                    </TextDistortFilter>
                   ),
                   ratesSection: ({ value }) => (
+                    <TextDistortFilter>
                     <div className="border">
                       <Rates title={value.title} />
                       <Link href={`mailto:"${services.bannerEmail}"`}>
@@ -138,27 +167,32 @@ export default async function ServicesPage() {
                           <PortableText
                             value={value.Banner}
                             components={portableTextComponents}
-                          /> 
+                          />
                         </div>
                       </Link>
                       <div className="p-4 text-center [&_ul]:mt-6 text-[20px]">
                         <PortableText value={value.rates} components={portableTextComponents} />
                       </div>
                     </div>
+                    </TextDistortFilter>
                   ),
                   outcallSection: ({ value }) => (
+                    <TextDistortFilter>
                     <div className="border p-4 my-4">
                       <div className="text-center text-[20px]">
                         <PortableText value={value.body} components={portableTextComponents} />
                       </div>
                     </div>
+                    </TextDistortFilter>
                   ),
                   virtualSection: ({ value }) => (
+                    <TextDistortFilter>
                     <div className="border p-4 my-4">
                       <div className="text-center text-[20px]">
                         <PortableText value={value.body} components={portableTextComponents} />
                       </div>
                     </div>
+                    </TextDistortFilter>
                   ),
                   image: ({ value }) => {
                     console.log("value", value)
@@ -168,6 +202,7 @@ export default async function ServicesPage() {
                                     const width = value.asset.metadata?.dimensions?.width || 800
                                     const height = value.asset.metadata?.dimensions?.height || 600
                                     return (
+                                      <TextDistortFilter>
                                       <div className="mt-4 mix-blend-difference md:grayscale md:contrast-200">
                                         <FadeInImage
                                           src={url}
@@ -181,6 +216,7 @@ export default async function ServicesPage() {
                                       <figcaption className="heading-1 text-justify break-normal pt-4">{value.caption}</figcaption>
                                     )}
                                       </div>
+                                      </TextDistortFilter>
                                     )
                                   },
                 },
@@ -191,8 +227,7 @@ export default async function ServicesPage() {
             <p>No content added yet.</p>
           )}
           </div>
-          </TextDistortFilter>
-          
+
         </div>
       </div>
       <FadeInImage src="/images/band.png" alt="Adults Only" width={200} height={200} className="fixed box-content bottom-[0px] right-[0px] z-50 overflow-hidden" />
