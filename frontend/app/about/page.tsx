@@ -41,7 +41,7 @@ export default async function AboutPage() {
 
   return (
     <>    
-      <div className=" md:grid md:grid-cols-2 dark:text-white bg-black ">
+      <div className=" md:grid md:grid-cols-2 dark:text-white bg-[#454545] ">
         <div className="relative overflow-hidden">
           <FadeInImage
             src={heroAsset?.url || ""}
@@ -51,9 +51,9 @@ export default async function AboutPage() {
             className="object-cover object-top mix-blend-exclusion"
           />
         </div>
-  <div className="scrollbar-hide bg-[url('/images/fence.png')] bg-cover bg-center md:col-start-2 pt-12 pb-16 px-6 md:pt-16 md:h-[100dvh] md:overflow-y-scroll xl:px-26 ">
+  <div className="scrollbar-hide bg-[#0b0b0b] bg-[url('/images/book-bg-texture.svg'),url('/images/scantexture.jpg')] bg-cover bg-center md:col-start-2 pt-12 pb-16 px-6 md:pt-16 h-[100dvh] overflow-y-scroll xl:px-26 ">
   <TextDistortFilter>
-      <div className="border-1 p-6 bg-black">
+      <div className="border-1 p-6">
       {about.content?.length ? (
           <PortableText
             value={about.content}
