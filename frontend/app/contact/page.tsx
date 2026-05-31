@@ -182,7 +182,7 @@ export default async function ContactPage() {
                         href={value?.href}
                         target={value?.openInNewTab ? "_blank" : "_self"}
                         rel={value?.openInNewTab ? "noopener noreferrer" : undefined}
-                        className="underline hover:line-through"
+                        className="hover:line-through"
                       >
                         {children}
                       </a>
