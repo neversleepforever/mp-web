@@ -1,8 +1,8 @@
 import FadeInImage from "@/app/components/FadeInImage"
-import TextDistortFilter from "@/app/components/TextFilter"
 import { sanityFetch } from "@/sanity/lib/live"
 import { bookingsQuery } from "@/sanity/lib/queries"
 import JotformEmbed from "../components/JotFormEmbed"
+import TextDistortFilter from "@/app/components/TextFilter"
 
 type ImageAsset = {
   _id: string
@@ -53,8 +53,9 @@ export default async function BookingPage() {
             className="object-cover object-top"
           />
         </div>
-        <div className="relative bg-[#0b0b0b] bg-cover bg-center md:col-start-2 h-[100dvh] flex flex-col pt-0 md:pt-0">
-            <TextDistortFilter className="flex-1 flex flex-col">
+        <div className="relative bg-[#0b0b0b] bg-[url('/images/scantexture.jpg')] bg-cover bg-center md:col-start-2 h-[100dvh] flex flex-col pt-0 md:px-6 md:py-12 xl:px-26">
+            <div className="pointer-events-none absolute inset-0 z-0 bg-[url('/images/book-bg-texture.svg')] bg-cover bg-center" />
+            <TextDistortFilter className="relative z-10 flex-1 flex flex-col">
                 <JotformEmbed formId="250685995022262"/>
             </TextDistortFilter>
             </div>

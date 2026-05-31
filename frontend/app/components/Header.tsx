@@ -13,7 +13,7 @@ export default function Header() {
     { href: "/about", label: "About" },
     { href: "/services", label: "Services" },
     { href: "/folio", label: "Folio" },
-    { href: "https://form.jotform.com/250685995022262", label: "Booking" },
+    { href: "/bookings", label: "Booking" },
     { href: "/contact", label: "Contact" },
   ]
   
