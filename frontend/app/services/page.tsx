@@ -195,7 +195,6 @@ export default async function ServicesPage() {
                     </TextDistortFilter>
                   ),
                   image: ({ value }) => {
-                    console.log("value", value)
                                     if (!value?.asset?.url) return null
                                   
                                     const url = value.asset.url
