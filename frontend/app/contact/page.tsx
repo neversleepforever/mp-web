@@ -166,7 +166,7 @@ export default async function ContactPage() {
             />
           </div>
         </div>
-        <div className="mt-4 border p-4 md:bg-black">
+        <div className="mt-4 border p-4 md:bg-black pointer-events-auto">
           <h1 className="heading-3">Site Credits</h1>
           <div className="mt-2 font-sans">
             {contact.siteCredits?.length ? (
