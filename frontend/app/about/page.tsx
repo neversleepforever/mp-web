@@ -42,7 +42,7 @@ export default async function AboutPage() {
   return (
     <>    
       <div className=" md:grid md:grid-cols-2 dark:text-white bg-[#454545] ">
-        <div className="relative overflow-hidden">
+        <div className="relative overflow-hidden bg-black">
           <FadeInImage
             src={heroAsset?.url || ""}
             alt={heroImage?.alt || "Cover Image"}
