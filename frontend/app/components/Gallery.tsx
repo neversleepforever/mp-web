@@ -234,7 +234,7 @@ export default function Gallery({
 
         <div
           ref={containerRef}
-          className="flex overflow-x-auto overflow-visible snap-x pl-[50vw] pr-[50vw] scrollbar-hide snap-x snap-mandatory lg:w-[59px] lg:h-full lg:overflow-y-auto lg:flex-col lg:px-0 lg:pb-0 lg:mx-0 lg:pt-0 lg:justify-center xl:justify-start"
+          className="flex overflow-x-auto overflow-visible snap-x pl-[50vw] pr-[50vw] scrollbar-hide snap-x snap-proximity lg:w-[59px] lg:h-full lg:overflow-y-auto lg:flex-col lg:px-0 lg:pb-0 lg:mx-0 lg:pt-0 lg:justify-center xl:justify-start"
         >
           {images.map((img, i) =>
             img?.asset ? (
@@ -249,7 +249,7 @@ export default function Gallery({
                   setSelectedIndex(i)
                   setTimeout(() => setScrollLocked(false), 300)
                 }}
-                className={`relative snap-center flex-shrink-0 overflow-hidden h-20 w-auto lg:w-full lg:h-auto ${
+                className={`relative snap-center snap-always flex-shrink-0 overflow-hidden h-20 w-auto lg:w-full lg:h-auto ${
                   i === images.length - 1 ? "lg:mb-12" : ""
                 } ${i === selectedIndex ? "outline outline-2 outline-white outline-offset-[-2px]" : "outline-none"}`}
                 aria-label={`Select image ${i + 1}`}
@@ -261,7 +261,7 @@ export default function Gallery({
                   height={img.asset.metadata?.dimensions?.height || 400}
                   placeholder="blur"
                   blurDataURL={img.asset.metadata?.lqip}
-                  className="h-full w-auto lg:w-full lg:h-auto object-contain snap-center"
+                  className="h-full w-auto lg:w-full lg:h-auto object-contain"
                 />
               </button>
             ) : null
