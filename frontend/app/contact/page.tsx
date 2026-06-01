@@ -112,9 +112,9 @@ export default async function ContactPage() {
         />
       </div>
  
-      <section style={{ height: "100svh" }} className="overflow-hidden pointer-events-none w-full col-start-1 row-start-1 col-span-2 row-span-1 flex flex-1 pt-16 md:pt-0 md:items-center justify-center z-40 md:pr-0 dark:text-white ">
+      <section style={{ height: "100svh" }} className="overflow-hidden pointer-events-none w-full col-start-1 row-start-1 col-span-2 row-span-1 flex flex-1 pt-16 px-6 md:px-0 md:pt-0 md:items-center justify-center z-40 md:pr-0 dark:text-white ">
      <TextDistortFilter>
-        <div className="pointer-events-auto md:bg-black min-w-[calc(100vw-4rem)] md:min-w-auto h-auto md:w-[670px] md:h-[470px] border p-4 md:grid md:grid-cols-2 md:grid-rows-1">
+        <div className="pointer-events-auto md:bg-black w-full md:w-[670px] h-auto md:h-[470px] border p-4 md:grid md:grid-cols-2 md:grid-rows-1">
           <div className="flex-1">
             <h1 className="heading-1 mb-8">Contact</h1>
 
