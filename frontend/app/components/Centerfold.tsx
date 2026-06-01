@@ -22,17 +22,20 @@ export default function Centerfold() {
     pathname?.startsWith("/bookings") ||
     pathname?.startsWith("/contact")
 
-  // Folio detail pages are bright/white — they get the same fold gutter but MUCH lighter
-  // (a soft page-fold shadow, not the strong dark crease the dark pages need).
-  const isFolio = pathname?.startsWith("/folio")
+  // Folio detail pages (gallery landing, video, journal) are bright/white — they get the same
+  // fold gutter but MUCH lighter (a soft page-fold shadow, not the strong dark crease the dark
+  // pages need). The /folio/gallery/[slug]/full viewer is excluded — its full-bleed project
+  // images shouldn't be cut by a crease.
+  const isFolio =
+    !!pathname?.startsWith("/folio/") && !pathname.endsWith("/full")
   const showGutter = isGutter || isFolio
 
   const gutterDesktop = isFolio
-    ? "linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.10) 42%, rgba(0,0,0,0.20) 50%, rgba(0,0,0,0.10) 58%, rgba(0,0,0,0) 100%)"
-    : "linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.5) 40%, rgba(0,0,0,0.82) 50%, rgba(0,0,0,0.5) 60%, rgba(0,0,0,0) 100%)"
+    ? "linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.07) 42%, rgba(0,0,0,0.14) 50%, rgba(0,0,0,0.07) 58%, rgba(0,0,0,0) 100%)"
+    : "linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.65) 50%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0) 100%)"
   const gutterMobile = isFolio
     ? "linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.06) 42%, rgba(0,0,0,0.12) 50%, rgba(0,0,0,0.06) 58%, rgba(0,0,0,0) 100%)"
-    : "linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 42%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.3) 58%, rgba(0,0,0,0) 100%)"
+    : "linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.22) 42%, rgba(0,0,0,0.38) 50%, rgba(0,0,0,0.22) 58%, rgba(0,0,0,0) 100%)"
 
   return (
    <>
@@ -41,7 +44,7 @@ export default function Centerfold() {
     {/* Desktop center-fold gutter — strong dark crease on dark pages, soft fold-shadow on folio */}
     {showGutter && (
       <div
-        className="hidden md:block fixed inset-y-0 left-1/2 -translate-x-1/2 w-[200px] z-40 pointer-events-none"
+        className="hidden md:block fixed inset-y-0 left-1/2 -translate-x-1/2 w-[200px] z-[45] pointer-events-none"
         style={{ background: gutterDesktop }}
       />
     )}
@@ -49,7 +52,7 @@ export default function Centerfold() {
     {/* Mobile center-fold gutter — narrower variant of the same */}
     {showGutter && (
       <div
-        className="md:hidden fixed inset-y-0 left-1/2 -translate-x-1/2 w-[150px] z-40 pointer-events-none"
+        className="md:hidden fixed inset-y-0 left-1/2 -translate-x-1/2 w-[150px] z-[45] pointer-events-none"
         style={{ background: gutterMobile }}
       />
     )}
