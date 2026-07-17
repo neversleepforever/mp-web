@@ -7,6 +7,9 @@ import Link from "next/link"
 import TextDistortFilter from "@/app/components/TextFilter"
 import FadeInImage from "@/app/components/FadeInImage"
 
+// Re-fetch from Sanity at most once per minute so content edits appear without a redeploy
+export const revalidate = 60
+
 interface SocialLink {
   displayTitle: string
   href: string

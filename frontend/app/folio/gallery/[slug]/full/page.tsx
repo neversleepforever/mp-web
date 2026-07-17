@@ -5,6 +5,9 @@ import Gallery, {GalleryImage} from "../../../../components/Gallery"
 import Submit from "@/app/components/Submit"
 import {  } from "@/app/components/Gallery"
 
+// Re-fetch from Sanity at most once per minute so content edits appear without a redeploy
+export const revalidate = 60
+
 export interface Folio {
   _id: string
   title?: string

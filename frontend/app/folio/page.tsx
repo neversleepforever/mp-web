@@ -7,6 +7,9 @@ import { urlFor } from "@/sanity/lib/imageBuilder"
 import FadeInImage from "@/app/components/FadeInImage"
 import { TransitionLink } from "../components/TransitionLink"
 
+// Re-fetch from Sanity at most once per minute so content edits appear without a redeploy
+export const revalidate = 60
+
 type ImageAsset = {
   _id: string
   metadata?: {

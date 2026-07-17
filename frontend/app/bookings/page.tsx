@@ -3,6 +3,9 @@ import { sanityFetch } from "@/sanity/lib/live"
 import { bookingsQuery } from "@/sanity/lib/queries"
 import JotformEmbed from "../components/JotFormEmbed"
 
+// Re-fetch from Sanity at most once per minute so content edits appear without a redeploy
+export const revalidate = 60
+
 type ImageAsset = {
   _id: string
   url?: string

@@ -8,6 +8,8 @@ import { servicesQuery } from "@/sanity/lib/queries"
 import { PortableText, type PortableTextComponents, type PortableTextBlock } from "next-sanity"
 import Link from "next/link"
 
+// Re-fetch from Sanity at most once per minute so content edits appear without a redeploy
+export const revalidate = 60
 
 type ImageAsset = {
   _id: string

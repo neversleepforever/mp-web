@@ -3,6 +3,9 @@ import { homeQuery } from "@/sanity/lib/queries"
 import TextDistortFilter from './components/TextFilter'
 import DraggableImages from './components/DraggableImages'
 
+// Re-fetch from Sanity at most once per minute so content edits appear without a redeploy
+export const revalidate = 60
+
 export default async function Page() {
   const { data: home } = await sanityFetch({ query: homeQuery })
   if (!home) return null
