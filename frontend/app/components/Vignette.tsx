@@ -1,0 +1,98 @@
+import type { CSSProperties } from "react"
+import FadeInImage from "@/app/components/FadeInImage"
+import {
+  VignetteBorderPortrait,
+  VignetteBorderLandscape,
+  VignetteBorderContentPortrait,
+  type PortraitGradient,
+} from "@/app/components/VignetteBorder"
+
+// Applies a mask SVG to an element via CSS (both standard and -webkit- for Safari).
+const maskStyle = (url: string): CSSProperties => ({
+  maskImage: `url(${url})`,
+  WebkitMaskImage: `url(${url})`,
+  maskSize: "100% 100%",
+  WebkitMaskSize: "100% 100%",
+  maskRepeat: "no-repeat",
+  WebkitMaskRepeat: "no-repeat",
+  maskPosition: "center",
+  WebkitMaskPosition: "center",
+})
+
+/** Portrait hero photo scaled inside the vignette mask, with the peach gradient
+ *  border. `uid` must be unique per instance (drives the border's gradient/filter
+ *  ids so two heroes on a page don't collide). */
+export function HeroVignette({
+  src,
+  alt,
+  blurDataURL,
+  className = "",
+  uid,
+  strokeWidth,
+  variant,
+}: {
+  src: string
+  alt: string
+  blurDataURL?: string
+  className?: string
+  uid: string
+  strokeWidth?: number
+  variant?: PortraitGradient
+}) {
+  return (
+    <div className={`relative ${className}`}>
+      <div className="absolute inset-0" style={maskStyle("/vignette-mask.svg")}>
+        <FadeInImage
+          src={src}
+          alt={alt}
+          blurDataURL={blurDataURL}
+          fill
+          className="object-cover object-top"
+        />
+      </div>
+      <VignetteBorderPortrait
+        uid={uid}
+        strokeWidth={strokeWidth}
+        variant={variant}
+        className="pointer-events-none absolute inset-0 h-full w-full select-none"
+      />
+    </div>
+  )
+}
+
+/** Content photo scaled inside a mask; the frame orientation (and its 2px light
+ *  border) follows the photo — portrait photo → portrait frame, else landscape. */
+export function ContentVignette({
+  src,
+  alt,
+  blurDataURL,
+  width,
+  height,
+  className = "",
+}: {
+  src: string
+  alt: string
+  blurDataURL?: string
+  width?: number
+  height?: number
+  className?: string
+}) {
+  const isPortrait = width != null && height != null ? height > width : false
+  const maskUrl = isPortrait ? "/vignette-cp-mask.svg" : "/vignette-h-mask.svg"
+  const Border = isPortrait ? VignetteBorderContentPortrait : VignetteBorderLandscape
+  const aspect = isPortrait ? "aspect-[612/889]" : "aspect-[612/406]"
+  return (
+    <div className={`relative w-full ${aspect} ${className}`}>
+      <div className="absolute inset-0" style={maskStyle(maskUrl)}>
+        <FadeInImage
+          src={src}
+          alt={alt}
+          fill
+          blurDataURL={blurDataURL}
+          className="object-cover md:grayscale md:contrast-200"
+        />
+      </div>
+      <Border className="pointer-events-none absolute inset-0 h-full w-full select-none" />
+    </div>
+  )
+}

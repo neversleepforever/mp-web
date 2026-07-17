@@ -2,6 +2,7 @@ import React from "react"
 import FadeInImage from "@/app/components/FadeInImage"
 import Rates from "@/app/components/Rates"
 import TextDistortFilter from "@/app/components/TextFilter"
+import { HeroVignette, ContentVignette } from "@/app/components/Vignette"
 import { sanityFetch } from "@/sanity/lib/live"
 import { servicesQuery } from "@/sanity/lib/queries"
 import { PortableText, type PortableTextComponents, type PortableTextBlock } from "next-sanity"
@@ -89,144 +90,159 @@ export default async function ServicesPage() {
     return <p>No Services content found. Add it in Sanity Studio.</p>
   }
 
-    if (!services) return <p>No Services content found. Add it in Sanity Studio.</p>
+  const heroImage = services.image
+  const heroAsset = heroImage?.asset
+  const heroSrc = heroAsset?.url || ""
+  const heroAlt = heroImage?.alt || "Cover Image"
 
-  const heroImage = services.image;
-  const heroAsset = heroImage?.asset;
+  const content = services.content ?? []
+
+  // On mobile the hero renders inside the first services section, right under
+  // its "Maggie Peach Services" title. This flag makes sure it's inserted once.
+  let heroInserted = false
+
+  const mainComponents: PortableTextComponents = {
+    block: {
+      h1: ({ children }) => (
+        <TextDistortFilter>
+          <h1 className="heading-1 flex justify-center items-center flex-wrap">{replaceEmoji(children)}</h1>
+        </TextDistortFilter>
+      ),
+      h2: ({ children }) => (
+        <TextDistortFilter>
+          <h2 className="heading-2 flex justify-center items-center flex-wrap">{replaceEmoji(children)}</h2>
+        </TextDistortFilter>
+      ),
+      h3: ({ children }) => (
+        <TextDistortFilter>
+          <h3 className="heading-3 flex justify-center items-center flex-wrap">{replaceEmoji(children)}</h3>
+        </TextDistortFilter>
+      ),
+      h4: ({ children }) => (
+        <TextDistortFilter>
+          <h4 className="heading-4 flex justify-center items-center flex-wrap text-black">{replaceEmoji(children)}</h4>
+        </TextDistortFilter>
+      ),
+      normal: ({ children }) => (
+        <TextDistortFilter>
+          <p className="mt-6 font-sans">{replaceEmoji(children)}</p>
+        </TextDistortFilter>
+      ),
+    },
+    types: {
+      ...portableTextComponents.types,
+      servicesSection: ({ value }) => {
+        const first = !heroInserted
+        if (first) heroInserted = true
+        return (
+          <div className="relative p-4 my-4">
+            {/* Distorted border overlay (kept separate so the hero stays crisp) */}
+            <TextDistortFilter className="pointer-events-none absolute inset-0">
+              <div className="h-full w-full border" />
+            </TextDistortFilter>
+            <TextDistortFilter>
+              <h1 className="heading-1 mb-6 flex justify-center items-center flex-wrap">{value.title}</h1>
+            </TextDistortFilter>
+            {/* Mobile hero — crisp, under the first section's title */}
+            {first && (
+              <HeroVignette
+                src={heroSrc}
+                alt={heroAlt}
+                blurDataURL={heroAsset?.metadata?.lqip}
+                uid="svc-hero-mobile"
+                strokeWidth={4.75}
+                variant="rose"
+                className="md:hidden aspect-[480/910] w-full max-w-[360px] mx-auto my-6"
+              />
+            )}
+            <TextDistortFilter>
+              <div className="[&_p]:text-justify text-[20px]">
+                <PortableText value={value.body} components={portableTextComponents} />
+              </div>
+            </TextDistortFilter>
+          </div>
+        )
+      },
+      ratesSection: ({ value }) => (
+        <TextDistortFilter>
+          <div className="border">
+            <Rates title={value.title} />
+            <Link href={`mailto:"${services.bannerEmail}"`}>
+              <div className="flex justify-center bg-white text-[12px] py-[10px] px-16 text-center lg:px-4 lg:[&_br]:hidden">
+                <PortableText value={value.Banner} components={portableTextComponents} />
+              </div>
+            </Link>
+            <div className="p-4 text-center [&_ul]:mt-6 text-[20px]">
+              <PortableText value={value.rates} components={portableTextComponents} />
+            </div>
+          </div>
+        </TextDistortFilter>
+      ),
+      outcallSection: ({ value }) => (
+        <TextDistortFilter>
+          <div className="border p-4 my-4">
+            <div className="text-center text-[20px]">
+              <PortableText value={value.body} components={portableTextComponents} />
+            </div>
+          </div>
+        </TextDistortFilter>
+      ),
+      virtualSection: ({ value }) => (
+        <TextDistortFilter>
+          <div className="border p-4 my-4">
+            <div className="text-center text-[20px]">
+              <PortableText value={value.body} components={portableTextComponents} />
+            </div>
+          </div>
+        </TextDistortFilter>
+      ),
+      image: ({ value }) => {
+        if (!value?.asset?.url) return null
+        const dims = value.asset.metadata?.dimensions
+        return (
+          <TextDistortFilter>
+            <div className="mt-4">
+              <ContentVignette
+                src={value.asset.url}
+                alt={value.alt || ""}
+                blurDataURL={value.asset.metadata?.lqip}
+                width={dims?.width}
+                height={dims?.height}
+              />
+              {value.caption && (
+                <figcaption className="heading-1 text-justify break-normal pt-4">{value.caption}</figcaption>
+              )}
+            </div>
+          </TextDistortFilter>
+        )
+      },
+    },
+  }
 
   return (
     <>
-
       <div className="md:grid md:grid-cols-2 dark:text-white bg-[#454545]">
-        <div className="relative w-full h-full bg-black">
-                   <FadeInImage
-                     src={heroAsset?.url || ""}
-                     alt={heroImage?.alt || "Cover Image"}
-                     blurDataURL={heroAsset?.metadata?.lqip}
-                     fill
-                     className="object-cover object-top mix-blend-exclusion"
-                   />
-          
+        {/* Hero — desktop only (left column). On mobile it renders inside the
+            content column, under the heading. */}
+        <div className="relative hidden md:flex items-center justify-center overflow-hidden bg-[#0b0b0b] bg-[url('/images/book-bg-texture.svg'),url('/images/scantexture.jpg')] bg-cover bg-center md:h-[100dvh] md:p-8">
+          <HeroVignette
+            src={heroSrc}
+            alt={heroAlt}
+            blurDataURL={heroAsset?.metadata?.lqip}
+            uid="svc-hero-desktop"
+            variant="rose"
+            className="aspect-[480/910] w-full max-w-[340px] h-auto lg:h-[77dvh] lg:w-auto lg:max-w-none"
+          />
         </div>
 
-      <div className="relative scrollbar-hide bg-[url('/images/scantexture.jpg')] bg-cover bg-center md:col-start-2 pt-8 pb-12 px-6 md:py-12 md:pl-4 md:pr-6 md:h-[100dvh] md:overflow-y-scroll xl:px-26">
+        <div className="relative scrollbar-hide bg-[url('/images/scantexture.jpg')] bg-cover bg-center md:col-start-2 pt-8 pb-12 px-6 md:py-12 md:pl-4 md:pr-6 md:h-[100dvh] md:overflow-y-scroll xl:px-26">
           <div>
-          {services.content?.length ? (
-            <PortableText
-              value={services.content}
-              components={{
-                ...portableTextComponents,
-                block: {
-                  h1: ({ children }) => (
-                    <TextDistortFilter>
-                      <h1 className="heading-1 flex justify-center items-center flex-wrap">{replaceEmoji(children)}</h1>
-                    </TextDistortFilter>
-                  ),
-                  h2: ({ children }) => (
-                    <TextDistortFilter>
-                      <h2 className="heading-2 flex justify-center items-center flex-wrap">{replaceEmoji(children)}</h2>
-                    </TextDistortFilter>
-                  ),
-                  h3: ({ children }) => (
-                    <TextDistortFilter>
-                      <h3 className="heading-3 flex justify-center items-center flex-wrap">{replaceEmoji(children)}</h3>
-                    </TextDistortFilter>
-                  ),
-                  h4: ({ children }) => (
-                    <TextDistortFilter>
-                      <h4 className="heading-4 flex justify-center items-center flex-wrap text-black">{replaceEmoji(children)}</h4>
-                    </TextDistortFilter>
-                  ),
-                  normal: ({ children }) => (
-                    <TextDistortFilter>
-                      <p className="mt-6 font-sans">{replaceEmoji(children)}</p>
-                    </TextDistortFilter>
-                  ),
-                },
-                types: {
-                  ...portableTextComponents.types,
-                  servicesSection: ({ value }) => (
-                    <TextDistortFilter>
-                    <div className="border p-4 my-4">
-                      <h1 className="heading-1 mb-6 flex justify-center items-center flex-wrap">{value.title}</h1>
-                      <div className="[&_p]:text-justify text-[20px]">
-                        <PortableText
-                          value={value.body}
-                          components={portableTextComponents}
-                        />
-                      </div>
-                    </div>
-                    </TextDistortFilter>
-                  ),
-                  ratesSection: ({ value }) => (
-                    <TextDistortFilter>
-                    <div className="border">
-                      <Rates title={value.title} />
-                      <Link href={`mailto:"${services.bannerEmail}"`}>
-                        <div className="flex justify-center bg-white text-[12px] py-[10px] px-16 text-center lg:px-4 lg:[&_br]:hidden">
-                          <PortableText
-                            value={value.Banner}
-                            components={portableTextComponents}
-                          />
-                        </div>
-                      </Link>
-                      <div className="p-4 text-center [&_ul]:mt-6 text-[20px]">
-                        <PortableText value={value.rates} components={portableTextComponents} />
-                      </div>
-                    </div>
-                    </TextDistortFilter>
-                  ),
-                  outcallSection: ({ value }) => (
-                    <TextDistortFilter>
-                    <div className="border p-4 my-4">
-                      <div className="text-center text-[20px]">
-                        <PortableText value={value.body} components={portableTextComponents} />
-                      </div>
-                    </div>
-                    </TextDistortFilter>
-                  ),
-                  virtualSection: ({ value }) => (
-                    <TextDistortFilter>
-                    <div className="border p-4 my-4">
-                      <div className="text-center text-[20px]">
-                        <PortableText value={value.body} components={portableTextComponents} />
-                      </div>
-                    </div>
-                    </TextDistortFilter>
-                  ),
-                  image: ({ value }) => {
-                                    if (!value?.asset?.url) return null
-                                  
-                                    const url = value.asset.url
-                                    const width = value.asset.metadata?.dimensions?.width || 800
-                                    const height = value.asset.metadata?.dimensions?.height || 600
-                                    return (
-                                      <TextDistortFilter>
-                                      <div className="mt-4 mix-blend-difference md:grayscale md:contrast-200">
-                                        <FadeInImage
-                                          src={url}
-                                          alt={value.alt || ""}
-                                          width={width}
-                                          height={height}
-                                          blurDataURL={value.asset.metadata?.lqip}
-                                          className="border-white border-1"
-                                        />
-                                    {value.caption && (
-                                      <figcaption className="heading-1 text-justify break-normal pt-4">{value.caption}</figcaption>
-                                    )}
-                                      </div>
-                                      </TextDistortFilter>
-                                    )
-                                  },
-                },
-              }}
-            />
-            
-          ) : (
-            <p>No content added yet.</p>
-          )}
+            {content.length ? (
+              <PortableText value={content} components={mainComponents} />
+            ) : (
+              <p>No content added yet.</p>
+            )}
           </div>
-
         </div>
       </div>
       <FadeInImage src="/images/band.png" alt="Adults Only" width={200} height={200} className="fixed box-content bottom-[0px] right-[0px] z-50 overflow-hidden" />

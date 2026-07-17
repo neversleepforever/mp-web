@@ -209,20 +209,42 @@ export default function Gallery({
           ref={mainImageRef}
           className="flex-1 flex justify-center items-end lg:items-center overflow-hidden scrollbar-hide pt-12 p-6 md:px-20 lg:p-0"
         >
-          <figure className="relative w-full h-full">
+          <figure className="relative w-full h-full overflow-hidden">
             {images.map((img, i) => {
               const fullSrc = urlFor(img.asset).width(1600).quality(60).url()
+              // On mobile, portraits fill the frame (cover) but landscape images
+              // keep their natural short proportions (contain) instead of being
+              // scaled up to portrait height. Desktop always contains.
+              const dims = img.asset.metadata?.dimensions
+              const isLandscape = dims ? dims.width > dims.height : false
+              // Shortest circular offset so next is always +1 (below) and prev
+              // -1 (above) — this makes last↔first wrap as a seamless loop.
+              const n = images.length
+              let offset = (((i - selectedIndex) % n) + n) % n
+              if (offset > n / 2) offset -= n
               return (
                 <div
                   key={i}
-                  className={`absolute inset-0 ${i === selectedIndex ? "opacity-100" : "opacity-0"}`}
+                  className="absolute inset-0 will-change-transform"
+                  style={{
+                    // Vertical slide + crossfade: the selected image slides to
+                    // centre and fades in; its neighbours slide away and fade out.
+                    transform: `translateY(${offset * 100}%)`,
+                    opacity: offset === 0 ? 1 : 0,
+                    // Only the on-screen neighbours animate; off-screen images
+                    // (incl. the one that wraps sides) snap so nothing flashes across.
+                    transition:
+                      Math.abs(offset) <= 1
+                        ? "transform 500ms ease-out, opacity 500ms ease-out"
+                        : "none",
+                  }}
                 >
                   <img
                     src={fullSrc}
                     alt={img.alt || title || ""}
                     onLoad={() => handleLoad(i)}
-                    className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ${
-                      i === selectedIndex ? "opacity-100" : "opacity-0"
+                    className={`absolute inset-0 w-full h-full lg:object-contain ${
+                      isLandscape ? "object-contain" : "object-cover"
                     }`}
                     draggable={false}
                   />
@@ -251,7 +273,7 @@ export default function Gallery({
                 }}
                 className={`relative snap-center snap-always flex-shrink-0 overflow-hidden h-20 w-auto lg:w-full lg:h-auto ${
                   i === images.length - 1 ? "lg:mb-12" : ""
-                } ${i === selectedIndex ? "outline outline-2 outline-white outline-offset-[-2px]" : "outline-none"}`}
+                }`}
                 aria-label={`Select image ${i + 1}`}
               >
                 <Image
@@ -263,6 +285,11 @@ export default function Gallery({
                   blurDataURL={img.asset.metadata?.lqip}
                   className="h-full w-auto lg:w-full lg:h-auto object-contain"
                 />
+                {i === selectedIndex && (
+                  <TextDistortFilter className="pointer-events-none absolute inset-0 z-10">
+                    <div className="h-full w-full outline outline-2 outline-white outline-offset-[-2px]" />
+                  </TextDistortFilter>
+                )}
               </button>
             ) : null
           )}
