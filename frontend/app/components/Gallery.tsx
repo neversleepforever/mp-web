@@ -95,11 +95,19 @@ export default function Gallery({
 
     let scrollTimeout: NodeJS.Timeout | null = null
     let scrollAccumulated = 0
-    const SCROLL_THRESHOLD = 20
-    const COOLDOWN_MS = 200
+    let isLocked = false
+    const SCROLL_THRESHOLD = 40
+    // Fixed cooldown: after a step we ignore wheel events for COOLDOWN_MS, then
+    // re-arm. The timer runs independently of incoming events, so this keeps the
+    // pace snappy (one image per ~280ms while scrolling) rather than waiting for a
+    // flick's full momentum tail to die. Trade-off: a hard pull whose inertia
+    // outlasts the cooldown can advance more than one image.
+    const COOLDOWN_MS = 290
 
     const handleWheel = (e: WheelEvent) => {
       if (!container.contains(e.target as Node)) return
+
+      if (isLocked) return
 
       scrollAccumulated += e.deltaY
 
@@ -108,8 +116,10 @@ export default function Gallery({
         else goPrev()
 
         scrollAccumulated = 0
+        isLocked = true
         if (scrollTimeout) clearTimeout(scrollTimeout)
         scrollTimeout = setTimeout(() => {
+          isLocked = false
           scrollAccumulated = 0
         }, COOLDOWN_MS)
       }
@@ -120,7 +130,11 @@ export default function Gallery({
       window.removeEventListener("wheel", handleWheel)
       if (scrollTimeout) clearTimeout(scrollTimeout)
     }
-  }, [images.length, selectedIndex])
+    // Note: selectedIndex is intentionally NOT a dependency — goNext/goPrev use
+    // functional updates, so the listener never needs to be re-subscribed. If it
+    // were, every navigation would reset the debounce lock and a single trackpad
+    // flick would whip through several images.
+  }, [images.length])
 
   // Mobile/tablet thumbnail scroll selection
   useEffect(() => {
