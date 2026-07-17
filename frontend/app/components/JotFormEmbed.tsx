@@ -26,7 +26,7 @@ export default function JotformEmbed({ formId }: { formId: string }) {
   const ready = iframeLoaded && minElapsed
 
   return (
-    <div className="relative w-full h-full">
+    <div className="relative w-full">
       {!ready && (
         <div className="absolute inset-0 flex flex-col gap-6 px-2 py-8 pointer-events-none animate-pulse">
           {/* heading */}
@@ -43,13 +43,13 @@ export default function JotformEmbed({ formId }: { formId: string }) {
         </div>
       )}
       <iframe
-        src={`https://form.jotform.com/${formId}`}
+        src={`https://form.jotform.com/${formId}?v=2`}
         onLoad={() => setIframeLoaded(true)}
-        className={`w-full h-full border-none bg-transparent transition-opacity duration-500 ${
+        className={`block w-full border-none bg-transparent transition-opacity duration-500 ${
           ready ? "opacity-100" : "opacity-0"
         }`}
-        style={{ minHeight: "100%" }}
-        scrolling="yes"
+        style={{ height: "3000px" }}
+        scrolling="no"
         allowFullScreen
       />
     </div>
