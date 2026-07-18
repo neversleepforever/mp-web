@@ -105,7 +105,7 @@ export default async function ContactPage() {
         />
       </div>
 
-      <div className="hidden overflow-hidden md:block md:absolute inset-y-0 left-0 w-1/2 bg-[url('/images/book-bg-texture.svg'),url('/images/scantexture.jpg')] bg-cover bg-center opacity-70" />
+      <div className="hidden overflow-hidden md:block md:absolute inset-y-0 left-0 w-1/2 bg-[url('/images/scantexture.jpg')] bg-cover bg-center opacity-70" />
  
       <section style={{ height: "100svh" }} className="overflow-hidden pointer-events-none w-full col-start-1 row-start-1 col-span-2 row-span-1 flex flex-1 pt-16 px-6 md:px-0 md:pt-0 md:items-center justify-center z-40 md:pr-0 dark:text-white ">
      <TextDistortFilter>

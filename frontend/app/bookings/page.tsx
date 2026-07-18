@@ -48,7 +48,7 @@ export default async function BookingPage() {
   return (
     <>
       <div className="md:grid md:grid-cols-2 dark:text-white bg-[#454545] h-[100dvh]">
-        <div className="relative hidden md:flex items-center justify-center overflow-hidden bg-[#0b0b0b] bg-[url('/images/book-bg-texture.svg'),url('/images/scantexture.jpg')] bg-cover bg-center md:h-[100dvh] md:p-8">
+        <div className="relative hidden md:flex items-center justify-center overflow-hidden bg-[#0b0b0b] bg-[url('/images/scantexture.jpg')] bg-cover bg-center md:h-[100dvh] md:p-8">
           <HeroVignette
             src={heroSrc}
             alt={heroAlt}
