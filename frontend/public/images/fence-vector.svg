@@ -1,0 +1,22 @@
+<svg width="680" height="560" viewBox="0 0 680 560" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" role="img">
+  <title>Vector chain-link fence</title>
+  <desc>A scalable chain-link diamond mesh in white galvanized wire on a dark night background.</desc>
+  <defs>
+    <pattern id="mesh" width="58" height="58" patternUnits="userSpaceOnUse">
+      <g fill="none" stroke-linecap="round">
+        <path d="M0 0 Q32 29 58 58" stroke="#8b9199" stroke-width="6"/>
+        <path d="M58 0 Q26 29 0 58" stroke="#8b9199" stroke-width="6"/>
+        <path d="M0 0 Q32 29 58 58" stroke="#eef3f7" stroke-width="3"/>
+        <path d="M58 0 Q26 29 0 58" stroke="#eef3f7" stroke-width="3"/>
+        <circle cx="29" cy="29" r="2.4" fill="#dfe6ec"/>
+      </g>
+    </pattern>
+    <radialGradient id="vig" cx="50%" cy="46%" r="70%">
+      <stop offset="55%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.6"/>
+    </radialGradient>
+  </defs>
+  <rect width="680" height="560" fill="#14171b"/>
+  <rect width="680" height="560" fill="url(#mesh)"/>
+  <rect width="680" height="560" fill="url(#vig)"/>
+</svg>
