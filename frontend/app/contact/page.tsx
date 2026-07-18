@@ -2,10 +2,10 @@ import { sanityFetch } from "@/sanity/lib/live"
 import { defineQuery } from "next-sanity"
 import { aboutQuery } from "@/sanity/lib/queries"
 import { PortableText, type PortableTextBlock } from "next-sanity"
-import Image from "next/image"
 import Link from "next/link"
 import TextDistortFilter from "@/app/components/TextFilter"
 import FadeInImage from "@/app/components/FadeInImage"
+import { ContentVignette } from "@/app/components/Vignette"
 
 // Re-fetch from Sanity at most once per minute so content edits appear without a redeploy
 export const revalidate = 60
@@ -73,13 +73,13 @@ export default async function ContactPage() {
                       const dims = value.asset?.metadata?.dimensions
                       if (!url || !dims) return null
                       return (
-                        <div className="mt-6 grayscale mix-blend-difference">
-                          <Image
+                        <div className="mt-6 mix-blend-difference">
+                          <ContentVignette
                             src={url}
                             alt={value.alt || ""}
+                            blurDataURL={value.asset?.metadata?.lqip}
                             width={dims.width}
                             height={dims.height}
-                            className="border-white border"
                           />
                         </div>
                       )
