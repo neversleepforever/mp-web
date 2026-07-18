@@ -137,7 +137,7 @@ export default async function ServicesPage() {
         const first = !heroInserted
         if (first) heroInserted = true
         return (
-          <div className="relative p-4 my-4">
+          <div className="relative p-4 my-4 bg-black md:bg-transparent">
             {/* Distorted border overlay (kept separate so the hero stays crisp) */}
             <TextDistortFilter className="pointer-events-none absolute inset-0">
               <div className="h-full w-full border" />
@@ -167,7 +167,7 @@ export default async function ServicesPage() {
       },
       ratesSection: ({ value }) => (
         <TextDistortFilter>
-          <div className="border">
+          <div className="border bg-black md:bg-transparent">
             <Rates title={value.title} />
             <Link href={`mailto:"${services.bannerEmail}"`}>
               <div className="flex justify-center bg-white text-[12px] py-[10px] px-16 text-center lg:px-4 lg:[&_br]:hidden">
@@ -182,7 +182,7 @@ export default async function ServicesPage() {
       ),
       outcallSection: ({ value }) => (
         <TextDistortFilter>
-          <div className="border p-4 my-4">
+          <div className="border p-4 my-4 bg-black md:bg-transparent">
             <div className="text-center text-[20px]">
               <PortableText value={value.body} components={portableTextComponents} />
             </div>
@@ -191,7 +191,7 @@ export default async function ServicesPage() {
       ),
       virtualSection: ({ value }) => (
         <TextDistortFilter>
-          <div className="border p-4 my-4">
+          <div className="border p-4 my-4 bg-black md:bg-transparent">
             <div className="text-center text-[20px]">
               <PortableText value={value.body} components={portableTextComponents} />
             </div>

@@ -57,8 +57,11 @@ export default function Centerfold() {
       />
     )}
 
-    {/* Base shadow layer — always present */}
-    <div className="fixed z-50 inset-0 mix-blend-exclusion pointer-events-none">
+    {/* Base shadow layer — always present.
+        Shadow2.png is only 367px wide, so desktop upscales it ~3.5x into a soft, wide fold
+        while mobile renders it near 1:1, leaving a crisp/hard crease. Blur it on mobile only
+        to recover the same soft fold. */}
+    <div className="fixed z-50 inset-0 mix-blend-exclusion pointer-events-none blur-[5px] md:blur-none">
       <Image
         src="/images/Shadow2.png"
         alt=""
@@ -67,9 +70,10 @@ export default function Centerfold() {
       />
     </div>
 
-    {/* Second shadow layer — only on dark pages, stacked for density */}
+    {/* Second shadow layer — only on dark pages, stacked for density (desktop only;
+        on narrow mobile the doubled exclusion turns the soft fold into a harsh seam) */}
     {isDark && (
-      <div className="fixed z-50 inset-0 mix-blend-exclusion pointer-events-none">
+      <div className="hidden md:block fixed z-50 inset-0 mix-blend-exclusion pointer-events-none">
         <Image
           src="/images/Shadow2.png"
           alt=""
