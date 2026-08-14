@@ -1,3 +1,4 @@
+import { redirect } from 'next/navigation'
 import { sanityFetch } from '@/sanity/lib/live'
 import { homeQuery } from "@/sanity/lib/queries"
 import TextDistortFilter from './components/TextFilter'
@@ -7,6 +8,8 @@ import DraggableImages from './components/DraggableImages'
 export const revalidate = 60
 
 export default async function Page() {
+  // Temporarily send visitors straight to the folio — remove this line to bring back the magazine-cover landing page
+  redirect('/folio')
   const { data: home } = await sanityFetch({ query: homeQuery })
   if (!home) return null
 

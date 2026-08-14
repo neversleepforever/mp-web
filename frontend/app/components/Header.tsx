@@ -29,9 +29,9 @@ export default function Header() {
         <nav className="w-full">
             <TextDistortFilter>
           <ul className="flex w-full justify-between text-xs sm:text-base tracking-tight font-nav uppercase">
-              <li key={"/"} className="hidden lg:block">
+              <li key={"/folio"} className="hidden lg:block">
                 <TransitionLink
-                  href={"/"}
+                  href={"/folio"}
                 >
                   
                     <Image

@@ -19,6 +19,13 @@ const maskStyle = (url: string): CSSProperties => ({
   WebkitMaskPosition: "center",
 })
 
+// Without a `sizes` prop, a `fill` image falls back to 100vw and the browser
+// downloads the largest srcset candidate (3840px) — ~100x the pixels needed on a
+// phone. These describe the real rendered widths so the browser picks sanely.
+// Hero caps around 340-400px wide; content photos fill their column.
+const HERO_SIZES = "(min-width: 768px) 400px, 100vw"
+const CONTENT_SIZES = "(min-width: 1280px) 40vw, (min-width: 768px) 50vw, 100vw"
+
 /** Portrait hero photo scaled inside the vignette mask, with the peach gradient
  *  border. `uid` must be unique per instance (drives the border's gradient/filter
  *  ids so two heroes on a page don't collide). */
@@ -30,6 +37,7 @@ export function HeroVignette({
   uid,
   strokeWidth,
   variant,
+  sizes = HERO_SIZES,
 }: {
   src: string
   alt: string
@@ -38,6 +46,7 @@ export function HeroVignette({
   uid: string
   strokeWidth?: number
   variant?: PortraitGradient
+  sizes?: string
 }) {
   return (
     <div className={`relative ${className}`}>
@@ -47,6 +56,7 @@ export function HeroVignette({
           alt={alt}
           blurDataURL={blurDataURL}
           fill
+          sizes={sizes}
           className="object-cover object-top"
         />
       </div>
@@ -69,6 +79,7 @@ export function ContentVignette({
   width,
   height,
   className = "",
+  sizes = CONTENT_SIZES,
 }: {
   src: string
   alt: string
@@ -76,6 +87,7 @@ export function ContentVignette({
   width?: number
   height?: number
   className?: string
+  sizes?: string
 }) {
   const isPortrait = width != null && height != null ? height > width : false
   const maskUrl = isPortrait ? "/vignette-cp-mask.svg" : "/vignette-h-mask.svg"
@@ -89,6 +101,7 @@ export function ContentVignette({
           alt={alt}
           fill
           blurDataURL={blurDataURL}
+          sizes={sizes}
           className="object-cover md:grayscale md:contrast-200"
         />
       </div>

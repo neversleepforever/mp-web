@@ -34,7 +34,7 @@ export default function Footer() {
             )}
           </div>
           <div className=" h-[30px] flex-shrink-0 flex justify-center">
-            <TransitionLink href={"/"}>
+            <TransitionLink href={"/folio"}>
               <Image
                 src="/images/logo/mistress-maggie-peach-1-line-black.svg"
                 alt="Logo"

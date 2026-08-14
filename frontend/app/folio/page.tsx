@@ -88,6 +88,7 @@ export default async function FolioIndexPage() {
                     src={previewImage}
                     alt={alt}
                     fill
+                    sizes="(min-width: 1280px) 380px, (min-width: 768px) 300px, 100vw"
                     placeholder={asset?.metadata?.lqip ? "blur" : "empty"}
                     blurDataURL={asset?.metadata?.lqip}
                     className="object-cover object-center "

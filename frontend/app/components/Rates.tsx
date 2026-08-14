@@ -21,6 +21,7 @@ export default function Rates({ title }: RatesProps) {
         src="/images/discover.jpg"
         alt="Discover"
         fill
+        sizes="55px"
         className="object-contain"
       />
     </div>
@@ -29,6 +30,7 @@ export default function Rates({ title }: RatesProps) {
         src="/images/amex.jpg"
         alt="Amex"
         fill
+        sizes="55px"
         className="object-contain"
       />
     </div>
@@ -62,6 +64,7 @@ export default function Rates({ title }: RatesProps) {
         src="/images/mastercard.jpg"
         alt="MasterCard"
         fill
+        sizes="55px"
         className="object-contain"
       />
     </div>
@@ -70,6 +73,7 @@ export default function Rates({ title }: RatesProps) {
         src="/images/visa.jpg"
         alt="Visa"
         fill
+        sizes="55px"
         className="object-contain"
       />
     </div>
