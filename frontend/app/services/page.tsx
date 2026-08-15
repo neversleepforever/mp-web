@@ -170,8 +170,18 @@ export default async function ServicesPage() {
           <div className="border bg-black md:bg-transparent">
             <Rates title={value.title} />
             <Link href={`mailto:"${services.bannerEmail}"`}>
-              <div className="flex justify-center bg-white text-[12px] py-[10px] px-16 text-center lg:px-4 lg:[&_br]:hidden">
-                <PortableText value={value.Banner} components={portableTextComponents} />
+              {/* Block, not flex: as a flex item the copy shrink-wrapped to its
+                  own content width and sat centred with uneven gaps that looked
+                  like a margin. text-center handles the alignment. */}
+              <div className="bg-white text-[12.5px] p-4 text-center">
+                {/* Render Sanity's hard breaks as spaces rather than <br>. Keeping
+                    them pinned the copy to its own natural width so the band never
+                    filled below lg; hiding them in CSS dropped the space instead
+                    and ran "PERFORMANCE,CUSTOM" together. */}
+                <PortableText
+                  value={value.Banner}
+                  components={{ ...portableTextComponents, hardBreak: () => " " }}
+                />
               </div>
             </Link>
             <div className="p-4 text-center [&_ul]:mt-6 text-[20px]">
@@ -247,7 +257,9 @@ export default async function ServicesPage() {
           </div>
         </div>
       </div>
-      <FadeInImage src="/images/band.png" alt="Adults Only" width={200} height={200} className="fixed box-content bottom-[0px] right-[0px] z-50 overflow-hidden" />
+      {/* Fixed overlay — never gate it behind the scroll reveal, or a missed
+          observer leaves the corner blank. */}
+      <FadeInImage revealImmediately src="/images/band.png" alt="Adults Only" width={200} height={200} className="fixed box-content bottom-[0px] right-[0px] z-50 overflow-hidden" />
     </>
   )
 }
