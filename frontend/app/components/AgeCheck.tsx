@@ -3,10 +3,12 @@ import { useState, useEffect } from "react"
 import Marquee from "react-fast-marquee";
 import TextDistortFilter from "./TextFilter";
 
+// GROQ returns null for an unset field, not undefined — the `??` fallbacks below
+// handle either.
 type AgeCheckContent = {
-  marqueeText?: string
-  bodyText?: string
-  buttonText?: string
+  marqueeText?: string | null
+  bodyText?: string | null
+  buttonText?: string | null
 }
 
 export default function AgeCheck({

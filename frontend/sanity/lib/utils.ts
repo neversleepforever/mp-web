@@ -45,8 +45,19 @@ export function resolveOpenGraphImage(image: any, width = 1200, height = 627) {
   return {url, alt: image?.alt as string, width, height}
 }
 
+/** The `link` object in the schema only defines displayTitle/href/openInNewTab.
+ *  `linkType`, `page` and `post` are leftovers from the Sanity starter template
+ *  that this resolver still branches on — harmless at runtime (the branches just
+ *  never match), but they aren't on the generated Link type. Declared here so the
+ *  legacy handling keeps compiling without changing any behaviour. */
+type ResolvableLink = Link & {
+  linkType?: string
+  page?: string
+  post?: string
+}
+
 // Depending on the type of link, we need to fetch the corresponding page, post, or URL.  Otherwise return null.
-export function linkResolver(link: Link | undefined) {
+export function linkResolver(link: ResolvableLink | undefined) {
   if (!link) return null
 
   // If linkType is not set but href is, lets set linkType to "href".  This comes into play when pasting links into the portable text editor because a link type is not assumed.
