@@ -52,12 +52,25 @@ export default function Gallery({
   const goNext = () =>
     setSelectedIndex((i) => (i + 1) % images.length)
 
+  // Two frames, so a cached image has a painted opacity-0 frame to fade from —
+  // without it the browser jumps straight to opaque and the photo pops in.
   const handleLoad = (index: number) => {
-    setLoaded((prev) => {
-      const updated = [...prev]
-      updated[index] = true
-      return updated
-    })
+    requestAnimationFrame(() =>
+      requestAnimationFrame(() =>
+        setLoaded((prev) => {
+          if (prev[index]) return prev
+          const updated = [...prev]
+          updated[index] = true
+          return updated
+        })
+      )
+    )
+  }
+
+  // A cached image can finish before React attaches onLoad, so that event never
+  // fires. Catch it from the ref instead, or the slide stays invisible forever.
+  const catchAlreadyLoaded = (el: HTMLImageElement | null, index: number) => {
+    if (el?.complete && el.naturalWidth > 0) handleLoad(index)
   }
 
   const hideArrows = pathname.includes("/journal")
@@ -244,7 +257,9 @@ export default function Gallery({
                     // Vertical slide + crossfade: the selected image slides to
                     // centre and fades in; its neighbours slide away and fade out.
                     transform: `translateY(${offset * 100}%)`,
-                    opacity: offset === 0 ? 1 : 0,
+                    // Hold the slide transparent until its photo has decoded so
+                    // it fades in like the rest of the site instead of popping.
+                    opacity: offset === 0 && loaded[i] ? 1 : 0,
                     // Only the on-screen neighbours animate; off-screen images
                     // (incl. the one that wraps sides) snap so nothing flashes across.
                     transition:
@@ -256,7 +271,10 @@ export default function Gallery({
                   <img
                     src={fullSrc}
                     alt={img.alt || title || ""}
+                    ref={(el) => catchAlreadyLoaded(el, i)}
                     onLoad={() => handleLoad(i)}
+                    // A broken image must not leave the slide permanently blank.
+                    onError={() => handleLoad(i)}
                     className={`absolute inset-0 w-full h-full lg:object-contain ${
                       isLandscape ? "object-contain" : "object-cover"
                     }`}

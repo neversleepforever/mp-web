@@ -31,12 +31,34 @@ interface AboutData {
   image?: AboutImage
 }
 
+// Distortion is applied per text block rather than once around the whole column
+// so photos stay outside the filter — the same split the heroes already use, and
+// the way Services does it. An SVG filter re-rasterises its entire subtree on any
+// change inside it, so a filter wrapping both the text and the photos made every
+// frame of a photo's fade re-run feTurbulence over ~1700px. On a phone that drops
+// frames and the fade reads as a blink.
 const portableComponents: PortableTextComponents = {
   block: {
-    h1: ({ children }) => <h1 className="heading-1 [text-wrap:balance]">{children}</h1>,
-    h2: ({ children }) => <h2 className="heading-2">{children}</h2>,
-    h3: ({ children }) => <h3 className="heading-3">{children}</h3>,
-    normal: ({ children }) => <p className="font-sans text-[22px] mt-6">{children}</p>,
+    h1: ({ children }) => (
+      <TextDistortFilter>
+        <h1 className="heading-1 [text-wrap:balance]">{children}</h1>
+      </TextDistortFilter>
+    ),
+    h2: ({ children }) => (
+      <TextDistortFilter>
+        <h2 className="heading-2">{children}</h2>
+      </TextDistortFilter>
+    ),
+    h3: ({ children }) => (
+      <TextDistortFilter>
+        <h3 className="heading-3">{children}</h3>
+      </TextDistortFilter>
+    ),
+    normal: ({ children }) => (
+      <TextDistortFilter>
+        <p className="font-sans text-[22px] mt-6">{children}</p>
+      </TextDistortFilter>
+    ),
   },
   types: {
     image: ({ value }) => {
@@ -96,9 +118,7 @@ export default async function AboutPage() {
             {content.length ? (
               <>
                 {firstBlock && (
-                  <TextDistortFilter>
-                    <PortableText value={[firstBlock]} components={portableComponents} />
-                  </TextDistortFilter>
+                  <PortableText value={[firstBlock]} components={portableComponents} />
                 )}
                 {/* Mobile hero — crisp (outside the distort filter), under the heading */}
                 <HeroVignette
@@ -109,9 +129,7 @@ export default async function AboutPage() {
                   strokeWidth={4.75}
                   className="md:hidden aspect-[480/910] w-full max-w-[360px] mx-auto mt-6"
                 />
-                <TextDistortFilter>
-                  <PortableText value={restBlocks} components={portableComponents} />
-                </TextDistortFilter>
+                <PortableText value={restBlocks} components={portableComponents} />
               </>
             ) : (
               <p>No content added yet.</p>
