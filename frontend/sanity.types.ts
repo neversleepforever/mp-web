@@ -13,69 +13,45 @@
  */
 
 // Source: schema.json
-export type CallToAction = {
-  _type: 'callToAction'
-  heading: string
-  text?: string
-  buttonText?: string
-  link?: Link
-}
+export type PortableText = Array<{
+  children?: Array<{
+    marks?: Array<string>
+    text?: string
+    _type: 'span'
+    _key: string
+  }>
+  style?: 'normal' | 'h1' | 'h2' | 'h3'
+  listItem?: 'bullet' | 'number'
+  markDefs?: Array<{
+    href?: string
+    _type: 'link'
+    _key: string
+  }>
+  level?: number
+  _type: 'block'
+  _key: string
+}>
 
 export type Link = {
   _type: 'link'
-  linkType?: 'href' | 'page' | 'post'
+  displayTitle?: string
   href?: string
-  page?: {
-    _ref: string
-    _type: 'reference'
-    _weak?: boolean
-    [internalGroqTypeReferenceTo]?: 'page'
-  }
-  post?: {
-    _ref: string
-    _type: 'reference'
-    _weak?: boolean
-    [internalGroqTypeReferenceTo]?: 'post'
-  }
   openInNewTab?: boolean
+}
+
+export type CallToAction = {
+  _type: 'callToAction'
+  heading?: string
+  text?: string
+  buttonText?: string
+  link?: Link
 }
 
 export type InfoSection = {
   _type: 'infoSection'
   heading?: string
   subheading?: string
-  content?: Array<{
-    children?: Array<{
-      marks?: Array<string>
-      text?: string
-      _type: 'span'
-      _key: string
-    }>
-    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
-    listItem?: 'bullet' | 'number'
-    markDefs?: Array<{
-      linkType?: 'href' | 'page' | 'post'
-      href?: string
-      page?: {
-        _ref: string
-        _type: 'reference'
-        _weak?: boolean
-        [internalGroqTypeReferenceTo]?: 'page'
-      }
-      post?: {
-        _ref: string
-        _type: 'reference'
-        _weak?: boolean
-        [internalGroqTypeReferenceTo]?: 'post'
-      }
-      openInNewTab?: boolean
-      _type: 'link'
-      _key: string
-    }>
-    level?: number
-    _type: 'block'
-    _key: string
-  }>
+  content?: BlockContent
 }
 
 export type BlockContent = Array<{
@@ -111,13 +87,592 @@ export type BlockContent = Array<{
   _key: string
 }>
 
+export type Video = {
+  _id: string
+  _type: 'video'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  title?: string
+  subtitle?: string
+  displayTitle?: string
+  photographer?: string
+  slug?: Slug
+  date?: string
+  description?: Array<{
+    children?: Array<{
+      marks?: Array<string>
+      text?: string
+      _type: 'span'
+      _key: string
+    }>
+    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
+    listItem?: 'bullet' | 'number'
+    markDefs?: Array<{
+      href?: string
+      _type: 'link'
+      _key: string
+    }>
+    level?: number
+    _type: 'block'
+    _key: string
+  }>
+  muxVideo?: MuxVideo
+  caption?: string
+  displayImage?: {
+    asset?: {
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+    }
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    _type: 'image'
+  }
+  images?: Array<{
+    asset?: {
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+    }
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    credit?: string
+    _type: 'image'
+    _key: string
+  }>
+}
+
+export type SanityImageCrop = {
+  _type: 'sanity.imageCrop'
+  top?: number
+  bottom?: number
+  left?: number
+  right?: number
+}
+
+export type SanityImageHotspot = {
+  _type: 'sanity.imageHotspot'
+  x?: number
+  y?: number
+  height?: number
+  width?: number
+}
+
+export type MuxVideo = {
+  _type: 'mux.video'
+  asset?: {
+    _ref: string
+    _type: 'reference'
+    _weak?: boolean
+    [internalGroqTypeReferenceTo]?: 'mux.videoAsset'
+  }
+}
+
+export type Slug = {
+  _type: 'slug'
+  current?: string
+  source?: string
+}
+
+export type Journal = {
+  _id: string
+  _type: 'journal'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  title?: string
+  subtitle?: string
+  displayTitle?: string
+  photographer?: string
+  slug?: Slug
+  date?: string
+  description?: Array<{
+    children?: Array<{
+      marks?: Array<string>
+      text?: string
+      _type: 'span'
+      _key: string
+    }>
+    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
+    listItem?: 'bullet' | 'number'
+    markDefs?: Array<{
+      href?: string
+      _type: 'link'
+      _key: string
+    }>
+    level?: number
+    _type: 'block'
+    _key: string
+  }>
+  displayImage?: {
+    asset?: {
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+    }
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    _type: 'image'
+  }
+  images?: Array<{
+    asset?: {
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+    }
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    credit?: string
+    _type: 'image'
+    _key: string
+  }>
+}
+
+export type Gallery = {
+  _id: string
+  _type: 'gallery'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  title?: string
+  subtitle?: string
+  displayTitle?: string
+  photographer?: string
+  slug?: Slug
+  date?: string
+  description?: Array<{
+    children?: Array<{
+      marks?: Array<string>
+      text?: string
+      _type: 'span'
+      _key: string
+    }>
+    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
+    listItem?: 'bullet' | 'number'
+    markDefs?: Array<{
+      href?: string
+      _type: 'link'
+      _key: string
+    }>
+    level?: number
+    _type: 'block'
+    _key: string
+  }>
+  displayImage?: {
+    asset?: {
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+    }
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    _type: 'image'
+  }
+  landingImage?: {
+    asset?: {
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+    }
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    _type: 'image'
+  }
+  images?: Array<{
+    asset?: {
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+    }
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    credit?: string
+    _type: 'image'
+    _key: string
+  }>
+}
+
+export type Bookings = {
+  _id: string
+  _type: 'bookings'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  image?: {
+    asset?: {
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+    }
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    _type: 'image'
+  }
+}
+
+export type AgeCheck = {
+  _id: string
+  _type: 'ageCheck'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  marqueeText?: string
+  bodyText?: string
+  buttonText?: string
+}
+
+export type Home = {
+  _id: string
+  _type: 'home'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  image1?: {
+    image?: {
+      asset?: {
+        _ref: string
+        _type: 'reference'
+        _weak?: boolean
+        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+      }
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      _type: 'image'
+    }
+    link?: string
+  }
+  image2?: {
+    image?: {
+      asset?: {
+        _ref: string
+        _type: 'reference'
+        _weak?: boolean
+        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+      }
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      _type: 'image'
+    }
+    link?: string
+  }
+  image3?: {
+    image?: {
+      asset?: {
+        _ref: string
+        _type: 'reference'
+        _weak?: boolean
+        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+      }
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      _type: 'image'
+    }
+    link?: string
+  }
+  image4?: {
+    image?: {
+      asset?: {
+        _ref: string
+        _type: 'reference'
+        _weak?: boolean
+        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+      }
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      _type: 'image'
+    }
+    link?: string
+  }
+}
+
+export type About = {
+  _id: string
+  _type: 'about'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  image?: {
+    asset?: {
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+    }
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    _type: 'image'
+  }
+  content?: Array<
+    | {
+        children?: Array<{
+          marks?: Array<string>
+          text?: string
+          _type: 'span'
+          _key: string
+        }>
+        style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
+        listItem?: 'bullet' | 'number'
+        markDefs?: Array<{
+          href?: string
+          _type: 'link'
+          _key: string
+        }>
+        level?: number
+        _type: 'block'
+        _key: string
+      }
+    | {
+        asset?: {
+          _ref: string
+          _type: 'reference'
+          _weak?: boolean
+          [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+        }
+        media?: unknown
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        _type: 'image'
+        _key: string
+      }
+  >
+}
+
+export type Contact = {
+  _id: string
+  _type: 'contact'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  socials1?: Array<
+    {
+      _key: string
+    } & Link
+  >
+  socials2?: Array<
+    {
+      _key: string
+    } & Link
+  >
+  siteCredits?: Array<{
+    children?: Array<{
+      marks?: Array<string>
+      text?: string
+      _type: 'span'
+      _key: string
+    }>
+    style?: 'normal'
+    listItem?: 'bullet' | 'number'
+    markDefs?: Array<{
+      href?: string
+      openInNewTab?: boolean
+      _type: 'link'
+      _key: string
+    }>
+    level?: number
+    _type: 'block'
+    _key: string
+  }>
+}
+
+export type Services = {
+  _id: string
+  _type: 'services'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  image?: {
+    asset?: {
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+    }
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    _type: 'image'
+  }
+  bannerEmail?: string
+  content?: Array<
+    | {
+        children?: Array<{
+          marks?: Array<string>
+          text?: string
+          _type: 'span'
+          _key: string
+        }>
+        style?: 'normal' | 'h1' | 'h2' | 'h3'
+        listItem?: 'bullet' | 'number'
+        markDefs?: Array<{
+          href?: string
+          _type: 'link'
+          _key: string
+        }>
+        level?: number
+        _type: 'block'
+        _key: string
+      }
+    | {
+        asset?: {
+          _ref: string
+          _type: 'reference'
+          _weak?: boolean
+          [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+        }
+        media?: unknown
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        caption?: string
+        _type: 'image'
+        _key: string
+      }
+    | {
+        title?: string
+        body?: Array<{
+          children?: Array<{
+            marks?: Array<string>
+            text?: string
+            _type: 'span'
+            _key: string
+          }>
+          style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
+          listItem?: 'bullet' | 'number'
+          markDefs?: Array<{
+            href?: string
+            _type: 'link'
+            _key: string
+          }>
+          level?: number
+          _type: 'block'
+          _key: string
+        }>
+        _type: 'servicesSection'
+        _key: string
+      }
+    | {
+        title?: string
+        Banner?: Array<{
+          children?: Array<{
+            marks?: Array<string>
+            text?: string
+            _type: 'span'
+            _key: string
+          }>
+          style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
+          listItem?: 'bullet' | 'number'
+          markDefs?: Array<{
+            href?: string
+            _type: 'link'
+            _key: string
+          }>
+          level?: number
+          _type: 'block'
+          _key: string
+        }>
+        rates?: Array<{
+          children?: Array<{
+            marks?: Array<string>
+            text?: string
+            _type: 'span'
+            _key: string
+          }>
+          style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
+          listItem?: 'bullet' | 'number'
+          markDefs?: Array<{
+            href?: string
+            _type: 'link'
+            _key: string
+          }>
+          level?: number
+          _type: 'block'
+          _key: string
+        }>
+        _type: 'ratesSection'
+        _key: string
+      }
+    | {
+        title?: string
+        body?: Array<{
+          children?: Array<{
+            marks?: Array<string>
+            text?: string
+            _type: 'span'
+            _key: string
+          }>
+          style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
+          listItem?: 'bullet' | 'number'
+          markDefs?: Array<{
+            href?: string
+            _type: 'link'
+            _key: string
+          }>
+          level?: number
+          _type: 'block'
+          _key: string
+        }>
+        _type: 'outcallSection'
+        _key: string
+      }
+    | {
+        title?: string
+        body?: Array<{
+          children?: Array<{
+            marks?: Array<string>
+            text?: string
+            _type: 'span'
+            _key: string
+          }>
+          style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
+          listItem?: 'bullet' | 'number'
+          markDefs?: Array<{
+            href?: string
+            _type: 'link'
+            _key: string
+          }>
+          level?: number
+          _type: 'block'
+          _key: string
+        }>
+        _type: 'virtualSection'
+        _key: string
+      }
+  >
+}
+
 export type Settings = {
   _id: string
   _type: 'settings'
   _createdAt: string
   _updatedAt: string
   _rev: string
-  title: string
+  title?: string
   description?: Array<{
     children?: Array<{
       marks?: Array<string>
@@ -172,9 +727,9 @@ export type Page = {
   _createdAt: string
   _updatedAt: string
   _rev: string
-  name: string
-  slug: Slug
-  heading: string
+  name?: string
+  slug?: Slug
+  heading?: string
   subheading?: string
   pageBuilder?: Array<
     | ({
@@ -192,11 +747,11 @@ export type Post = {
   _createdAt: string
   _updatedAt: string
   _rev: string
-  title: string
-  slug: Slug
+  title?: string
+  slug?: Slug
   content?: BlockContent
   excerpt?: string
-  coverImage: {
+  coverImage?: {
     asset?: {
       _ref: string
       _type: 'reference'
@@ -224,9 +779,9 @@ export type Person = {
   _createdAt: string
   _updatedAt: string
   _rev: string
-  firstName: string
-  lastName: string
-  picture: {
+  firstName?: string
+  lastName?: string
+  picture?: {
     asset?: {
       _ref: string
       _type: 'reference'
@@ -281,7 +836,7 @@ export type SanityAssistOutputField = {
 
 export type SanityAssistInstructionContext = {
   _type: 'sanity.assist.instruction.context'
-  reference: {
+  reference?: {
     _ref: string
     _type: 'reference'
     _weak?: boolean
@@ -314,7 +869,7 @@ export type AssistInstructionContext = {
 
 export type SanityAssistInstructionUserInput = {
   _type: 'sanity.assist.instruction.userInput'
-  message: string
+  message?: string
   description?: string
 }
 
@@ -376,6 +931,92 @@ export type SanityAssistSchemaTypeField = {
   >
 }
 
+export type MuxVideoAsset = {
+  _id: string
+  _type: 'mux.videoAsset'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  status?: string
+  assetId?: string
+  playbackId?: string
+  filename?: string
+  thumbTime?: number
+  data?: MuxAssetData
+}
+
+export type MuxAssetData = {
+  _type: 'mux.assetData'
+  resolution_tier?: string
+  upload_id?: string
+  created_at?: string
+  id?: string
+  status?: string
+  max_stored_resolution?: string
+  passthrough?: string
+  encoding_tier?: string
+  video_quality?: string
+  master_access?: string
+  aspect_ratio?: string
+  duration?: number
+  max_stored_frame_rate?: number
+  mp4_support?: string
+  max_resolution_tier?: string
+  tracks?: Array<
+    {
+      _key: string
+    } & MuxTrack
+  >
+  playback_ids?: Array<
+    {
+      _key: string
+    } & MuxPlaybackId
+  >
+  static_renditions?: MuxStaticRenditions
+}
+
+export type MuxStaticRenditions = {
+  _type: 'mux.staticRenditions'
+  status?: string
+  files?: Array<
+    {
+      _key: string
+    } & MuxStaticRenditionFile
+  >
+}
+
+export type MuxStaticRenditionFile = {
+  _type: 'mux.staticRenditionFile'
+  name?: string
+  ext?: string
+  height?: number
+  width?: number
+  bitrate?: number
+  filesize?: string
+  type?: string
+  status?: string
+  resolution_tier?: string
+  resolution?: string
+  id?: string
+  passthrough?: string
+}
+
+export type MuxPlaybackId = {
+  _type: 'mux.playbackId'
+  id?: string
+  policy?: string
+}
+
+export type MuxTrack = {
+  _type: 'mux.track'
+  id?: string
+  type?: string
+  max_width?: number
+  max_frame_rate?: number
+  duration?: number
+  max_height?: number
+}
+
 export type SanityImagePaletteSwatch = {
   _type: 'sanity.imagePaletteSwatch'
   background?: string
@@ -402,20 +1043,15 @@ export type SanityImageDimensions = {
   aspectRatio?: number
 }
 
-export type SanityImageHotspot = {
-  _type: 'sanity.imageHotspot'
-  x?: number
-  y?: number
-  height?: number
-  width?: number
-}
-
-export type SanityImageCrop = {
-  _type: 'sanity.imageCrop'
-  top?: number
-  bottom?: number
-  left?: number
-  right?: number
+export type SanityImageMetadata = {
+  _type: 'sanity.imageMetadata'
+  location?: Geopoint
+  dimensions?: SanityImageDimensions
+  palette?: SanityImagePalette
+  lqip?: string
+  blurHash?: string
+  hasAlpha?: boolean
+  isOpaque?: boolean
 }
 
 export type SanityFileAsset = {
@@ -438,6 +1074,13 @@ export type SanityFileAsset = {
   path?: string
   url?: string
   source?: SanityAssetSourceData
+}
+
+export type SanityAssetSourceData = {
+  _type: 'sanity.assetSourceData'
+  name?: string
+  id?: string
+  url?: string
 }
 
 export type SanityImageAsset = {
@@ -463,17 +1106,6 @@ export type SanityImageAsset = {
   source?: SanityAssetSourceData
 }
 
-export type SanityImageMetadata = {
-  _type: 'sanity.imageMetadata'
-  location?: Geopoint
-  dimensions?: SanityImageDimensions
-  palette?: SanityImagePalette
-  lqip?: string
-  blurHash?: string
-  hasAlpha?: boolean
-  isOpaque?: boolean
-}
-
 export type Geopoint = {
   _type: 'geopoint'
   lat?: number
@@ -481,24 +1113,25 @@ export type Geopoint = {
   alt?: number
 }
 
-export type Slug = {
-  _type: 'slug'
-  current: string
-  source?: string
-}
-
-export type SanityAssetSourceData = {
-  _type: 'sanity.assetSourceData'
-  name?: string
-  id?: string
-  url?: string
-}
-
 export type AllSanitySchemaTypes =
-  | CallToAction
+  | PortableText
   | Link
+  | CallToAction
   | InfoSection
   | BlockContent
+  | Video
+  | SanityImageCrop
+  | SanityImageHotspot
+  | MuxVideo
+  | Slug
+  | Journal
+  | Gallery
+  | Bookings
+  | AgeCheck
+  | Home
+  | About
+  | Contact
+  | Services
   | Settings
   | Page
   | Post
@@ -515,17 +1148,20 @@ export type AllSanitySchemaTypes =
   | SanityAssistInstructionFieldRef
   | SanityAssistInstruction
   | SanityAssistSchemaTypeField
+  | MuxVideoAsset
+  | MuxAssetData
+  | MuxStaticRenditions
+  | MuxStaticRenditionFile
+  | MuxPlaybackId
+  | MuxTrack
   | SanityImagePaletteSwatch
   | SanityImagePalette
   | SanityImageDimensions
-  | SanityImageHotspot
-  | SanityImageCrop
-  | SanityFileAsset
-  | SanityImageAsset
   | SanityImageMetadata
-  | Geopoint
-  | Slug
+  | SanityFileAsset
   | SanityAssetSourceData
+  | SanityImageAsset
+  | Geopoint
 export declare const internalGroqTypeReferenceTo: unique symbol
 // Source: ./sanity/lib/queries.ts
 // Variable: settingsQuery
@@ -536,7 +1172,7 @@ export type SettingsQueryResult = {
   _createdAt: string
   _updatedAt: string
   _rev: string
-  title: string
+  title?: string
   description?: Array<{
     children?: Array<{
       marks?: Array<string>
@@ -589,24 +1225,24 @@ export type SettingsQueryResult = {
 export type GetPageQueryResult = {
   _id: string
   _type: 'page'
-  name: string
-  slug: Slug
-  heading: string
+  name: string | null
+  slug: Slug | null
+  heading: string | null
   subheading: string | null
   pageBuilder: Array<
     | {
         _key: string
         _type: 'callToAction'
-        heading: string
+        heading?: string
         text?: string
         buttonText?: string
         link: {
           _type: 'link'
-          linkType?: 'href' | 'page' | 'post'
+          displayTitle?: string
           href?: string
-          page: string | null
-          post: string | null
           openInNewTab?: boolean
+          page: null
+          post: null
         } | null
       }
     | {
@@ -643,12 +1279,12 @@ export type GetPageQueryResult = {
 // Query: *[_type == "page" || _type == "post" && defined(slug.current)] | order(_type asc) {    "slug": slug.current,    _type,    _updatedAt,  }
 export type SitemapDataResult = Array<
   | {
-      slug: string
+      slug: string | null
       _type: 'page'
       _updatedAt: string
     }
   | {
-      slug: string
+      slug: string | null
       _type: 'post'
       _updatedAt: string
     }
@@ -658,8 +1294,8 @@ export type SitemapDataResult = Array<
 export type AllPostsQueryResult = Array<{
   _id: string
   status: 'draft' | 'published'
-  title: string
-  slug: string
+  title: string | 'Untitled'
+  slug: string | null
   excerpt: string | null
   coverImage: {
     asset?: {
@@ -673,11 +1309,11 @@ export type AllPostsQueryResult = Array<{
     crop?: SanityImageCrop
     alt?: string
     _type: 'image'
-  }
+  } | null
   date: string
   author: {
-    firstName: string
-    lastName: string
+    firstName: string | null
+    lastName: string | null
     picture: {
       asset?: {
         _ref: string
@@ -690,7 +1326,7 @@ export type AllPostsQueryResult = Array<{
       crop?: SanityImageCrop
       alt?: string
       _type: 'image'
-    }
+    } | null
   } | null
 }>
 // Variable: morePostsQuery
@@ -698,8 +1334,8 @@ export type AllPostsQueryResult = Array<{
 export type MorePostsQueryResult = Array<{
   _id: string
   status: 'draft' | 'published'
-  title: string
-  slug: string
+  title: string | 'Untitled'
+  slug: string | null
   excerpt: string | null
   coverImage: {
     asset?: {
@@ -713,11 +1349,11 @@ export type MorePostsQueryResult = Array<{
     crop?: SanityImageCrop
     alt?: string
     _type: 'image'
-  }
+  } | null
   date: string
   author: {
-    firstName: string
-    lastName: string
+    firstName: string | null
+    lastName: string | null
     picture: {
       asset?: {
         _ref: string
@@ -730,7 +1366,7 @@ export type MorePostsQueryResult = Array<{
       crop?: SanityImageCrop
       alt?: string
       _type: 'image'
-    }
+    } | null
   } | null
 }>
 // Variable: postQuery
@@ -760,8 +1396,8 @@ export type PostQueryResult = {
   }> | null
   _id: string
   status: 'draft' | 'published'
-  title: string
-  slug: string
+  title: string | 'Untitled'
+  slug: string | null
   excerpt: string | null
   coverImage: {
     asset?: {
@@ -775,11 +1411,11 @@ export type PostQueryResult = {
     crop?: SanityImageCrop
     alt?: string
     _type: 'image'
-  }
+  } | null
   date: string
   author: {
-    firstName: string
-    lastName: string
+    firstName: string | null
+    lastName: string | null
     picture: {
       asset?: {
         _ref: string
@@ -792,49 +1428,418 @@ export type PostQueryResult = {
       crop?: SanityImageCrop
       alt?: string
       _type: 'image'
-    }
+    } | null
   } | null
 } | null
 // Variable: postPagesSlugs
 // Query: *[_type == "post" && defined(slug.current)]  {"slug": slug.current}
 export type PostPagesSlugsResult = Array<{
-  slug: string
+  slug: string | null
 }>
 // Variable: pagesSlugs
 // Query: *[_type == "page" && defined(slug.current)]  {"slug": slug.current}
 export type PagesSlugsResult = Array<{
-  slug: string
+  slug: string | null
 }>
 // Variable: folioPagesSlugs
 // Query: *[_type == "folio" && defined(slug.current)]{    "slug": slug.current  }
 export type FolioPagesSlugsResult = Array<never>
 // Variable: journalSlugsQuery
 // Query: *[_type == "journal" && defined(slug.current)]{    "slug": slug.current  }
-export type JournalSlugsQueryResult = Array<never>
+export type JournalSlugsQueryResult = Array<{
+  slug: string | null
+}>
 // Variable: videoSlugsQuery
 // Query: *[_type == "video" && defined(slug.current)]{    "slug": slug.current  }
-export type VideoSlugsQueryResult = Array<never>
+export type VideoSlugsQueryResult = Array<{
+  slug: string | null
+}>
 // Variable: folioQuery
 // Query: *[_type == "gallery" && slug.current == $slug][0]{    _id,    title,    subtitle,    displayTitle,    photographer,    date,    description,    "slug": slug.current,    landingImage{      alt,      credit,      asset->{        _id,        metadata{          lqip,          dimensions{            width,            height          }        }      }    },    images[]{      alt,      credit,      asset->{        _id,        metadata {          lqip,          dimensions {            width,            height          }        }      }    }  }
-export type FolioQueryResult = null
+export type FolioQueryResult = {
+  _id: string
+  title: string | null
+  subtitle: string | null
+  displayTitle: string | null
+  photographer: string | null
+  date: string | null
+  description: Array<{
+    children?: Array<{
+      marks?: Array<string>
+      text?: string
+      _type: 'span'
+      _key: string
+    }>
+    style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
+    listItem?: 'bullet' | 'number'
+    markDefs?: Array<{
+      href?: string
+      _type: 'link'
+      _key: string
+    }>
+    level?: number
+    _type: 'block'
+    _key: string
+  }> | null
+  slug: string | null
+  landingImage: {
+    alt: string | null
+    credit: null
+    asset: {
+      _id: string
+      metadata: {
+        lqip: string | null
+        dimensions: {
+          width: number | null
+          height: number | null
+        } | null
+      } | null
+    } | null
+  } | null
+  images: Array<{
+    alt: null
+    credit: string | null
+    asset: {
+      _id: string
+      metadata: {
+        lqip: string | null
+        dimensions: {
+          width: number | null
+          height: number | null
+        } | null
+      } | null
+    } | null
+  }> | null
+} | null
 // Variable: videoQuery
-// Query: *[_type == "video" && slug.current == $slug][0]{  _id,  title,  subtitle,  displayTitle,  photographer,  date,  "slug": slug.current,  description,  videoUrl,  caption,  muxVideo {    asset->{      playbackId,      assetId,      status    }  }}
-export type VideoQueryResult = null
+// Query: *[_type == "video" && slug.current == $slug][0]{  _id,  title,  subtitle,  displayTitle,  photographer,  date,  "slug": slug.current,  description,  videoUrl,  caption,  muxVideo {    asset->{      playbackId,      assetId,      status    }  },  images[]{    alt,    credit,    asset->{      _id,      metadata {        lqip,        dimensions {          width,          height        }      }    }  }}
+export type VideoQueryResult = {
+  _id: string
+  title: string | null
+  subtitle: string | null
+  displayTitle: string | null
+  photographer: string | null
+  date: string | null
+  slug: string | null
+  description: Array<{
+    children?: Array<{
+      marks?: Array<string>
+      text?: string
+      _type: 'span'
+      _key: string
+    }>
+    style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
+    listItem?: 'bullet' | 'number'
+    markDefs?: Array<{
+      href?: string
+      _type: 'link'
+      _key: string
+    }>
+    level?: number
+    _type: 'block'
+    _key: string
+  }> | null
+  videoUrl: null
+  caption: string | null
+  muxVideo: {
+    asset: {
+      playbackId: string | null
+      assetId: string | null
+      status: string | null
+    } | null
+  } | null
+  images: Array<{
+    alt: null
+    credit: string | null
+    asset: {
+      _id: string
+      metadata: {
+        lqip: string | null
+        dimensions: {
+          width: number | null
+          height: number | null
+        } | null
+      } | null
+    } | null
+  }> | null
+} | null
 // Variable: allGalleryQuery
 // Query: *[_type == "gallery" && defined(slug.current)] | order(date desc, _updatedAt desc) {    _id,    title,    subtitle,    displayTitle,    photographer,    date,    "slug": slug.current,    images[]{      alt,      credit,      asset->{        _id,        metadata {          lqip,          dimensions {            width,            height          }        }      }    }  }
-export type AllGalleryQueryResult = Array<never>
+export type AllGalleryQueryResult = Array<{
+  _id: string
+  title: string | null
+  subtitle: string | null
+  displayTitle: string | null
+  photographer: string | null
+  date: string | null
+  slug: string | null
+  images: Array<{
+    alt: null
+    credit: string | null
+    asset: {
+      _id: string
+      metadata: {
+        lqip: string | null
+        dimensions: {
+          width: number | null
+          height: number | null
+        } | null
+      } | null
+    } | null
+  }> | null
+}>
 // Variable: servicesQuery
 // Query: *[_type == "services"][0]{      image{        alt,        asset->{          _id,          url,          metadata{            lqip,            dimensions { width, height }          }        }      },    bannerEmail,    content[]{      ...,      _type == "image" => {        ...,        "asset": asset->{          _id,          url,          metadata {            lqip,            dimensions { width, height }          }        }      },      _type == "servicesSection" => {        ...,        body[]{          ...,          _type == "image" => {            ...,            "asset": asset->{              _id,              url,              metadata {                lqip,                dimensions { width, height }              }            }          }        }      },      _type == "ratesSection" => {        ...,        rates[]{          ...,          _type == "image" => {            ...,            "asset": asset->{              _id,              url,              metadata {                lqip,                dimensions { width, height }              }            }          }        }      },      _type == "outcallSection" => {        ...,        body[]{          ...,          _type == "image" => {            ...,            "asset": asset->{              _id,              url,              metadata {                lqip,                dimensions { width, height }              }            }          }        }      },      _type == "virtualSection" => {        ...,        body[]{          ...,          _type == "image" => {            ...,            "asset": asset->{              _id,              url,              metadata {                lqip,                dimensions { width, height }              }            }          }        }      }    }  }
-export type ServicesQueryResult = null
+export type ServicesQueryResult = {
+  image: {
+    alt: null
+    asset: {
+      _id: string
+      url: string | null
+      metadata: {
+        lqip: string | null
+        dimensions: {
+          width: number | null
+          height: number | null
+        } | null
+      } | null
+    } | null
+  } | null
+  bannerEmail: string | null
+  content: Array<
+    | {
+        children?: Array<{
+          marks?: Array<string>
+          text?: string
+          _type: 'span'
+          _key: string
+        }>
+        style?: 'h1' | 'h2' | 'h3' | 'normal'
+        listItem?: 'bullet' | 'number'
+        markDefs?: Array<{
+          href?: string
+          _type: 'link'
+          _key: string
+        }>
+        level?: number
+        _type: 'block'
+        _key: string
+      }
+    | {
+        asset: {
+          _id: string
+          url: string | null
+          metadata: {
+            lqip: string | null
+            dimensions: {
+              width: number | null
+              height: number | null
+            } | null
+          } | null
+        } | null
+        media?: unknown
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        caption?: string
+        _type: 'image'
+        _key: string
+      }
+    | {
+        title?: string
+        body: Array<{
+          children?: Array<{
+            marks?: Array<string>
+            text?: string
+            _type: 'span'
+            _key: string
+          }>
+          style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
+          listItem?: 'bullet' | 'number'
+          markDefs?: Array<{
+            href?: string
+            _type: 'link'
+            _key: string
+          }>
+          level?: number
+          _type: 'block'
+          _key: string
+        }> | null
+        _type: 'outcallSection'
+        _key: string
+      }
+    | {
+        title?: string
+        Banner?: Array<{
+          children?: Array<{
+            marks?: Array<string>
+            text?: string
+            _type: 'span'
+            _key: string
+          }>
+          style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
+          listItem?: 'bullet' | 'number'
+          markDefs?: Array<{
+            href?: string
+            _type: 'link'
+            _key: string
+          }>
+          level?: number
+          _type: 'block'
+          _key: string
+        }>
+        rates: Array<{
+          children?: Array<{
+            marks?: Array<string>
+            text?: string
+            _type: 'span'
+            _key: string
+          }>
+          style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
+          listItem?: 'bullet' | 'number'
+          markDefs?: Array<{
+            href?: string
+            _type: 'link'
+            _key: string
+          }>
+          level?: number
+          _type: 'block'
+          _key: string
+        }> | null
+        _type: 'ratesSection'
+        _key: string
+      }
+    | {
+        title?: string
+        body: Array<{
+          children?: Array<{
+            marks?: Array<string>
+            text?: string
+            _type: 'span'
+            _key: string
+          }>
+          style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
+          listItem?: 'bullet' | 'number'
+          markDefs?: Array<{
+            href?: string
+            _type: 'link'
+            _key: string
+          }>
+          level?: number
+          _type: 'block'
+          _key: string
+        }> | null
+        _type: 'servicesSection'
+        _key: string
+      }
+    | {
+        title?: string
+        body: Array<{
+          children?: Array<{
+            marks?: Array<string>
+            text?: string
+            _type: 'span'
+            _key: string
+          }>
+          style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
+          listItem?: 'bullet' | 'number'
+          markDefs?: Array<{
+            href?: string
+            _type: 'link'
+            _key: string
+          }>
+          level?: number
+          _type: 'block'
+          _key: string
+        }> | null
+        _type: 'virtualSection'
+        _key: string
+      }
+  > | null
+} | null
 // Variable: aboutQuery
 // Query: *[_type == "about"][0]{    _id,      image{        alt,        asset->{          _id,          url,          metadata{            lqip,            dimensions { width, height }          }        }      },    content[]{      ...,      _type == "image" => {        alt,        asset->{          _id,          url,          metadata {            lqip,            dimensions { width, height }          }        }      }    }  }
-export type AboutQueryResult = null
+export type AboutQueryResult = {
+  _id: string
+  image: {
+    alt: null
+    asset: {
+      _id: string
+      url: string | null
+      metadata: {
+        lqip: string | null
+        dimensions: {
+          width: number | null
+          height: number | null
+        } | null
+      } | null
+    } | null
+  } | null
+  content: Array<
+    | {
+        children?: Array<{
+          marks?: Array<string>
+          text?: string
+          _type: 'span'
+          _key: string
+        }>
+        style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
+        listItem?: 'bullet' | 'number'
+        markDefs?: Array<{
+          href?: string
+          _type: 'link'
+          _key: string
+        }>
+        level?: number
+        _type: 'block'
+        _key: string
+      }
+    | {
+        asset: {
+          _id: string
+          url: string | null
+          metadata: {
+            lqip: string | null
+            dimensions: {
+              width: number | null
+              height: number | null
+            } | null
+          } | null
+        } | null
+        media?: unknown
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        _type: 'image'
+        _key: string
+        alt: null
+      }
+  > | null
+} | null
 // Variable: ageCheckQuery
 // Query: *[_type == "ageCheck"][0] {  marqueeText,  bodyText,  buttonText}
-export type AgeCheckQueryResult = null
+export type AgeCheckQueryResult = {
+  marqueeText: string | null
+  bodyText: string | null
+  buttonText: string | null
+} | null
 // Variable: bookingsQuery
 // Query: *[_type == "bookings"][0]{    _id,    image{      alt,      asset->{        _id,        url,        metadata{          lqip,          dimensions { width, height }        }      }    }  }
-export type BookingsQueryResult = null
+export type BookingsQueryResult = {
+  _id: string
+  image: {
+    alt: string | null
+    asset: {
+      _id: string
+      url: string | null
+      metadata: {
+        lqip: string | null
+        dimensions: {
+          width: number | null
+          height: number | null
+        } | null
+      } | null
+    } | null
+  } | null
+} | null
 
 // Query TypeMap
 import '@sanity/client'
@@ -852,7 +1857,7 @@ declare module '@sanity/client' {
     '\n  *[_type == "journal" && defined(slug.current)]{\n    "slug": slug.current\n  }\n': JournalSlugsQueryResult
     '\n  *[_type == "video" && defined(slug.current)]{\n    "slug": slug.current\n  }\n': VideoSlugsQueryResult
     '\n  *[_type == "gallery" && slug.current == $slug][0]{\n    _id,\n    title,\n    subtitle,\n    displayTitle,\n    photographer,\n    date,\n    description,\n    "slug": slug.current,\n    landingImage{\n      alt,\n      credit,\n      asset->{\n        _id,\n        metadata{\n          lqip,\n          dimensions{\n            width,\n            height\n          }\n        }\n      }\n    },\n    images[]{\n      alt,\n      credit,\n      asset->{\n        _id,\n        metadata {\n          lqip,\n          dimensions {\n            width,\n            height\n          }\n        }\n      }\n    }\n  }\n': FolioQueryResult
-    '\n*[_type == "video" && slug.current == $slug][0]{\n  _id,\n  title,\n  subtitle,\n  displayTitle,\n  photographer,\n  date,\n  "slug": slug.current,\n  description,\n  videoUrl,\n  caption,\n  muxVideo {\n    asset->{\n      playbackId,\n      assetId,\n      status\n    }\n  }\n}\n': VideoQueryResult
+    '\n*[_type == "video" && slug.current == $slug][0]{\n  _id,\n  title,\n  subtitle,\n  displayTitle,\n  photographer,\n  date,\n  "slug": slug.current,\n  description,\n  videoUrl,\n  caption,\n  muxVideo {\n    asset->{\n      playbackId,\n      assetId,\n      status\n    }\n  },\n  images[]{\n    alt,\n    credit,\n    asset->{\n      _id,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  }\n}\n': VideoQueryResult
     '\n  *[_type == "gallery" && defined(slug.current)] | order(date desc, _updatedAt desc) {\n    _id,\n    title,\n    subtitle,\n    displayTitle,\n    photographer,\n    date,\n    "slug": slug.current,\n    images[]{\n      alt,\n      credit,\n      asset->{\n        _id,\n        metadata {\n          lqip,\n          dimensions {\n            width,\n            height\n          }\n        }\n      }\n    }\n  }\n': AllGalleryQueryResult
     '\n  *[_type == "services"][0]{\n      image{\n        alt,\n        asset->{\n          _id,\n          url,\n          metadata{\n            lqip,\n            dimensions { width, height }\n          }\n        }\n      },\n    bannerEmail,\n    content[]{\n      ...,\n      _type == "image" => {\n        ...,\n        "asset": asset->{\n          _id,\n          url,\n          metadata {\n            lqip,\n            dimensions { width, height }\n          }\n        }\n      },\n\n      _type == "servicesSection" => {\n        ...,\n        body[]{\n          ...,\n          _type == "image" => {\n            ...,\n            "asset": asset->{\n              _id,\n              url,\n              metadata {\n                lqip,\n                dimensions { width, height }\n              }\n            }\n          }\n        }\n      },\n\n      _type == "ratesSection" => {\n        ...,\n        rates[]{\n          ...,\n          _type == "image" => {\n            ...,\n            "asset": asset->{\n              _id,\n              url,\n              metadata {\n                lqip,\n                dimensions { width, height }\n              }\n            }\n          }\n        }\n      },\n\n      _type == "outcallSection" => {\n        ...,\n        body[]{\n          ...,\n          _type == "image" => {\n            ...,\n            "asset": asset->{\n              _id,\n              url,\n              metadata {\n                lqip,\n                dimensions { width, height }\n              }\n            }\n          }\n        }\n      },\n\n      _type == "virtualSection" => {\n        ...,\n        body[]{\n          ...,\n          _type == "image" => {\n            ...,\n            "asset": asset->{\n              _id,\n              url,\n              metadata {\n                lqip,\n                dimensions { width, height }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n': ServicesQueryResult
     '\n  *[_type == "about"][0]{\n    _id,\n      image{\n        alt,\n        asset->{\n          _id,\n          url,\n          metadata{\n            lqip,\n            dimensions { width, height }\n          }\n        }\n      },\n    content[]{\n      ...,\n      _type == "image" => {\n        alt,\n        asset->{\n          _id,\n          url,\n          metadata {\n            lqip,\n            dimensions { width, height }\n          }\n        }\n      }\n    }\n  }\n': AboutQueryResult

@@ -327,6 +327,20 @@ export const videoQuery = defineQuery(`
       assetId,
       status
     }
+  },
+  images[]{
+    alt,
+    credit,
+    asset->{
+      _id,
+      metadata {
+        lqip,
+        dimensions {
+          width,
+          height
+        }
+      }
+    }
   }
 }
 `)

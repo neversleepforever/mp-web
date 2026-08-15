@@ -84,5 +84,28 @@ export const video = defineType({
         }),
       ],
     }),
+    // Same shape and 12-image cap as the gallery document, so both use the one
+    // Gallery component. Leave empty and the video page hides its stills link.
+    defineField({
+      name: 'images',
+      title: 'Images',
+      description:
+        'Stills from the video. When empty, the "View Stills" link is hidden on the video page.',
+      type: 'array',
+      of: [
+        {
+          type: 'image',
+          options: {hotspot: true},
+          fields: [
+            defineField({
+              name: 'credit',
+              title: 'Credit',
+              type: 'string',
+            }),
+          ],
+        },
+      ],
+      validation: (Rule) => Rule.max(12)
+    }),
   ],
 })
