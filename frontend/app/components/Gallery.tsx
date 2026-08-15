@@ -3,6 +3,8 @@
 import { useState, useEffect, useRef } from "react"
 import { usePathname } from "next/navigation"
 import Image from "next/image"
+import MuxPlayer from "@mux/mux-player-react"
+import type MuxPlayerElement from "@mux/mux-player"
 import { urlFor } from "@/sanity/lib/imageBuilder"
 import TextDistortFilter from "./TextFilter"
 
@@ -26,6 +28,9 @@ type Props = {
   title?: string
   enableKeyboard?: boolean
   showControls?: boolean
+  /** Optional Mux video shown as the first slide, ahead of the images. Omitted
+   *  everywhere except the video pages, so galleries and journals are unaffected. */
+  leadVideo?: { playbackId: string }
 }
 
 export default function Gallery({
@@ -33,6 +38,7 @@ export default function Gallery({
   title,
   enableKeyboard = true,
   showControls = false,
+  leadVideo,
 }: Props) {
   const [loaded, setLoaded] = useState<boolean[]>(() =>
     new Array(images.length).fill(false)
@@ -45,12 +51,28 @@ export default function Gallery({
   const containerRef = useRef<HTMLDivElement>(null)
   const thumbnailRefs = useRef<(HTMLButtonElement | null)[]>([])
   const mainImageRef = useRef<HTMLDivElement>(null)
+  const videoRef = useRef<MuxPlayerElement | null>(null)
+
+  // With a lead video the slides are [video, ...images], so slide index and
+  // image index differ by one. Everything below counts slides; `leadOffset`
+  // converts back to an image index.
+  const hasLead = Boolean(leadVideo?.playbackId)
+  const leadOffset = hasLead ? 1 : 0
+  const slideCount = images.length + leadOffset
+
+  /** Shortest circular distance from the selected slide, so next is always +1
+   *  (below) and prev -1 (above) and last↔first wraps seamlessly. */
+  const offsetFor = (slideIndex: number) => {
+    let offset = (((slideIndex - selectedIndex) % slideCount) + slideCount) % slideCount
+    if (offset > slideCount / 2) offset -= slideCount
+    return offset
+  }
 
   const goPrev = () =>
-    setSelectedIndex((i) => (i - 1 + images.length) % images.length)
+    setSelectedIndex((i) => (i - 1 + slideCount) % slideCount)
 
   const goNext = () =>
-    setSelectedIndex((i) => (i + 1) % images.length)
+    setSelectedIndex((i) => (i + 1) % slideCount)
 
   // Two frames, so a cached image has a painted opacity-0 frame to fade from —
   // without it the browser jumps straight to opaque and the photo pops in.
@@ -212,6 +234,13 @@ export default function Gallery({
     return () => clearTimeout(timeout)
   }, [selectedIndex, selectedByTap])
 
+  // Swiping to a still should stop the trailer — otherwise its audio keeps
+  // playing underneath the photos.
+  useEffect(() => {
+    if (!hasLead || selectedIndex === 0) return
+    videoRef.current?.pause()
+  }, [selectedIndex, hasLead])
+
   // Preload images
   useEffect(() => {
     if (!images?.length) return
@@ -237,18 +266,39 @@ export default function Gallery({
           className="flex-1 flex justify-center items-end lg:items-center overflow-hidden scrollbar-hide pt-12 p-6 md:px-20 lg:p-0"
         >
           <figure className="relative w-full h-full overflow-hidden">
+            {hasLead && (() => {
+              const offset = offsetFor(0)
+              return (
+                <div
+                  className="absolute inset-0 will-change-transform flex items-center justify-center"
+                  style={{
+                    transform: `translateY(${offset * 100}%)`,
+                    opacity: offset === 0 ? 1 : 0,
+                    transition:
+                      Math.abs(offset) <= 1
+                        ? "transform 500ms ease-out, opacity 500ms ease-out"
+                        : "none",
+                  }}
+                >
+                  <MuxPlayer
+                    ref={videoRef}
+                    playbackId={leadVideo!.playbackId}
+                    streamType="on-demand"
+                    autoPlay={false}
+                    className="w-full max-h-full object-contain"
+                  />
+                </div>
+              )
+            })()}
             {images.map((img, i) => {
+              const slideIndex = i + leadOffset
               const fullSrc = urlFor(img.asset).width(1600).quality(60).url()
               // On mobile, portraits fill the frame (cover) but landscape images
               // keep their natural short proportions (contain) instead of being
               // scaled up to portrait height. Desktop always contains.
               const dims = img.asset.metadata?.dimensions
               const isLandscape = dims ? dims.width > dims.height : false
-              // Shortest circular offset so next is always +1 (below) and prev
-              // -1 (above) — this makes last↔first wrap as a seamless loop.
-              const n = images.length
-              let offset = (((i - selectedIndex) % n) + n) % n
-              if (offset > n / 2) offset -= n
+              const offset = offsetFor(slideIndex)
               return (
                 <div
                   key={i}
@@ -290,21 +340,50 @@ export default function Gallery({
           ref={containerRef}
           className="flex overflow-x-auto overflow-visible snap-x pl-[50vw] pr-[50vw] scrollbar-hide snap-x snap-proximity lg:w-[59px] lg:h-full lg:overflow-y-auto lg:flex-col lg:px-0 lg:pb-0 lg:mx-0 lg:pt-0 lg:justify-center xl:justify-start"
         >
+          {hasLead && (
+            <button
+              ref={(el) => {
+                thumbnailRefs.current[0] = el
+              }}
+              onClick={() => {
+                setSelectedByTap(true)
+                setScrollLocked(true)
+                setSelectedIndex(0)
+                setTimeout(() => setScrollLocked(false), 300)
+              }}
+              className="relative snap-center snap-always flex-shrink-0 overflow-hidden h-20 w-auto lg:w-full lg:h-auto"
+              aria-label="Select video"
+            >
+              {/* Mux serves a still from the video itself, so the rail shows the
+                  trailer rather than a placeholder. */}
+              <img
+                src={`https://image.mux.com/${leadVideo!.playbackId}/thumbnail.png?width=400`}
+                alt={title ? `${title} video` : "Video"}
+                className="h-full w-auto lg:w-full lg:h-auto object-contain"
+                draggable={false}
+              />
+              {selectedIndex === 0 && (
+                <TextDistortFilter className="pointer-events-none absolute inset-0 z-10">
+                  <div className="h-full w-full outline outline-2 outline-white outline-offset-[-2px]" />
+                </TextDistortFilter>
+              )}
+            </button>
+          )}
           {images.map((img, i) =>
             img?.asset ? (
               <button
                 key={i}
                 ref={(el) => {
-                  thumbnailRefs.current[i] = el
+                  thumbnailRefs.current[i + leadOffset] = el
                 }}
                 onClick={() => {
                   setSelectedByTap(true)
                   setScrollLocked(true)
-                  setSelectedIndex(i)
+                  setSelectedIndex(i + leadOffset)
                   setTimeout(() => setScrollLocked(false), 300)
                 }}
                 className={`relative snap-center snap-always flex-shrink-0 overflow-hidden h-20 w-auto lg:w-full lg:h-auto ${
-                  i === images.length - 1 ? "lg:mb-12" : ""
+                  i + leadOffset === slideCount - 1 ? "lg:mb-12" : ""
                 }`}
                 aria-label={`Select image ${i + 1}`}
               >
@@ -317,7 +396,7 @@ export default function Gallery({
                   blurDataURL={img.asset.metadata?.lqip}
                   className="h-full w-auto lg:w-full lg:h-auto object-contain"
                 />
-                {i === selectedIndex && (
+                {i + leadOffset === selectedIndex && (
                   <TextDistortFilter className="pointer-events-none absolute inset-0 z-10">
                     <div className="h-full w-full outline outline-2 outline-white outline-offset-[-2px]" />
                   </TextDistortFilter>

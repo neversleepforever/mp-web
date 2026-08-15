@@ -8,6 +8,7 @@ import { resolveOpenGraphImage } from "@/sanity/lib/utils"
 import Link from "next/link"
 import MuxPlayer from "@mux/mux-player-react"
 import TextDistortFilter from "@/app/components/TextFilter"
+import Gallery, { GalleryImage } from "@/app/components/Gallery"
 
 export interface Video {
   _id: string
@@ -26,6 +27,7 @@ export interface Video {
     }
   }
   caption?: string
+  images?: unknown[]
 }
 
 export const revalidate = 60
@@ -88,6 +90,12 @@ export default async function VideoPage({
   const video = data as Video | null
   if (!video?._id) return notFound()
 
+  // Rendered here rather than in the Footer: the Footer only knows the pathname,
+  // so it can't tell whether this video has stills, and a link to an empty
+  // gallery is worse than no link.
+  const hasStills = Boolean(video.images?.length)
+  const stillsHref = `/folio/video/${video.slug}/full`
+
   return (
     <>
       <div className="my-12 md:my-16 p-6 md:p-0 pt-0 xl:p-0 xl:-my-0 xl:grid xl:grid-cols-2 xl:h-screen">
@@ -123,8 +131,20 @@ export default async function VideoPage({
           </TextDistortFilter>
         </div>
 
+       {/* Mobile: trailer and stills as one carousel, the video leading. Desktop
+           keeps the trailer as a cover with a "View Stills" link instead. */}
+       {video.muxVideo?.asset?.playbackId && hasStills && (
+         <div className="lg:hidden w-full">
+           <Gallery
+             images={video.images as GalleryImage[]}
+             title={video.title}
+             leadVideo={{ playbackId: video.muxVideo.asset.playbackId }}
+           />
+         </div>
+       )}
+
        {video.muxVideo?.asset?.playbackId ? (
-  <div className="w-full xl:h-[100vh] md:px-20 lg:px-30 xl:p-30 flex flex-col items-center justify-center">
+  <div className={`w-full xl:h-[100vh] md:px-20 lg:px-30 xl:p-30 flex-col items-center justify-center ${hasStills ? "hidden lg:flex" : "flex"}`}>
     <MuxPlayer
       playbackId={video.muxVideo.asset.playbackId}
       streamType="on-demand"
@@ -145,6 +165,22 @@ export default async function VideoPage({
   <p className="text-gray-500 italic">No video available</p>
 )}
       </div>
+      {/* The only link to the stills, at every size. Sits where the galleries put
+          "View Full Shoot" and matches the footer's padding so the two line up —
+          and above it, since the footer is a full-width fixed bar at z-40 that
+          would otherwise swallow the click. */}
+      {hasStills && (
+        <div className="hidden lg:block fixed bottom-0 right-0 py-4 px-7 z-50">
+          <TextDistortFilter>
+            <Link
+              href={stillsHref}
+              className="uppercase hover:underline text-[14px] text-black mix-blend-difference"
+            >
+              View Stills
+            </Link>
+          </TextDistortFilter>
+        </div>
+      )}
     </>
   )
 }
