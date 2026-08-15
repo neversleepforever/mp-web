@@ -59,7 +59,9 @@ const handleVerify = () => {
     return null
   }
 
-  const marqueeText = (<div className="pl-2">For Adults Only  <span>🍑</span></div>)
+  // Render the Sanity value. This was previously hardcoded, so marqueeLabel was
+  // read from the CMS and then discarded — edits to marqueeText never appeared.
+  const marqueeText = (<div className="pl-2">{marqueeLabel}</div>)
 
   return (
     <>
