@@ -6,8 +6,8 @@ import { usePathname } from "next/navigation"
 
 export default function Centerfold() {
   const pathname = usePathname();
+  // Hidden on the folio grid, which lives at the root.
   if (pathname === "/") return null;
-  if (pathname === "/folio") return null;
 
   const isDark =
     pathname?.startsWith("/about") ||

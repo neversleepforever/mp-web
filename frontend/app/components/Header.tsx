@@ -12,7 +12,7 @@ export default function Header() {
   const links = [
     { href: "/about", label: "About" },
     { href: "/services", label: "Services" },
-    { href: "/folio", label: "Folio" },
+    { href: "/", label: "Folio" },
     { href: "/bookings", label: "Booking" },
     { href: "/contact", label: "Contact" },
   ]
@@ -34,9 +34,9 @@ export default function Header() {
         <nav className="w-full">
             <TextDistortFilter>
           <ul className="flex w-full justify-between text-xs sm:text-base tracking-tight font-nav uppercase">
-              <li key={"/folio"} className="hidden lg:block">
+              <li key={"/"} className="hidden lg:block">
                 <TransitionLink
-                  href={"/folio"}
+                  href={"/"}
                 >
                   
                     <Image

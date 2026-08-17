@@ -26,7 +26,8 @@ export default function Footer() {
     ? `${pathname?.replace(/\/full$/, "")}/full`
     : null
 
-  const backHref = isFolioPage ? "/folio" : null
+  // The folio index lives at the root now; only project pages sit under /folio.
+  const backHref = isFolioPage ? "/" : null
 
   return (
     <footer className="fixed bottom-0 left-0 right-0 py-4 px-7 w-full z-40">
@@ -37,7 +38,7 @@ export default function Footer() {
           {isFolioPage && !pathname.endsWith("/folio") && !isFullGalleryPage && (
             <TextDistortFilter>
               <TransitionLink
-                href={backHref ?? "/folio"}
+                href={backHref ?? "/"}
                 className="uppercase hover:underline text-[14px] text-black mix-blend-difference"
               >
                 Back
@@ -46,7 +47,7 @@ export default function Footer() {
           )}
         </div>
         <div className=" h-[30px] flex-shrink-0 flex justify-center">
-          <TransitionLink href={"/folio"}>
+          <TransitionLink href={"/"}>
             <Image
               src="/images/logo/mistress-maggie-peach-1-line-black.svg"
               alt="Logo"
