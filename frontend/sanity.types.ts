@@ -501,21 +501,18 @@ export type Contact = {
     _key: string
   }>
   banners?: Array<{
-    image?: {
-      asset?: {
-        _ref: string
-        _type: 'reference'
-        _weak?: boolean
-        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
-      }
-      media?: unknown
-      hotspot?: SanityImageHotspot
-      crop?: SanityImageCrop
-      _type: 'image'
+    asset?: {
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
     }
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
     url?: string
     alt?: string
-    _type: 'banner'
+    _type: 'image'
     _key: string
   }>
 }

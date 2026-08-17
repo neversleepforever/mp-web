@@ -1,4 +1,4 @@
-import { defineArrayMember, defineField, defineType } from "sanity"
+import { defineField, defineType } from "sanity"
 import { DocumentIcon } from "@sanity/icons"
 
 export const contact = defineType({
@@ -72,21 +72,14 @@ export const contact = defineType({
       description:
         "Banner images shown under Site Credits. Animated GIFs are kept animated. Drag to reorder — each opens its link in a new tab.",
       type: "array",
+      // An array of images with extra fields on each, exactly like the gallery
+      // document's `images`. An earlier version wrapped each image in a custom
+      // object; that shape misbehaved in the Studio — uploads hung and row
+      // controls vanished — so this mirrors the structure already proven here.
       of: [
-        // defineArrayMember, not defineField — an array member declared as a
-        // field produces a malformed type, which breaks the row UI in the Studio
-        // (reordering, removing, and validation).
-        defineArrayMember({
-          name: "banner",
-          title: "Banner",
-          type: "object",
+        {
+          type: "image",
           fields: [
-            defineField({
-              name: "image",
-              title: "Image",
-              type: "image",
-              description: "GIF, PNG or JPG.",
-            }),
             defineField({
               name: "url",
               title: "Link URL",
@@ -99,13 +92,7 @@ export const contact = defineType({
               type: "string",
             }),
           ],
-          preview: {
-            select: { title: "alt", subtitle: "url", media: "image" },
-            prepare({ title, subtitle, media }) {
-              return { title: title || "Banner", subtitle, media }
-            },
-          },
-        }),
+        },
       ],
     }),
   ],
