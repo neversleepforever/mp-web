@@ -215,7 +215,7 @@ export default async function ContactPage() {
         {contact.banners?.length ? (
           // Same box treatment as Site Credits above, so spacing stays consistent.
           <div className="mt-4 border p-4 md:bg-black pointer-events-auto">
-            <div className="flex flex-wrap items-center gap-3 md:gap-4">
+            <div className="flex flex-col gap-3 md:gap-4">
               {contact.banners.map((banner, i) => {
                 const src = banner.image?.asset?.url
                 if (!src) return null
@@ -228,7 +228,10 @@ export default async function ContactPage() {
                     alt={banner.alt || ""}
                     width={dims?.width}
                     height={dims?.height}
-                    className="h-10 md:h-12 w-auto max-w-full object-contain"
+                    // Full width of the box, so a wide banner reaches the right
+                    // edge like the boxes above it. Height follows the aspect
+                    // ratio, which also shrinks them naturally on mobile.
+                    className="block w-full h-auto object-contain"
                     draggable={false}
                   />
                 )
@@ -238,12 +241,11 @@ export default async function ContactPage() {
                     href={banner.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="shrink-0 hover:opacity-80 transition-opacity"
                   >
                     {img}
                   </a>
                 ) : (
-                  <span key={i} className="shrink-0">
+                  <span key={i} className="block w-full">
                     {img}
                   </span>
                 )
