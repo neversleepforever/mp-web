@@ -16,11 +16,24 @@ interface SocialLink {
   openInNewTab?: boolean
 }
 
+interface Banner {
+  url?: string
+  alt?: string
+  image?: {
+    asset?: {
+      url?: string
+      metadata?: { dimensions?: { width: number; height: number } }
+    }
+  }
+}
+
 interface ContactData {
   _id: string
+  heading?: string
   socials1?: SocialLink[]
   socials2?: SocialLink[]
   siteCredits?: PortableTextBlock[]
+  banners?: Banner[]
 }
 
 interface AboutData {
@@ -31,9 +44,20 @@ interface AboutData {
 const contactQuery = defineQuery(`
   *[_type == "contact"][0]{
     _id,
+    heading,
     socials1[]{displayTitle, href, openInNewTab},
     socials2[]{displayTitle, href, openInNewTab},
-    siteCredits
+    siteCredits,
+    banners[]{
+      url,
+      alt,
+      image{
+        asset->{
+          url,
+          metadata{ dimensions{ width, height } }
+        }
+      }
+    }
   }
 `)
 
@@ -111,7 +135,7 @@ export default async function ContactPage() {
      <TextDistortFilter>
         <div className="pointer-events-auto md:bg-black w-full md:w-[670px] h-auto md:h-[470px] border p-4 md:grid md:grid-cols-2 md:grid-rows-1">
           <div className="flex-1">
-            <h1 className="heading-1 mb-8">Contact</h1>
+            <h1 className="heading-1 mb-8">{contact.heading ?? "Contact"}</h1>
 
             {contact.socials1?.length ? (
               <div className="mb-8">
@@ -188,6 +212,45 @@ export default async function ContactPage() {
             ) : null}
           </div>
         </div>
+        {contact.banners?.length ? (
+          // Same box treatment as Site Credits above, so spacing stays consistent.
+          <div className="mt-4 border p-4 md:bg-black pointer-events-auto">
+            <div className="flex flex-wrap items-center gap-3 md:gap-4">
+              {contact.banners.map((banner, i) => {
+                const src = banner.image?.asset?.url
+                if (!src) return null
+                const dims = banner.image?.asset?.metadata?.dimensions
+                const img = (
+                  // Plain <img> with the untouched asset URL on purpose: running a
+                  // GIF through next/image optimisation flattens it to one frame.
+                  <img
+                    src={src}
+                    alt={banner.alt || ""}
+                    width={dims?.width}
+                    height={dims?.height}
+                    className="h-10 md:h-12 w-auto max-w-full object-contain"
+                    draggable={false}
+                  />
+                )
+                return banner.url ? (
+                  <a
+                    key={i}
+                    href={banner.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="shrink-0 hover:opacity-80 transition-opacity"
+                  >
+                    {img}
+                  </a>
+                ) : (
+                  <span key={i} className="shrink-0">
+                    {img}
+                  </span>
+                )
+              })}
+            </div>
+          </div>
+        ) : null}
     </TextDistortFilter>
       </section>
     </div>

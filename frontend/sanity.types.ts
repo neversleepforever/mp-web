@@ -470,6 +470,7 @@ export type Contact = {
   _createdAt: string
   _updatedAt: string
   _rev: string
+  heading?: string
   socials1?: Array<
     {
       _key: string
@@ -497,6 +498,24 @@ export type Contact = {
     }>
     level?: number
     _type: 'block'
+    _key: string
+  }>
+  banners?: Array<{
+    image?: {
+      asset?: {
+        _ref: string
+        _type: 'reference'
+        _weak?: boolean
+        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+      }
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      _type: 'image'
+    }
+    url?: string
+    alt?: string
+    _type: 'banner'
     _key: string
   }>
 }
