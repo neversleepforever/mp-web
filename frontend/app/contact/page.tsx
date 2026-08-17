@@ -16,15 +16,19 @@ interface SocialLink {
   openInNewTab?: boolean
 }
 
+interface BannerAsset {
+  url?: string
+  metadata?: { dimensions?: { width: number; height: number } }
+}
+
 interface Banner {
   url?: string
   alt?: string
-  image?: {
-    asset?: {
-      url?: string
-      metadata?: { dimensions?: { width: number; height: number } }
-    }
-  }
+  /** Current shape: the array item is the image itself. */
+  asset?: BannerAsset
+  /** Earlier shape: the image was nested in the array item. Kept so banners
+   *  added before the schema changed still render. */
+  image?: { asset?: BannerAsset }
 }
 
 interface ContactData {
@@ -51,6 +55,10 @@ const contactQuery = defineQuery(`
     banners[]{
       url,
       alt,
+      asset->{
+        url,
+        metadata{ dimensions{ width, height } }
+      },
       image{
         asset->{
           url,
@@ -69,6 +77,12 @@ export default async function ContactPage() {
 
   const contact = contactData as ContactData | null
   const about = aboutData as AboutData | null
+
+  // Accept either stored shape, and keep only banners that will actually
+  // render — an entry with no asset would otherwise leave an empty box.
+  const banners = (contact?.banners ?? [])
+    .map((b) => ({ ...b, resolved: b.asset ?? b.image?.asset }))
+    .filter((b) => b.resolved?.url)
 
   if (!contact) {
     return <p>No contact info found. Add it in Sanity Studio.</p>
@@ -176,7 +190,9 @@ export default async function ContactPage() {
             ) : null}
           </div>
 
-          <div className="hidden md:block md:flex md:items-center md:justify-end md:p-6 md:overflow-hidden">
+          {/* pl only — padding on all sides pushed the image 41px off the right
+              edge while the text sat at 17px. The box's own p-4 sets the gap. */}
+          <div className="hidden md:block md:flex md:items-center md:justify-end md:pl-6 md:overflow-hidden">
             <FadeInImage
               src="/images/linkspage.png"
               alt="Links Page Illustration"
@@ -185,7 +201,9 @@ export default async function ContactPage() {
             />
           </div>
         </div>
-        <div className="mt-4 border p-4 md:bg-black pointer-events-auto">
+        {/* Same width as the box above, so the three stack flush. Without it
+            these stretch to the parent and sit ~19px wider. */}
+        <div className="mt-4 border p-4 md:bg-black pointer-events-auto w-full md:w-[670px]">
           <h1 className="heading-3">Site Credits</h1>
           <div className="mt-2 font-sans">
             {contact.siteCredits?.length ? (
@@ -212,14 +230,13 @@ export default async function ContactPage() {
             ) : null}
           </div>
         </div>
-        {contact.banners?.length ? (
+        {banners.length ? (
           // Same box treatment as Site Credits above, so spacing stays consistent.
-          <div className="mt-4 border p-4 md:bg-black pointer-events-auto">
+          <div className="mt-4 border p-4 md:bg-black pointer-events-auto w-full md:w-[670px]">
             <div className="flex flex-col gap-3 md:gap-4">
-              {contact.banners.map((banner, i) => {
-                const src = banner.image?.asset?.url
-                if (!src) return null
-                const dims = banner.image?.asset?.metadata?.dimensions
+              {banners.map((banner, i) => {
+                const src = banner.resolved!.url!
+                const dims = banner.resolved?.metadata?.dimensions
                 const img = (
                   // Plain <img> with the untouched asset URL on purpose: running a
                   // GIF through next/image optimisation flattens it to one frame.
@@ -241,6 +258,7 @@ export default async function ContactPage() {
                     href={banner.url}
                     target="_blank"
                     rel="noopener noreferrer"
+                    className="block w-full hover:opacity-80 transition-opacity"
                   >
                     {img}
                   </a>
