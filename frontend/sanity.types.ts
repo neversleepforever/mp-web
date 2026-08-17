@@ -510,7 +510,7 @@ export type Contact = {
     media?: unknown
     hotspot?: SanityImageHotspot
     crop?: SanityImageCrop
-    url?: string
+    linkUrl?: string
     alt?: string
     _type: 'image'
     _key: string

@@ -22,6 +22,8 @@ interface BannerAsset {
 }
 
 interface Banner {
+  /** Current field name. `url` is the earlier one, kept so existing rows work. */
+  linkUrl?: string
   url?: string
   alt?: string
   /** Current shape: the array item is the image itself. */
@@ -53,6 +55,7 @@ const contactQuery = defineQuery(`
     socials2[]{displayTitle, href, openInNewTab},
     siteCredits,
     banners[]{
+      linkUrl,
       url,
       alt,
       asset->{
@@ -233,7 +236,10 @@ export default async function ContactPage() {
         {banners.length ? (
           // Same box treatment as Site Credits above, so spacing stays consistent.
           <div className="mt-4 border p-4 md:bg-black pointer-events-auto w-full md:w-[670px]">
-            <div className="flex flex-col gap-3 md:gap-4">
+            <h1 className="heading-3">Directory</h1>
+            {/* A touch more room than Site Credits' mt-2 — the banners are
+                images rather than text and need the extra breathing space. */}
+            <div className="mt-[14px] flex flex-col gap-3 md:gap-4">
               {banners.map((banner, i) => {
                 const src = banner.resolved!.url!
                 const dims = banner.resolved?.metadata?.dimensions
@@ -248,22 +254,25 @@ export default async function ContactPage() {
                     // Full width of the box, so a wide banner reaches the right
                     // edge like the boxes above it. Height follows the aspect
                     // ratio, which also shrinks them naturally on mobile.
-                    className="block w-full h-auto object-contain"
+                    // Greyscale until hovered, so the colour is the reward for
+                    // pointing at one.
+                    className="block w-full h-auto object-contain grayscale transition-[filter] duration-300 group-hover:grayscale-0"
                     draggable={false}
                   />
                 )
-                return banner.url ? (
+                const href = banner.linkUrl ?? banner.url
+                return href ? (
                   <a
                     key={i}
-                    href={banner.url}
+                    href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block w-full hover:opacity-80 transition-opacity"
+                    className="group block w-full"
                   >
                     {img}
                   </a>
                 ) : (
-                  <span key={i} className="block w-full">
+                  <span key={i} className="group block w-full">
                     {img}
                   </span>
                 )

@@ -3297,7 +3297,7 @@
                 },
                 "optional": true
               },
-              "url": {
+              "linkUrl": {
                 "type": "objectAttribute",
                 "value": {
                   "type": "string"

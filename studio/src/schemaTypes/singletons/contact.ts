@@ -80,8 +80,11 @@ export const contact = defineType({
         {
           type: "image",
           fields: [
+            // Named linkUrl, not url: an image value already carries asset.url
+            // and the image input resolves URLs internally, so a sibling field
+            // called `url` collided with it and left the input spinning.
             defineField({
-              name: "url",
+              name: "linkUrl",
               title: "Link URL",
               type: "url",
               description: "Opens in a new tab.",
