@@ -47,7 +47,7 @@ export default function AnnouncementBanner({ data }: { data: AnnouncementData | 
   return (
     <div
       style={{ height: BAR_HEIGHT }}
-      className="fixed inset-x-0 top-0 z-50 flex items-center justify-center gap-[6px] md:gap-[10px] bg-black px-3 pr-9 font-sans font-normal text-[10px] md:text-[11px] uppercase tracking-wide whitespace-nowrap text-white"
+      className="fixed inset-x-0 top-0 z-50 flex items-center justify-center gap-[10px] bg-black px-3 pr-9 font-sans font-normal text-[10px] md:text-[11px] uppercase tracking-wide whitespace-nowrap text-white"
     >
       {data?.newsletterText && (
         <a
@@ -57,7 +57,9 @@ export default function AnnouncementBanner({ data }: { data: AnnouncementData | 
           // line-through replaces the underline on hover — they're the same
           // CSS property, so no separate "remove underline" is needed (and
           // adding hover:no-underline would cancel the strike instead).
-          className="underline decoration-1 underline-offset-2 hover:line-through"
+          // No underline-offset: Safari applies text-underline-offset to
+          // line-through as well, which pushed the strike below centre.
+          className="underline decoration-1 hover:line-through"
         >
           {data.newsletterText}
         </a>
