@@ -6,12 +6,21 @@ import { usePathname } from "next/navigation"
 import TextDistortFilter from "./TextFilter"
 import { TransitionLink } from "./TransitionLink"
 
+/** Dark end to end, so the wordmark is white. Everywhere else it stays black. */
+const DARK_PAGES = ["/about", "/services", "/bookings", "/contact"]
+
 export default function Footer() {
   const pathname = usePathname()
 
   const isFolioPage = pathname?.startsWith("/folio")
   const isGalleryPage = pathname?.startsWith("/folio/gallery/")
   const isFullGalleryPage = pathname?.endsWith("/full")
+
+  // Fixed per page rather than measured against whatever sits behind it.
+  // Watching the artwork meant the mark changed colour mid-swipe as one photo
+  // slid out and the next slid in — a flash on every carousel move, for a
+  // wordmark that only ever needs two states.
+  const isDarkPage = DARK_PAGES.some((p) => pathname?.startsWith(p))
 
   const fullGalleryHref = isGalleryPage
     ? `${pathname?.replace(/\/full$/, "")}/full`
@@ -21,42 +30,48 @@ export default function Footer() {
 
   return (
     <footer className="fixed bottom-0 left-0 right-0 py-4 px-7 w-full z-40">
-      <TextDistortFilter>
-        <div className="flex items-center justify-between w-full">
-          <div className="flex-1 flex justify-start">
-            {isFolioPage && !pathname.endsWith("/folio") && !isFullGalleryPage && (
+      {/* Distortion is applied per text link rather than around the whole row,
+          so the wordmark stays clean. */}
+      <div className="flex items-center justify-between w-full">
+        <div className="flex-1 flex justify-start">
+          {isFolioPage && !pathname.endsWith("/folio") && !isFullGalleryPage && (
+            <TextDistortFilter>
               <TransitionLink
                 href={backHref ?? "/folio"}
                 className="uppercase hover:underline text-[14px] text-black mix-blend-difference"
               >
                 Back
               </TransitionLink>
-            )}
-          </div>
-          <div className=" h-[30px] flex-shrink-0 flex justify-center">
-            <TransitionLink href={"/folio"}>
-              <Image
-                src="/images/logo/mistress-maggie-peach-1-line-black.svg"
-                alt="Logo"
-                width={180}
-                height={24}
-                className="object-contain dark:invert lg:hidden"
-              />
-            </TransitionLink>
-          </div>
-          <div className="flex-1 flex justify-end">
-            {isGalleryPage && !isFullGalleryPage && (
+            </TextDistortFilter>
+          )}
+        </div>
+        <div className=" h-[30px] flex-shrink-0 flex justify-center">
+          <TransitionLink href={"/folio"}>
+            <Image
+              src="/images/logo/mistress-maggie-peach-1-line-black.svg"
+              alt="Logo"
+              width={180}
+              height={24}
+              // Source SVG is black; inverted to white on the dark pages.
+              // Inline because Tailwind's `invert` resolves to invert(0) here.
+              className="object-contain lg:hidden"
+              style={{filter: isDarkPage ? "invert(1)" : undefined}}
+            />
+          </TransitionLink>
+        </div>
+        <div className="flex-1 flex justify-end">
+          {isGalleryPage && !isFullGalleryPage && (
+            <TextDistortFilter>
               <TransitionLink
                 href={fullGalleryHref ?? "#"}
                 className="hidden lg:block uppercase hover:underline text-[14px] text-black mix-blend-difference"
               >
                 View Full Shoot
               </TransitionLink>
-            )}
-          </div>
-
+            </TextDistortFilter>
+          )}
         </div>
-      </TextDistortFilter>
+      </div>
     </footer>
   )
 }
