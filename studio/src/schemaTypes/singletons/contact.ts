@@ -1,4 +1,4 @@
-import { defineField, defineType } from "sanity"
+import { defineArrayMember, defineField, defineType } from "sanity"
 import { DocumentIcon } from "@sanity/icons"
 
 export const contact = defineType({
@@ -73,7 +73,10 @@ export const contact = defineType({
         "Banner images shown under Site Credits. Animated GIFs are kept animated. Drag to reorder — each opens its link in a new tab.",
       type: "array",
       of: [
-        defineField({
+        // defineArrayMember, not defineField — an array member declared as a
+        // field produces a malformed type, which breaks the row UI in the Studio
+        // (reordering, removing, and validation).
+        defineArrayMember({
           name: "banner",
           title: "Banner",
           type: "object",
@@ -83,7 +86,6 @@ export const contact = defineType({
               title: "Image",
               type: "image",
               description: "GIF, PNG or JPG.",
-              validation: (Rule) => Rule.required(),
             }),
             defineField({
               name: "url",
