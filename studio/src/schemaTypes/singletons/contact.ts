@@ -79,15 +79,17 @@ export const contact = defineType({
       of: [
         {
           type: "image",
+          // Deliberately identical in shape to gallery.images / video.images,
+          // which upload reliably: hotspot enabled and plain string fields. A
+          // version of this without options and with a `url`-typed field left
+          // the image input spinning on "Loading" after every upload.
+          options: { hotspot: true },
           fields: [
-            // Named linkUrl, not url: an image value already carries asset.url
-            // and the image input resolves URLs internally, so a sibling field
-            // called `url` collided with it and left the input spinning.
             defineField({
               name: "linkUrl",
               title: "Link URL",
-              type: "url",
-              description: "Opens in a new tab.",
+              type: "string",
+              description: "Opens in a new tab. Include https://",
             }),
             defineField({
               name: "alt",
