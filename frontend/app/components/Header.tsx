@@ -23,7 +23,12 @@ export default function Header() {
 
   return (
     <>
-    <header className="fixed top-0 left-0 right-0 z-40 py-4 px-7 md:pt-4 dark:text-white bg-transparent">
+    <header
+      // Sits below the announcement bar when it's shown; the bar publishes its
+      // height as --announcement-h and 0px otherwise.
+      style={{ top: "var(--announcement-h, 0px)" }}
+      className="fixed left-0 right-0 z-40 py-4 px-7 md:pt-4 dark:text-white bg-transparent"
+    >
       <div className="flex w-full">
       
         <nav className="w-full">

@@ -16,6 +16,7 @@ import {blockContent} from './objects/blockContent'
 import { portableText } from "./objects/portableText"
 import agecheck from './singletons/agecheck'
 import bookings from './singletons/bookings'
+import { announcement } from './singletons/announcement'
 
 export const schemaTypes = [
   // Singletons
@@ -26,6 +27,7 @@ export const schemaTypes = [
   home,
   agecheck,
   bookings,
+  announcement,
   // Documents
   page,
   post,

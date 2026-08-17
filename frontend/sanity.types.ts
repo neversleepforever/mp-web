@@ -311,6 +311,18 @@ export type Gallery = {
   }>
 }
 
+export type Announcement = {
+  _id: string
+  _type: 'announcement'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  enabled?: boolean
+  newsletterText?: string
+  newsletterUrl?: string
+  bookingText?: string
+}
+
 export type Bookings = {
   _id: string
   _type: 'bookings'
@@ -1142,6 +1154,7 @@ export type AllSanitySchemaTypes =
   | Slug
   | Journal
   | Gallery
+  | Announcement
   | Bookings
   | AgeCheck
   | Home
@@ -1837,6 +1850,14 @@ export type AgeCheckQueryResult = {
   bodyText: string | null
   buttonText: string | null
 } | null
+// Variable: announcementQuery
+// Query: *[_type == "announcement"][0] {  enabled,  newsletterText,  newsletterUrl,  bookingText}
+export type AnnouncementQueryResult = {
+  enabled: boolean | null
+  newsletterText: string | null
+  newsletterUrl: string | null
+  bookingText: string | null
+} | null
 // Variable: bookingsQuery
 // Query: *[_type == "bookings"][0]{    _id,    image{      alt,      asset->{        _id,        url,        metadata{          lqip,          dimensions { width, height }        }      }    }  }
 export type BookingsQueryResult = {
@@ -1878,6 +1899,7 @@ declare module '@sanity/client' {
     '\n  *[_type == "services"][0]{\n      image{\n        alt,\n        asset->{\n          _id,\n          url,\n          metadata{\n            lqip,\n            dimensions { width, height }\n          }\n        }\n      },\n    bannerEmail,\n    content[]{\n      ...,\n      _type == "image" => {\n        ...,\n        "asset": asset->{\n          _id,\n          url,\n          metadata {\n            lqip,\n            dimensions { width, height }\n          }\n        }\n      },\n\n      _type == "servicesSection" => {\n        ...,\n        body[]{\n          ...,\n          _type == "image" => {\n            ...,\n            "asset": asset->{\n              _id,\n              url,\n              metadata {\n                lqip,\n                dimensions { width, height }\n              }\n            }\n          }\n        }\n      },\n\n      _type == "ratesSection" => {\n        ...,\n        rates[]{\n          ...,\n          _type == "image" => {\n            ...,\n            "asset": asset->{\n              _id,\n              url,\n              metadata {\n                lqip,\n                dimensions { width, height }\n              }\n            }\n          }\n        }\n      },\n\n      _type == "outcallSection" => {\n        ...,\n        body[]{\n          ...,\n          _type == "image" => {\n            ...,\n            "asset": asset->{\n              _id,\n              url,\n              metadata {\n                lqip,\n                dimensions { width, height }\n              }\n            }\n          }\n        }\n      },\n\n      _type == "virtualSection" => {\n        ...,\n        body[]{\n          ...,\n          _type == "image" => {\n            ...,\n            "asset": asset->{\n              _id,\n              url,\n              metadata {\n                lqip,\n                dimensions { width, height }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n': ServicesQueryResult
     '\n  *[_type == "about"][0]{\n    _id,\n      image{\n        alt,\n        asset->{\n          _id,\n          url,\n          metadata{\n            lqip,\n            dimensions { width, height }\n          }\n        }\n      },\n    content[]{\n      ...,\n      _type == "image" => {\n        alt,\n        asset->{\n          _id,\n          url,\n          metadata {\n            lqip,\n            dimensions { width, height }\n          }\n        }\n      }\n    }\n  }\n': AboutQueryResult
     '\n*[_type == "ageCheck"][0] {\n  marqueeText,\n  bodyText,\n  buttonText\n}': AgeCheckQueryResult
+    '\n*[_type == "announcement"][0] {\n  enabled,\n  newsletterText,\n  newsletterUrl,\n  bookingText\n}': AnnouncementQueryResult
     '\n  *[_type == "bookings"][0]{\n    _id,\n    image{\n      alt,\n      asset->{\n        _id,\n        url,\n        metadata{\n          lqip,\n          dimensions { width, height }\n        }\n      }\n    }\n  }\n': BookingsQueryResult
   }
 }

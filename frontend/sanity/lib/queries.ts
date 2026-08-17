@@ -515,6 +515,14 @@ export const ageCheckQuery = defineQuery(`
   buttonText
 }`)
 
+export const announcementQuery = defineQuery(`
+*[_type == "announcement"][0] {
+  enabled,
+  newsletterText,
+  newsletterUrl,
+  bookingText
+}`)
+
 export const bookingsQuery = defineQuery(`
   *[_type == "bookings"][0]{
     _id,
