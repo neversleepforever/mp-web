@@ -47,7 +47,7 @@ export default function AnnouncementBanner({ data }: { data: AnnouncementData | 
   return (
     <div
       style={{ height: BAR_HEIGHT }}
-      className="fixed inset-x-0 top-0 z-50 flex items-center justify-center gap-3 md:gap-6 bg-black px-3 pr-9 text-[10px] md:text-[11px] uppercase tracking-wide whitespace-nowrap text-white"
+      className="fixed inset-x-0 top-0 z-50 flex items-center justify-center gap-3 md:gap-6 bg-black px-3 pr-9 font-sans font-normal text-[10px] md:text-[11px] uppercase tracking-wide whitespace-nowrap text-white"
     >
       {data?.newsletterText && (
         <a

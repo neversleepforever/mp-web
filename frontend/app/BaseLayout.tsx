@@ -28,7 +28,13 @@ export default function BaseLayout({
   }, [isDark])
 
   return (
-    <section className="flex flex-col min-h-[100dvh] overflow-hidden">
+    <section
+      // The banner and Header are both fixed, so the page content shifts down
+      // by the banner's height too — keeping the nav-to-content spacing the
+      // same as without the banner. --announcement-h is 0px when it's off.
+      style={{ paddingTop: "var(--announcement-h, 0px)" }}
+      className="flex flex-col min-h-[100dvh] overflow-hidden"
+    >
       <Centerfold />
       <AnnouncementBanner data={announcement ?? null} />
       <Header />
