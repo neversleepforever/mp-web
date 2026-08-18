@@ -71,6 +71,7 @@ export default async function BookingPage() {
               ]}
               scrollContainerId="bookings-content-scroll"
               uidPrefix="booking-hero-desktop"
+              mode="wipe"
               variant="rose"
               className="aspect-[480/910] w-full max-w-[340px] h-auto lg:h-[77dvh] lg:w-auto lg:max-w-none"
             />

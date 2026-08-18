@@ -206,8 +206,23 @@ body.dark {
   }
 }
 
-/* Scrolling back up mirrors the sweep: the same keyframes played backwards,
-   right-to-left. */
-.hero-sheen--reverse {
-  animation-direction: reverse;
+/* Level-edge wipes for the hero swap's "wipe" mode — a scan pass down or up
+   the frame, direction following the scroll. */
+@keyframes hero-wipe-down {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* The rewind: the outgoing image retracts upward, uncovering what's beneath. */
+@keyframes hero-wipe-out {
+  from {
+    clip-path: inset(0 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 100% 0);
+  }
 }

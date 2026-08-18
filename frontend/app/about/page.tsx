@@ -118,6 +118,7 @@ export default async function AboutPage() {
               ]}
               scrollContainerId="about-content-scroll"
               uidPrefix="hero-desktop"
+              mode="wipe"
               className="aspect-[480/910] w-full max-w-[340px] h-auto lg:h-[77dvh] lg:w-auto lg:max-w-none"
             />
           ) : (

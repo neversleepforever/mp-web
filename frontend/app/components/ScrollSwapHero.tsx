@@ -16,6 +16,13 @@ const sheenMask: CSSProperties = {
   WebkitMaskPosition: "center",
 }
 
+// Wipe states: a level edge, no angle — the reveal reads as a scan pass, the
+// same vertical axis the gallery carousel already moves on. The edge follows
+// the scroll: down-scroll sweeps down, back-scroll sweeps up (keyframes in
+// globals.css).
+const SHOWN = "inset(0 0 0 0)"
+const HIDDEN = "inset(0 0 100% 0)"
+
 export interface SwapImage {
   src: string
   alt: string
@@ -32,32 +39,42 @@ type HeroProps = React.ComponentProps<typeof HeroVignette>
  *
  * Listens to the content column (found by id) rather than the window, because
  * these pages scroll inside that column on md+, not the document.
+ *
+ * Two transition modes: "fade" crossfades; "wipe" slides a slanted clip-path
+ * edge across, the incoming image wiping over the outgoing one.
  */
 export default function ScrollSwapHero({
   images,
   scrollContainerId,
   uidPrefix,
   variant,
+  mode = "fade",
   className = "",
 }: {
   images: SwapImage[]
   scrollContainerId: string
   uidPrefix: string
   variant?: HeroProps["variant"]
+  mode?: "fade" | "wipe"
   className?: string
 }) {
   const [active, setActive] = useState(0)
   // Increments on every image change so the sheen overlay remounts and its
   // one-shot animation replays. 0 = never swapped, so nothing plays on load.
   const [sweep, setSweep] = useState(0)
-  // Scrolling down sweeps the light left-to-right; scrolling back mirrors it.
-  const [sweepBack, setSweepBack] = useState(false)
+  // The layer being wiped over — kept above the rest so the incoming edge
+  // reveals it, not whichever image happens to be later in the DOM.
+  const [prevLayer, setPrevLayer] = useState(0)
+  // Scrolling down sweeps the edge downward; scrolling back sweeps it up —
+  // the same direction-following the gallery carousel uses.
+  const [wipeUp, setWipeUp] = useState(false)
   const prevActive = useRef(0)
   const count = images.length
 
   useEffect(() => {
     if (prevActive.current !== active) {
-      setSweepBack(active < prevActive.current)
+      setWipeUp(active < prevActive.current)
+      setPrevLayer(prevActive.current)
       prevActive.current = active
       setSweep((s) => s + 1)
     }
@@ -80,6 +97,35 @@ export default function ScrollSwapHero({
     return () => el.removeEventListener("scroll", measure)
   }, [scrollContainerId, count])
 
+  /** Per-layer presentation in wipe mode. Scrolling down: the incoming layer
+   *  wipes in over the top, a scan pass downward. Scrolling up: the true
+   *  reverse — the outgoing layer rolls back up the way it came, uncovering
+   *  the earlier image sitting fully shown beneath it. Keyframes fix start
+   *  states, and nothing animates before the first swap, so page load is
+   *  still. */
+  const layerClip = (i: number): CSSProperties => {
+    if (mode !== "wipe") return {}
+    const isActive = i === active
+    const isPrev = i === prevLayer && !isActive
+
+    if (wipeUp && sweep > 0) {
+      if (isPrev)
+        return {
+          clipPath: HIDDEN,
+          animation: "hero-wipe-out 1200ms ease-in-out",
+          zIndex: 2,
+        }
+      return { clipPath: isActive ? SHOWN : HIDDEN, zIndex: isActive ? 1 : 0 }
+    }
+
+    return {
+      clipPath: isActive || isPrev ? SHOWN : HIDDEN,
+      animation:
+        isActive && sweep > 0 ? "hero-wipe-down 1200ms ease-in-out" : undefined,
+      zIndex: isActive ? 2 : isPrev ? 1 : 0,
+    }
+  }
+
   // Positioning lives on these wrappers, not on HeroVignette's className —
   // HeroVignette prepends `relative`, and Tailwind's `.relative` outranks
   // `.absolute` in the stylesheet, so an absolutely-stacked copy would compute
@@ -89,8 +135,13 @@ export default function ScrollSwapHero({
       {images.map((img, i) => (
         <div
           key={i}
-          className={`${i === 0 ? "h-full w-full" : "absolute inset-0"} transition-opacity duration-700 ease-in-out ${
-            active === i ? "opacity-100" : "opacity-0"
+          style={layerClip(i)}
+          className={`${i === 0 ? "h-full w-full" : "absolute inset-0"} ${
+            mode === "fade"
+              ? `transition-opacity duration-700 ease-in-out ${
+                  active === i ? "opacity-100" : "opacity-0"
+                }`
+              : ""
           }`}
         >
           <HeroVignette
@@ -103,16 +154,17 @@ export default function ScrollSwapHero({
           />
         </div>
       ))}
-      {/* One-shot specular sweep over the crossfade — purely additive, so if
-          it ever fails the plain fade above still carries the swap. */}
-      {sweep > 0 && (
+      {/* One-shot specular sweep over the crossfade — fade mode only: in wipe
+          mode the travelling edge is the effect, and the sheen on top of it
+          read as too much. Purely additive either way. */}
+      {mode === "fade" && sweep > 0 && (
         <div
           key={sweep}
           aria-hidden
           className="pointer-events-none absolute inset-0 overflow-hidden"
-          style={sheenMask}
+          style={{ ...sheenMask, zIndex: 3 }}
         >
-          <div className={`hero-sheen ${sweepBack ? "hero-sheen--reverse" : ""}`} />
+          <div className="hero-sheen" />
         </div>
       )}
     </div>

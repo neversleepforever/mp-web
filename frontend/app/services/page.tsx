@@ -265,6 +265,7 @@ export default async function ServicesPage() {
               images={swapImages}
               scrollContainerId="services-content-scroll"
               uidPrefix="svc-hero-desktop"
+              mode="wipe"
               variant="rose"
               className="aspect-[480/910] w-full max-w-[340px] h-auto lg:h-[77dvh] lg:w-auto lg:max-w-none"
             />
