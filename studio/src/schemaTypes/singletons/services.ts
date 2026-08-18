@@ -14,6 +14,24 @@ export const services = defineType({
           icon: ImageIcon,
           options: { hotspot: true },
         }),
+      defineField({
+          name: "imageSecondary",
+          title: "Second Image",
+          type: "image",
+          description:
+            "Desktop/tablet only: the left image steps to this one as the text is scrolled. Leave empty to keep a single image.",
+          icon: ImageIcon,
+          options: { hotspot: true },
+        }),
+      defineField({
+          name: "imageTertiary",
+          title: "Third Image",
+          type: "image",
+          description:
+            "Desktop/tablet only: the final step of the scroll sequence. Leave empty to swap between two.",
+          icon: ImageIcon,
+          options: { hotspot: true },
+        }),
         defineField({
           name: "bannerEmail",
           title: "Banner Email",

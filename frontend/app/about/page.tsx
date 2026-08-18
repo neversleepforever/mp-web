@@ -1,6 +1,6 @@
 import TextDistortFilter from "@/app/components/TextFilter"
 import { HeroVignette, ContentVignette } from "@/app/components/Vignette"
-import AboutHeroSwap from "@/app/components/AboutHeroSwap"
+import ScrollSwapHero from "@/app/components/ScrollSwapHero"
 import { sanityFetch } from "@/sanity/lib/live"
 import { aboutQuery } from "@/sanity/lib/queries"
 import { PortableText, type PortableTextBlock, type PortableTextComponents } from "next-sanity"
@@ -107,14 +107,17 @@ export default async function AboutPage() {
             content column, under the heading. */}
         <div className="relative hidden md:flex items-center justify-center overflow-hidden bg-[#0b0b0b] bg-[url('/images/scantexture.jpg')] bg-cover bg-center md:h-[100dvh] md:p-8">
           {secondSrc ? (
-            <AboutHeroSwap
-              first={{ src: heroSrc, alt: heroAlt, blurDataURL: heroAsset?.metadata?.lqip }}
-              second={{
-                src: secondSrc,
-                alt: about.imageSecondary?.alt || heroAlt,
-                blurDataURL: secondAsset?.metadata?.lqip,
-              }}
+            <ScrollSwapHero
+              images={[
+                { src: heroSrc, alt: heroAlt, blurDataURL: heroAsset?.metadata?.lqip },
+                {
+                  src: secondSrc,
+                  alt: about.imageSecondary?.alt || heroAlt,
+                  blurDataURL: secondAsset?.metadata?.lqip,
+                },
+              ]}
               scrollContainerId="about-content-scroll"
+              uidPrefix="hero-desktop"
               className="aspect-[480/910] w-full max-w-[340px] h-auto lg:h-[77dvh] lg:w-auto lg:max-w-none"
             />
           ) : (

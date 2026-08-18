@@ -385,6 +385,28 @@ export const servicesQuery = defineQuery(`
           }
         }
       },
+      imageSecondary{
+        alt,
+        asset->{
+          _id,
+          url,
+          metadata{
+            lqip,
+            dimensions { width, height }
+          }
+        }
+      },
+      imageTertiary{
+        alt,
+        asset->{
+          _id,
+          url,
+          metadata{
+            lqip,
+            dimensions { width, height }
+          }
+        }
+      },
     bannerEmail,
     content[]{
       ...,

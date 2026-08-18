@@ -3,6 +3,7 @@ import FadeInImage from "@/app/components/FadeInImage"
 import Rates from "@/app/components/Rates"
 import TextDistortFilter from "@/app/components/TextFilter"
 import { HeroVignette, ContentVignette } from "@/app/components/Vignette"
+import ScrollSwapHero from "@/app/components/ScrollSwapHero"
 import { sanityFetch } from "@/sanity/lib/live"
 import { servicesQuery } from "@/sanity/lib/queries"
 import { PortableText, type PortableTextComponents, type PortableTextBlock } from "next-sanity"
@@ -34,6 +35,8 @@ interface ServicesData {
   bannerEmail?: string
   content?: PortableTextBlock[]
     image?: ServicesImage
+  imageSecondary?: ServicesImage
+  imageTertiary?: ServicesImage
 }
 
 const replaceEmoji = (children: React.ReactNode): React.ReactNode => {
@@ -96,6 +99,19 @@ export default async function ServicesPage() {
   const heroAsset = heroImage?.asset
   const heroSrc = heroAsset?.url || ""
   const heroAlt = heroImage?.alt || "Cover Image"
+
+  // Optional extra heroes: with any set, the md+ hero steps through them as the
+  // content column is scrolled — its range split evenly between the images.
+  const swapImages = [
+    { src: heroSrc, alt: heroAlt, blurDataURL: heroAsset?.metadata?.lqip },
+    ...[services.imageSecondary, services.imageTertiary]
+      .filter((img) => img?.asset?.url)
+      .map((img) => ({
+        src: img!.asset!.url!,
+        alt: img!.alt || heroAlt,
+        blurDataURL: img!.asset!.metadata?.lqip,
+      })),
+  ]
 
   const content = services.content ?? []
 
@@ -244,14 +260,24 @@ export default async function ServicesPage() {
         {/* Hero — desktop only (left column). On mobile it renders inside the
             content column, under the heading. */}
         <div className="relative hidden md:flex items-center justify-center overflow-hidden bg-[#0b0b0b] bg-[url('/images/scantexture.jpg')] bg-cover bg-center md:h-[100dvh] md:p-8">
-          <HeroVignette
-            src={heroSrc}
-            alt={heroAlt}
-            blurDataURL={heroAsset?.metadata?.lqip}
-            uid="svc-hero-desktop"
-            variant="rose"
-            className="aspect-[480/910] w-full max-w-[340px] h-auto lg:h-[77dvh] lg:w-auto lg:max-w-none"
-          />
+          {swapImages.length > 1 ? (
+            <ScrollSwapHero
+              images={swapImages}
+              scrollContainerId="services-content-scroll"
+              uidPrefix="svc-hero-desktop"
+              variant="rose"
+              className="aspect-[480/910] w-full max-w-[340px] h-auto lg:h-[77dvh] lg:w-auto lg:max-w-none"
+            />
+          ) : (
+            <HeroVignette
+              src={heroSrc}
+              alt={heroAlt}
+              blurDataURL={heroAsset?.metadata?.lqip}
+              uid="svc-hero-desktop"
+              variant="rose"
+              className="aspect-[480/910] w-full max-w-[340px] h-auto lg:h-[77dvh] lg:w-auto lg:max-w-none"
+            />
+          )}
         </div>
 
         {/* Mobile fence, viewport-sized like About's. About's column is
@@ -263,7 +289,7 @@ export default async function ServicesPage() {
           aria-hidden
           className="md:hidden fixed inset-0 z-0 bg-black bg-cover bg-center"
         />
-        <div className="relative z-10 scrollbar-hide md:bg-[url('/images/scantexture.jpg')] bg-cover bg-center md:col-start-2 pt-8 pb-12 px-6 md:py-12 md:pl-4 md:pr-6 md:h-[100dvh] md:overflow-y-scroll xl:px-26">
+        <div id="services-content-scroll" className="relative z-10 scrollbar-hide md:bg-[url('/images/scantexture.jpg')] bg-cover bg-center md:col-start-2 pt-8 pb-12 px-6 md:py-12 md:pl-4 md:pr-6 md:h-[100dvh] md:overflow-y-scroll xl:px-26">
           <div>
             {content.length ? (
               <PortableText value={content} components={mainComponents} />

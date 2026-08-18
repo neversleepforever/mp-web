@@ -571,6 +571,30 @@ export type Services = {
     crop?: SanityImageCrop
     _type: 'image'
   }
+  imageSecondary?: {
+    asset?: {
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+    }
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    _type: 'image'
+  }
+  imageTertiary?: {
+    asset?: {
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+    }
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    _type: 'image'
+  }
   bannerEmail?: string
   content?: Array<
     | {
@@ -1652,9 +1676,37 @@ export type AllGalleryQueryResult = Array<{
   }> | null
 }>
 // Variable: servicesQuery
-// Query: *[_type == "services"][0]{      image{        alt,        asset->{          _id,          url,          metadata{            lqip,            dimensions { width, height }          }        }      },    bannerEmail,    content[]{      ...,      _type == "image" => {        ...,        "asset": asset->{          _id,          url,          metadata {            lqip,            dimensions { width, height }          }        }      },      _type == "servicesSection" => {        ...,        body[]{          ...,          _type == "image" => {            ...,            "asset": asset->{              _id,              url,              metadata {                lqip,                dimensions { width, height }              }            }          }        }      },      _type == "ratesSection" => {        ...,        rates[]{          ...,          _type == "image" => {            ...,            "asset": asset->{              _id,              url,              metadata {                lqip,                dimensions { width, height }              }            }          }        }      },      _type == "outcallSection" => {        ...,        body[]{          ...,          _type == "image" => {            ...,            "asset": asset->{              _id,              url,              metadata {                lqip,                dimensions { width, height }              }            }          }        }      },      _type == "virtualSection" => {        ...,        body[]{          ...,          _type == "image" => {            ...,            "asset": asset->{              _id,              url,              metadata {                lqip,                dimensions { width, height }              }            }          }        }      }    }  }
+// Query: *[_type == "services"][0]{      image{        alt,        asset->{          _id,          url,          metadata{            lqip,            dimensions { width, height }          }        }      },      imageSecondary{        alt,        asset->{          _id,          url,          metadata{            lqip,            dimensions { width, height }          }        }      },      imageTertiary{        alt,        asset->{          _id,          url,          metadata{            lqip,            dimensions { width, height }          }        }      },    bannerEmail,    content[]{      ...,      _type == "image" => {        ...,        "asset": asset->{          _id,          url,          metadata {            lqip,            dimensions { width, height }          }        }      },      _type == "servicesSection" => {        ...,        body[]{          ...,          _type == "image" => {            ...,            "asset": asset->{              _id,              url,              metadata {                lqip,                dimensions { width, height }              }            }          }        }      },      _type == "ratesSection" => {        ...,        rates[]{          ...,          _type == "image" => {            ...,            "asset": asset->{              _id,              url,              metadata {                lqip,                dimensions { width, height }              }            }          }        }      },      _type == "outcallSection" => {        ...,        body[]{          ...,          _type == "image" => {            ...,            "asset": asset->{              _id,              url,              metadata {                lqip,                dimensions { width, height }              }            }          }        }      },      _type == "virtualSection" => {        ...,        body[]{          ...,          _type == "image" => {            ...,            "asset": asset->{              _id,              url,              metadata {                lqip,                dimensions { width, height }              }            }          }        }      }    }  }
 export type ServicesQueryResult = {
   image: {
+    alt: null
+    asset: {
+      _id: string
+      url: string | null
+      metadata: {
+        lqip: string | null
+        dimensions: {
+          width: number | null
+          height: number | null
+        } | null
+      } | null
+    } | null
+  } | null
+  imageSecondary: {
+    alt: null
+    asset: {
+      _id: string
+      url: string | null
+      metadata: {
+        lqip: string | null
+        dimensions: {
+          width: number | null
+          height: number | null
+        } | null
+      } | null
+    } | null
+  } | null
+  imageTertiary: {
     alt: null
     asset: {
       _id: string
@@ -1944,7 +1996,7 @@ declare module '@sanity/client' {
     '\n  *[_type == "gallery" && slug.current == $slug][0]{\n    _id,\n    title,\n    subtitle,\n    displayTitle,\n    photographer,\n    date,\n    description,\n    "slug": slug.current,\n    landingImage{\n      alt,\n      credit,\n      asset->{\n        _id,\n        metadata{\n          lqip,\n          dimensions{\n            width,\n            height\n          }\n        }\n      }\n    },\n    images[]{\n      alt,\n      credit,\n      asset->{\n        _id,\n        metadata {\n          lqip,\n          dimensions {\n            width,\n            height\n          }\n        }\n      }\n    }\n  }\n': FolioQueryResult
     '\n*[_type == "video" && slug.current == $slug][0]{\n  _id,\n  title,\n  subtitle,\n  displayTitle,\n  photographer,\n  date,\n  "slug": slug.current,\n  description,\n  videoUrl,\n  caption,\n  muxVideo {\n    asset->{\n      playbackId,\n      assetId,\n      status\n    }\n  },\n  images[]{\n    alt,\n    credit,\n    asset->{\n      _id,\n      metadata {\n        lqip,\n        dimensions {\n          width,\n          height\n        }\n      }\n    }\n  }\n}\n': VideoQueryResult
     '\n  *[_type == "gallery" && defined(slug.current)] | order(date desc, _updatedAt desc) {\n    _id,\n    title,\n    subtitle,\n    displayTitle,\n    photographer,\n    date,\n    "slug": slug.current,\n    images[]{\n      alt,\n      credit,\n      asset->{\n        _id,\n        metadata {\n          lqip,\n          dimensions {\n            width,\n            height\n          }\n        }\n      }\n    }\n  }\n': AllGalleryQueryResult
-    '\n  *[_type == "services"][0]{\n      image{\n        alt,\n        asset->{\n          _id,\n          url,\n          metadata{\n            lqip,\n            dimensions { width, height }\n          }\n        }\n      },\n    bannerEmail,\n    content[]{\n      ...,\n      _type == "image" => {\n        ...,\n        "asset": asset->{\n          _id,\n          url,\n          metadata {\n            lqip,\n            dimensions { width, height }\n          }\n        }\n      },\n\n      _type == "servicesSection" => {\n        ...,\n        body[]{\n          ...,\n          _type == "image" => {\n            ...,\n            "asset": asset->{\n              _id,\n              url,\n              metadata {\n                lqip,\n                dimensions { width, height }\n              }\n            }\n          }\n        }\n      },\n\n      _type == "ratesSection" => {\n        ...,\n        rates[]{\n          ...,\n          _type == "image" => {\n            ...,\n            "asset": asset->{\n              _id,\n              url,\n              metadata {\n                lqip,\n                dimensions { width, height }\n              }\n            }\n          }\n        }\n      },\n\n      _type == "outcallSection" => {\n        ...,\n        body[]{\n          ...,\n          _type == "image" => {\n            ...,\n            "asset": asset->{\n              _id,\n              url,\n              metadata {\n                lqip,\n                dimensions { width, height }\n              }\n            }\n          }\n        }\n      },\n\n      _type == "virtualSection" => {\n        ...,\n        body[]{\n          ...,\n          _type == "image" => {\n            ...,\n            "asset": asset->{\n              _id,\n              url,\n              metadata {\n                lqip,\n                dimensions { width, height }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n': ServicesQueryResult
+    '\n  *[_type == "services"][0]{\n      image{\n        alt,\n        asset->{\n          _id,\n          url,\n          metadata{\n            lqip,\n            dimensions { width, height }\n          }\n        }\n      },\n      imageSecondary{\n        alt,\n        asset->{\n          _id,\n          url,\n          metadata{\n            lqip,\n            dimensions { width, height }\n          }\n        }\n      },\n      imageTertiary{\n        alt,\n        asset->{\n          _id,\n          url,\n          metadata{\n            lqip,\n            dimensions { width, height }\n          }\n        }\n      },\n    bannerEmail,\n    content[]{\n      ...,\n      _type == "image" => {\n        ...,\n        "asset": asset->{\n          _id,\n          url,\n          metadata {\n            lqip,\n            dimensions { width, height }\n          }\n        }\n      },\n\n      _type == "servicesSection" => {\n        ...,\n        body[]{\n          ...,\n          _type == "image" => {\n            ...,\n            "asset": asset->{\n              _id,\n              url,\n              metadata {\n                lqip,\n                dimensions { width, height }\n              }\n            }\n          }\n        }\n      },\n\n      _type == "ratesSection" => {\n        ...,\n        rates[]{\n          ...,\n          _type == "image" => {\n            ...,\n            "asset": asset->{\n              _id,\n              url,\n              metadata {\n                lqip,\n                dimensions { width, height }\n              }\n            }\n          }\n        }\n      },\n\n      _type == "outcallSection" => {\n        ...,\n        body[]{\n          ...,\n          _type == "image" => {\n            ...,\n            "asset": asset->{\n              _id,\n              url,\n              metadata {\n                lqip,\n                dimensions { width, height }\n              }\n            }\n          }\n        }\n      },\n\n      _type == "virtualSection" => {\n        ...,\n        body[]{\n          ...,\n          _type == "image" => {\n            ...,\n            "asset": asset->{\n              _id,\n              url,\n              metadata {\n                lqip,\n                dimensions { width, height }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n': ServicesQueryResult
     '\n  *[_type == "about"][0]{\n    _id,\n      image{\n        alt,\n        asset->{\n          _id,\n          url,\n          metadata{\n            lqip,\n            dimensions { width, height }\n          }\n        }\n      },\n      imageSecondary{\n        alt,\n        asset->{\n          _id,\n          url,\n          metadata{\n            lqip,\n            dimensions { width, height }\n          }\n        }\n      },\n    content[]{\n      ...,\n      _type == "image" => {\n        alt,\n        asset->{\n          _id,\n          url,\n          metadata {\n            lqip,\n            dimensions { width, height }\n          }\n        }\n      }\n    }\n  }\n': AboutQueryResult
     '\n*[_type == "ageCheck"][0] {\n  marqueeText,\n  bodyText,\n  buttonText\n}': AgeCheckQueryResult
     '\n*[_type == "announcement"][0] {\n  enabled,\n  newsletterText,\n  newsletterUrl,\n  bookingText\n}': AnnouncementQueryResult
