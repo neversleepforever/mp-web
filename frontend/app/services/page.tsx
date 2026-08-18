@@ -167,7 +167,7 @@ export default async function ServicesPage() {
       },
       ratesSection: ({ value }) => (
         <TextDistortFilter>
-          <div className="border bg-black bg-[url('/images/book-bg-texture.svg')] bg-cover bg-center">
+          <div className="border bg-black bg-[url('/images/book-bg-texture.svg')] bg-[length:100%_auto] bg-repeat-y bg-top">
             <Rates title={value.title} />
             <Link href={`mailto:"${services.bannerEmail}"`}>
               {/* Block, not flex: as a flex item the copy shrink-wrapped to its
@@ -192,7 +192,7 @@ export default async function ServicesPage() {
       ),
       outcallSection: ({ value }) => (
         <TextDistortFilter>
-          <div className="border p-4 my-4 bg-black bg-[url('/images/book-bg-texture.svg')] bg-cover bg-center">
+          <div className="border p-4 my-4 bg-black bg-[url('/images/book-bg-texture.svg')] bg-[length:100%_auto] bg-repeat-y bg-top">
             <div className="text-center text-[20px]">
               <PortableText value={value.body} components={portableTextComponents} />
             </div>
@@ -201,7 +201,7 @@ export default async function ServicesPage() {
       ),
       virtualSection: ({ value }) => (
         <TextDistortFilter>
-          <div className="border p-4 my-4 bg-black bg-[url('/images/book-bg-texture.svg')] bg-cover bg-center">
+          <div className="border p-4 my-4 bg-black bg-[url('/images/book-bg-texture.svg')] bg-[length:100%_auto] bg-repeat-y bg-top">
             <div className="text-center text-[20px]">
               <PortableText value={value.body} components={portableTextComponents} />
             </div>
