@@ -104,7 +104,11 @@ export default async function FolioIndexPage() {
               )}
 
               <TextDistortFilter>
-                <div className="mt-2 font-nav text-[12px] uppercase">
+                {/* The cover mockups carry ~4% transparent margin on each side,
+                    so text flush to the image box sits left of the visible cover
+                    edge. Padding by percentage rather than pixels keeps it
+                    aligned as the tile resizes across breakpoints. */}
+                <div className="mt-2 pl-[4.2%] font-nav text-[12px] uppercase">
                   <h2>{folio.displayTitle ?? "Untitled"}</h2>
                   {folio.date && (
                     <p>

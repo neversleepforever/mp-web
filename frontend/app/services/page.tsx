@@ -213,7 +213,10 @@ export default async function ServicesPage() {
         const dims = value.asset.metadata?.dimensions
         return (
           <TextDistortFilter>
-            <div className="mt-4">
+            {/* Black behind the photo on mobile so the vignette mask's soft
+                edges fade into black, like About's boxed content — without it
+                the fence shows through the fade. md+ sits on its own texture. */}
+            <div className="mt-4 bg-black md:bg-transparent">
               <ContentVignette
                 src={value.asset.url}
                 alt={value.alt || ""}
@@ -247,7 +250,16 @@ export default async function ServicesPage() {
           />
         </div>
 
-        <div className="relative scrollbar-hide bg-[url('/images/scantexture.jpg')] bg-cover bg-center md:col-start-2 pt-8 pb-12 px-6 md:py-12 md:pl-4 md:pr-6 md:h-[100dvh] md:overflow-y-scroll xl:px-26">
+        {/* Mobile fence, viewport-sized like About's. About's column is
+            h-[100dvh] so bg-cover naturally sizes the fence to one screen;
+            this column grows with its content and the page scrolls the
+            document, so the same background stretched the fence across the
+            full page height. A fixed layer pins it to the viewport instead. */}
+        <div
+          aria-hidden
+          className="md:hidden fixed inset-0 z-0 bg-black bg-cover bg-center"
+        />
+        <div className="relative z-10 scrollbar-hide md:bg-[url('/images/scantexture.jpg')] bg-cover bg-center md:col-start-2 pt-8 pb-12 px-6 md:py-12 md:pl-4 md:pr-6 md:h-[100dvh] md:overflow-y-scroll xl:px-26">
           <div>
             {content.length ? (
               <PortableText value={content} components={mainComponents} />

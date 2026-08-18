@@ -58,7 +58,9 @@ export default async function BookingPage() {
             className="aspect-[480/910] w-full max-w-[340px] h-auto lg:h-[77dvh] lg:w-auto lg:max-w-none"
           />
         </div>
-        <div className="relative scrollbar-hide bg-[#0b0b0b] bg-[url('/images/book-bg-texture.svg'),url('/images/scantexture.jpg')] bg-cover bg-center md:bg-none md:col-start-2 h-[100dvh] overflow-y-auto pt-0 pb-12 md:px-6 md:pt-4 xl:px-26">
+        {/* Mobile background is the fence alone over near-black — the grey
+            scantexture layer is parked, matching About and Services. */}
+        <div className="relative scrollbar-hide bg-[#0b0b0b] bg-cover bg-center md:bg-none md:col-start-2 h-[100dvh] overflow-y-auto pt-0 pb-12 md:px-6 md:pt-4 xl:px-26">
             <div className="relative z-10">
                 <JotformEmbed formId="250685995022262"/>
             </div>

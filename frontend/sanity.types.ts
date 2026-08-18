@@ -482,6 +482,18 @@ export type Contact = {
   _createdAt: string
   _updatedAt: string
   _rev: string
+  image?: {
+    asset?: {
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+    }
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    _type: 'image'
+  }
   heading?: string
   socials1?: Array<
     {

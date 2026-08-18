@@ -1,5 +1,5 @@
 import { defineField, defineType } from "sanity"
-import { DocumentIcon } from "@sanity/icons"
+import { DocumentIcon, ImageIcon } from "@sanity/icons"
 
 export const contact = defineType({
   name: "contact",
@@ -7,6 +7,15 @@ export const contact = defineType({
   type: "document",
   icon: DocumentIcon,
   fields: [
+    defineField({
+      name: "image",
+      title: "Image",
+      type: "image",
+      description:
+        "Illustration shown beside the links on desktop, and under the heading on mobile.",
+      icon: ImageIcon,
+      options: { hotspot: true },
+    }),
     defineField({
       name: "heading",
       title: "Heading",

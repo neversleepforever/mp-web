@@ -108,7 +108,9 @@ export default async function AboutPage() {
           />
         </div>
 
-        <div className="scrollbar-hide bg-black bg-[url('/images/book-bg-texture.svg'),url('/images/scantexture.jpg')] md:bg-[url('/images/scantexture-dark.jpg')] bg-cover bg-center md:col-start-2 pt-12 pb-16 px-6 md:pt-16 h-[100dvh] overflow-y-scroll xl:px-26 ">
+        {/* Mobile background is the fence alone over black — the grey
+            scantexture layer is parked for now. Desktop keeps its own image. */}
+        <div className="scrollbar-hide bg-black md:bg-[url('/images/scantexture-dark.jpg')] bg-cover bg-center md:col-start-2 pt-12 pb-16 px-6 md:pt-16 h-[100dvh] overflow-y-scroll xl:px-26 ">
           <div className="relative p-6 bg-black">
             {/* Distorted border, kept as its own overlay so the filter doesn't
                 smear the mobile hero inside the box */}
