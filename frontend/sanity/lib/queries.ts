@@ -569,6 +569,17 @@ export const bookingsQuery = defineQuery(`
           dimensions { width, height }
         }
       }
+    },
+    imageSecondary{
+      alt,
+      asset->{
+        _id,
+        url,
+        metadata{
+          lqip,
+          dimensions { width, height }
+        }
+      }
     }
   }
 `)

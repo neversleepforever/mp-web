@@ -342,6 +342,19 @@ export type Bookings = {
     alt?: string
     _type: 'image'
   }
+  imageSecondary?: {
+    asset?: {
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+    }
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    _type: 'image'
+  }
 }
 
 export type AgeCheck = {
@@ -1959,10 +1972,24 @@ export type AnnouncementQueryResult = {
   bookingText: string | null
 } | null
 // Variable: bookingsQuery
-// Query: *[_type == "bookings"][0]{    _id,    image{      alt,      asset->{        _id,        url,        metadata{          lqip,          dimensions { width, height }        }      }    }  }
+// Query: *[_type == "bookings"][0]{    _id,    image{      alt,      asset->{        _id,        url,        metadata{          lqip,          dimensions { width, height }        }      }    },    imageSecondary{      alt,      asset->{        _id,        url,        metadata{          lqip,          dimensions { width, height }        }      }    }  }
 export type BookingsQueryResult = {
   _id: string
   image: {
+    alt: string | null
+    asset: {
+      _id: string
+      url: string | null
+      metadata: {
+        lqip: string | null
+        dimensions: {
+          width: number | null
+          height: number | null
+        } | null
+      } | null
+    } | null
+  } | null
+  imageSecondary: {
     alt: string | null
     asset: {
       _id: string
@@ -2000,6 +2027,6 @@ declare module '@sanity/client' {
     '\n  *[_type == "about"][0]{\n    _id,\n      image{\n        alt,\n        asset->{\n          _id,\n          url,\n          metadata{\n            lqip,\n            dimensions { width, height }\n          }\n        }\n      },\n      imageSecondary{\n        alt,\n        asset->{\n          _id,\n          url,\n          metadata{\n            lqip,\n            dimensions { width, height }\n          }\n        }\n      },\n    content[]{\n      ...,\n      _type == "image" => {\n        alt,\n        asset->{\n          _id,\n          url,\n          metadata {\n            lqip,\n            dimensions { width, height }\n          }\n        }\n      }\n    }\n  }\n': AboutQueryResult
     '\n*[_type == "ageCheck"][0] {\n  marqueeText,\n  bodyText,\n  buttonText\n}': AgeCheckQueryResult
     '\n*[_type == "announcement"][0] {\n  enabled,\n  newsletterText,\n  newsletterUrl,\n  bookingText\n}': AnnouncementQueryResult
-    '\n  *[_type == "bookings"][0]{\n    _id,\n    image{\n      alt,\n      asset->{\n        _id,\n        url,\n        metadata{\n          lqip,\n          dimensions { width, height }\n        }\n      }\n    }\n  }\n': BookingsQueryResult
+    '\n  *[_type == "bookings"][0]{\n    _id,\n    image{\n      alt,\n      asset->{\n        _id,\n        url,\n        metadata{\n          lqip,\n          dimensions { width, height }\n        }\n      }\n    },\n    imageSecondary{\n      alt,\n      asset->{\n        _id,\n        url,\n        metadata{\n          lqip,\n          dimensions { width, height }\n        }\n      }\n    }\n  }\n': BookingsQueryResult
   }
 }
