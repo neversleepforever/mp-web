@@ -164,6 +164,14 @@ body {
   transition-duration: 500ms;
 }
 
+/* iOS Safari tints its translucent toolbars from the body background, not from
+   the page elements behind them — a white body under a black page renders the
+   bottom bar as a milky strip with content ghosting through. BaseLayout marks
+   the dark pages by toggling .dark on the body. */
+body.dark {
+  background-color: #000;
+}
+
 .page-transition {
   opacity: 0;
   /* background: black; */

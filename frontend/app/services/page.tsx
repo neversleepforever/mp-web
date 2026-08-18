@@ -137,7 +137,7 @@ export default async function ServicesPage() {
         const first = !heroInserted
         if (first) heroInserted = true
         return (
-          <div className="relative p-4 my-4 bg-black md:bg-transparent">
+          <div className="relative p-4 my-4 bg-black">
             {/* Distorted border overlay (kept separate so the hero stays crisp) */}
             <TextDistortFilter className="pointer-events-none absolute inset-0">
               <div className="h-full w-full border" />
@@ -167,7 +167,7 @@ export default async function ServicesPage() {
       },
       ratesSection: ({ value }) => (
         <TextDistortFilter>
-          <div className="border bg-black md:bg-transparent">
+          <div className="border bg-black bg-[url('/images/book-bg-texture.svg')] bg-cover bg-center">
             <Rates title={value.title} />
             <Link href={`mailto:"${services.bannerEmail}"`}>
               {/* Block, not flex: as a flex item the copy shrink-wrapped to its
@@ -192,7 +192,7 @@ export default async function ServicesPage() {
       ),
       outcallSection: ({ value }) => (
         <TextDistortFilter>
-          <div className="border p-4 my-4 bg-black md:bg-transparent">
+          <div className="border p-4 my-4 bg-black bg-[url('/images/book-bg-texture.svg')] bg-cover bg-center">
             <div className="text-center text-[20px]">
               <PortableText value={value.body} components={portableTextComponents} />
             </div>
@@ -201,7 +201,7 @@ export default async function ServicesPage() {
       ),
       virtualSection: ({ value }) => (
         <TextDistortFilter>
-          <div className="border p-4 my-4 bg-black md:bg-transparent">
+          <div className="border p-4 my-4 bg-black bg-[url('/images/book-bg-texture.svg')] bg-cover bg-center">
             <div className="text-center text-[20px]">
               <PortableText value={value.body} components={portableTextComponents} />
             </div>
@@ -213,10 +213,10 @@ export default async function ServicesPage() {
         const dims = value.asset.metadata?.dimensions
         return (
           <TextDistortFilter>
-            {/* Black behind the photo on mobile so the vignette mask's soft
-                edges fade into black, like About's boxed content — without it
-                the fence shows through the fade. md+ sits on its own texture. */}
-            <div className="mt-4 bg-black md:bg-transparent">
+            {/* No background: the photo and its caption sit straight on the
+                page. It briefly carried black to stop the fence showing through
+                the vignette's fade, but the fence is no longer behind it. */}
+            <div className="mt-4">
               <ContentVignette
                 src={value.asset.url}
                 alt={value.alt || ""}
@@ -236,7 +236,11 @@ export default async function ServicesPage() {
 
   return (
     <>
-      <div className="md:grid md:grid-cols-2 dark:text-white bg-[#454545]">
+      {/* bg-black rather than grey: the fixed mobile backdrop below only covers
+          the viewport, so when Safari's toolbar collapses the strip it uncovers
+          showed this element (and the white body) through. Colouring the page
+          itself means there's nothing pale to reveal. */}
+      <div className="md:grid md:grid-cols-2 dark:text-white bg-black md:bg-[#454545]">
         {/* Hero — desktop only (left column). On mobile it renders inside the
             content column, under the heading. */}
         <div className="relative hidden md:flex items-center justify-center overflow-hidden bg-[#0b0b0b] bg-[url('/images/scantexture.jpg')] bg-cover bg-center md:h-[100dvh] md:p-8">

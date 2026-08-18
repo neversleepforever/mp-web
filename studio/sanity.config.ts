@@ -17,6 +17,7 @@ import {
 } from 'sanity/presentation'
 import {assist} from '@sanity/assist'
 import {muxInput} from "sanity-plugin-mux-input"
+import {media} from "sanity-plugin-media"
 
 // Environment variables for project configuration
 const projectId = process.env.SANITY_STUDIO_PROJECT_ID || 'your-projectID'
@@ -130,6 +131,10 @@ export default defineConfig({
     unsplashImageAsset(),
     assist(),
     visionTool(),
+    // Media tab: browse every uploaded asset, see which are unreferenced, and
+    // delete in bulk. Pinned to the 4.x line — 5+ requires Sanity 5 or 6, and
+    // this Studio is on 4.19.
+    media(),
   ],
 
   // Schema configuration, imported from ./src/schemaTypes/index.ts
