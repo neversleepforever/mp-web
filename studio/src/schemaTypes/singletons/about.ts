@@ -15,6 +15,15 @@ export const about = defineType({
           icon: ImageIcon,
           options: { hotspot: true },
         }),
+      defineField({
+          name: "imageSecondary",
+          title: "Second Image",
+          type: "image",
+          description:
+            "Desktop/tablet only: the left image swaps to this one once the text is scrolled past halfway. Leave empty to keep a single image.",
+          icon: ImageIcon,
+          options: { hotspot: true },
+        }),
     defineField({
       name: "content",
       title: "Content",

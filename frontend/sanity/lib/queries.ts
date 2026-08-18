@@ -491,6 +491,17 @@ export const aboutQuery = defineQuery(`
           }
         }
       },
+      imageSecondary{
+        alt,
+        asset->{
+          _id,
+          url,
+          metadata{
+            lqip,
+            dimensions { width, height }
+          }
+        }
+      },
     content[]{
       ...,
       _type == "image" => {

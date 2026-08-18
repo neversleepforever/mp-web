@@ -1,5 +1,6 @@
 import TextDistortFilter from "@/app/components/TextFilter"
 import { HeroVignette, ContentVignette } from "@/app/components/Vignette"
+import AboutHeroSwap from "@/app/components/AboutHeroSwap"
 import { sanityFetch } from "@/sanity/lib/live"
 import { aboutQuery } from "@/sanity/lib/queries"
 import { PortableText, type PortableTextBlock, type PortableTextComponents } from "next-sanity"
@@ -29,6 +30,7 @@ interface AboutData {
   _id: string
   content?: PortableTextBlock[]
   image?: AboutImage
+  imageSecondary?: AboutImage
 }
 
 // Distortion is applied per text block rather than once around the whole column
@@ -89,6 +91,11 @@ export default async function AboutPage() {
   const heroSrc = heroAsset?.url || ""
   const heroAlt = heroImage?.alt || "Cover Image"
 
+  // Optional second hero: when set in the Studio, the md+ hero swaps to it once
+  // the content column is scrolled past halfway.
+  const secondAsset = about.imageSecondary?.asset
+  const secondSrc = secondAsset?.url || ""
+
   // On mobile the hero sits between the heading (first block) and the body.
   const content = about.content ?? []
   const [firstBlock, ...restBlocks] = content
@@ -99,18 +106,31 @@ export default async function AboutPage() {
         {/* Hero — desktop only (left column). On mobile it renders inside the
             content column, under the heading. */}
         <div className="relative hidden md:flex items-center justify-center overflow-hidden bg-[#0b0b0b] bg-[url('/images/scantexture.jpg')] bg-cover bg-center md:h-[100dvh] md:p-8">
-          <HeroVignette
-            src={heroSrc}
-            alt={heroAlt}
-            blurDataURL={heroAsset?.metadata?.lqip}
-            uid="hero-desktop"
-            className="aspect-[480/910] w-full max-w-[340px] h-auto lg:h-[77dvh] lg:w-auto lg:max-w-none"
-          />
+          {secondSrc ? (
+            <AboutHeroSwap
+              first={{ src: heroSrc, alt: heroAlt, blurDataURL: heroAsset?.metadata?.lqip }}
+              second={{
+                src: secondSrc,
+                alt: about.imageSecondary?.alt || heroAlt,
+                blurDataURL: secondAsset?.metadata?.lqip,
+              }}
+              scrollContainerId="about-content-scroll"
+              className="aspect-[480/910] w-full max-w-[340px] h-auto lg:h-[77dvh] lg:w-auto lg:max-w-none"
+            />
+          ) : (
+            <HeroVignette
+              src={heroSrc}
+              alt={heroAlt}
+              blurDataURL={heroAsset?.metadata?.lqip}
+              uid="hero-desktop"
+              className="aspect-[480/910] w-full max-w-[340px] h-auto lg:h-[77dvh] lg:w-auto lg:max-w-none"
+            />
+          )}
         </div>
 
         {/* Mobile background is the fence alone over black — the grey
             scantexture layer is parked for now. Desktop keeps its own image. */}
-        <div className="scrollbar-hide bg-black md:bg-[url('/images/scantexture-dark.jpg')] bg-cover bg-center md:col-start-2 pt-12 pb-16 px-6 md:pt-16 h-[100dvh] overflow-y-scroll xl:px-26 ">
+        <div id="about-content-scroll" className="scrollbar-hide bg-black md:bg-[url('/images/scantexture-dark.jpg')] bg-cover bg-center md:col-start-2 pt-12 pb-16 px-6 md:pt-16 h-[100dvh] overflow-y-scroll xl:px-26 ">
           <div className="relative p-6 bg-black">
             {/* Distorted border, kept as its own overlay so the filter doesn't
                 smear the mobile hero inside the box */}
