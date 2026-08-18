@@ -210,19 +210,23 @@ body.dark {
    the frame, direction following the scroll. */
 @keyframes hero-wipe-down {
   from {
-    clip-path: inset(0 0 100% 0);
+    -webkit-clip-path: inset(0% 0% 100% 0%);
+    clip-path: inset(0% 0% 100% 0%);
   }
   to {
-    clip-path: inset(0 0 0 0);
+    -webkit-clip-path: inset(0% 0% 0% 0%);
+    clip-path: inset(0% 0% 0% 0%);
   }
 }
 
 /* The rewind: the outgoing image retracts upward, uncovering what's beneath. */
 @keyframes hero-wipe-out {
   from {
-    clip-path: inset(0 0 0 0);
+    -webkit-clip-path: inset(0% 0% 0% 0%);
+    clip-path: inset(0% 0% 0% 0%);
   }
   to {
-    clip-path: inset(0 0 100% 0);
+    -webkit-clip-path: inset(0% 0% 100% 0%);
+    clip-path: inset(0% 0% 100% 0%);
   }
 }

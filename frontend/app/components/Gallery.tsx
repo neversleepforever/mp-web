@@ -68,11 +68,55 @@ export default function Gallery({
     return offset
   }
 
+  // Scan-wipe transitions, matching the hero swaps: forward wipes down,
+  // backward rewinds up. The original slide+fade is kept intact below —
+  // flip to false to restore it.
+  const WIPE = true
+
   const goPrev = () =>
     setSelectedIndex((i) => (i - 1 + slideCount) % slideCount)
 
   const goNext = () =>
     setSelectedIndex((i) => (i + 1) % slideCount)
+
+  // Wipe bookkeeping: which slide is being covered/uncovered, which way the
+  // edge travels (shortest circular direction, so wrap-around still reads as
+  // forward), and a counter so nothing animates before the first interaction.
+  // Adjusted during render (React's sanctioned prev-state pattern) rather than
+  // in an effect — an effect runs after paint, which let the first click paint
+  // an unanimated jump frame before the wipe kicked in.
+  const [wipe, setWipe] = useState({ cur: 0, prev: 0, back: false, count: 0 })
+  if (wipe.cur !== selectedIndex) {
+    const n = slideCount
+    let off = (((selectedIndex - wipe.cur) % n) + n) % n
+    if (off > n / 2) off -= n
+    setWipe({ cur: selectedIndex, prev: wipe.cur, back: off < 0, count: wipe.count + 1 })
+  }
+  const { prev: wipePrev, back: wipeBack, count: wipeCount } = wipe
+
+  /** Per-slide style in wipe mode — same layering as ScrollSwapHero: forward,
+   *  the incoming slide wipes down on top; backward, the outgoing slide rolls
+   *  back up off the slide beneath. */
+  const wipeStyle = (slideIndex: number, visible: boolean): React.CSSProperties => {
+    const isActive = slideIndex === selectedIndex
+    const isPrev = slideIndex === wipePrev && !isActive
+    // The opacity transition keeps the still-loading case soft: if a photo
+    // finishes decoding after its wipe already played, it fades in instead of
+    // popping — the same courtesy the slide+fade version extended.
+    const base = { opacity: visible ? 1 : 0, transition: "opacity 400ms ease" }
+    if (wipeBack && wipeCount > 0) {
+      if (isPrev)
+        return { ...base, clipPath: "inset(0% 0% 100% 0%)", WebkitClipPath: "inset(0% 0% 100% 0%)", animation: "hero-wipe-out 700ms ease-in-out", zIndex: 2 }
+      return { ...base, clipPath: isActive ? "inset(0% 0% 0% 0%)" : "inset(0% 0% 100% 0%)", WebkitClipPath: isActive ? "inset(0% 0% 0% 0%)" : "inset(0% 0% 100% 0%)", zIndex: isActive ? 1 : 0 }
+    }
+    return {
+      ...base,
+      clipPath: isActive || isPrev ? "inset(0% 0% 0% 0%)" : "inset(0% 0% 100% 0%)",
+      WebkitClipPath: isActive || isPrev ? "inset(0% 0% 0% 0%)" : "inset(0% 0% 100% 0%)",
+      animation: isActive && wipeCount > 0 ? "hero-wipe-down 700ms ease-in-out" : undefined,
+      zIndex: isActive ? 2 : isPrev ? 1 : 0,
+    }
+  }
 
   // Two frames, so a cached image has a painted opacity-0 frame to fade from —
   // without it the browser jumps straight to opaque and the photo pops in.
@@ -270,8 +314,8 @@ export default function Gallery({
               const offset = offsetFor(0)
               return (
                 <div
-                  className="absolute inset-0 will-change-transform flex items-center justify-center"
-                  style={{
+                  className={`absolute inset-0 flex items-center justify-center ${WIPE ? "" : "will-change-transform"}`}
+                  style={WIPE ? wipeStyle(0, true) : {
                     transform: `translateY(${offset * 100}%)`,
                     opacity: offset === 0 ? 1 : 0,
                     transition:
@@ -302,8 +346,8 @@ export default function Gallery({
               return (
                 <div
                   key={i}
-                  className="absolute inset-0 will-change-transform"
-                  style={{
+                  className={`absolute inset-0 ${WIPE ? "" : "will-change-transform"}`}
+                  style={WIPE ? wipeStyle(slideIndex, loaded[i]) : {
                     // Vertical slide + crossfade: the selected image slides to
                     // centre and fades in; its neighbours slide away and fade out.
                     transform: `translateY(${offset * 100}%)`,

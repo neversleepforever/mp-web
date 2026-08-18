@@ -20,8 +20,8 @@ const sheenMask: CSSProperties = {
 // same vertical axis the gallery carousel already moves on. The edge follows
 // the scroll: down-scroll sweeps down, back-scroll sweeps up (keyframes in
 // globals.css).
-const SHOWN = "inset(0 0 0 0)"
-const HIDDEN = "inset(0 0 100% 0)"
+const SHOWN = "inset(0% 0% 0% 0%)"
+const HIDDEN = "inset(0% 0% 100% 0%)"
 
 export interface SwapImage {
   src: string
