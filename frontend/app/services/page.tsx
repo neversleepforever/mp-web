@@ -259,7 +259,7 @@ export default async function ServicesPage() {
       <div className="md:grid md:grid-cols-2 dark:text-white bg-black md:bg-[#454545]">
         {/* Hero — desktop only (left column). On mobile it renders inside the
             content column, under the heading. */}
-        <div className="relative hidden md:flex items-center justify-center overflow-hidden bg-[#0b0b0b] bg-[url('/images/scantexture.jpg')] bg-cover bg-center md:h-[100dvh] md:p-8">
+        <div className="relative hidden md:flex items-center justify-center overflow-hidden bg-[#0b0b0b] bg-[url('/images/scantexture.jpg')] bg-cover bg-center md:h-[calc(100dvh_-_var(--announcement-h,0px))] md:p-8">
           {swapImages.length > 1 ? (
             <ScrollSwapHero
               images={swapImages}
@@ -281,7 +281,7 @@ export default async function ServicesPage() {
         </div>
 
         {/* Mobile fence, viewport-sized like About's. About's column is
-            h-[100dvh] so bg-cover naturally sizes the fence to one screen;
+            h-[calc(100dvh_-_var(--announcement-h,0px))] so bg-cover naturally sizes the fence to one screen;
             this column grows with its content and the page scrolls the
             document, so the same background stretched the fence across the
             full page height. A fixed layer pins it to the viewport instead. */}
@@ -289,7 +289,7 @@ export default async function ServicesPage() {
           aria-hidden
           className="md:hidden fixed inset-0 z-0 bg-black bg-cover bg-center"
         />
-        <div id="services-content-scroll" className="relative z-10 scrollbar-hide md:bg-[url('/images/scantexture.jpg')] bg-cover bg-center md:col-start-2 pt-8 pb-12 px-6 md:py-12 md:pl-4 md:pr-6 md:h-[100dvh] md:overflow-y-scroll xl:px-26">
+        <div id="services-content-scroll" className="relative z-10 scrollbar-hide md:bg-[url('/images/scantexture.jpg')] bg-cover bg-center md:col-start-2 pt-8 pb-12 px-6 md:py-12 md:pl-4 md:pr-6 md:h-[calc(100dvh_-_var(--announcement-h,0px))] md:overflow-y-scroll xl:px-26">
           <div>
             {content.length ? (
               <PortableText value={content} components={mainComponents} />

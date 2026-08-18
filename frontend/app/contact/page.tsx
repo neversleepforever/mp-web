@@ -127,7 +127,7 @@ export default async function ContactPage() {
   // scrolls instead — with three boxes it no longer fits a short screen, and
   // overflow-hidden made anything past the fold unreachable.
   return (
-    <div className="dark:bg-black bg-black grid grid-cols-2 grid-rows-1 w-screen min-h-[100svh] md:h-[100svh] md:overflow-hidden">
+    <div className="dark:bg-black bg-black grid grid-cols-2 grid-rows-1 w-screen min-h-[calc(100svh_-_var(--announcement-h,0px))] md:h-[calc(100svh_-_var(--announcement-h,0px))] md:overflow-hidden">
       {/* Mirrored About content (md+ only) */}
       {about?.content?.length ? (
         <div className="pointer-events-none hidden md:block md:col-start-1 md:row-start-1 md:col-span-1 md:row-span-1 z-0 overflow-hidden">
@@ -173,7 +173,7 @@ export default async function ContactPage() {
 
       <div className="hidden overflow-hidden md:block md:absolute inset-y-0 left-0 w-1/2 bg-[url('/images/scantexture.jpg')] bg-cover bg-center opacity-70" />
  
-      <section className="min-h-[100svh] md:h-[100svh] md:overflow-hidden pointer-events-none w-full col-start-1 row-start-1 col-span-2 row-span-1 flex flex-1 pt-16 pb-16 px-6 md:pb-0 md:px-0 md:pt-0 md:items-center justify-center z-40 md:pr-0 dark:text-white ">
+      <section className="min-h-[calc(100svh_-_var(--announcement-h,0px))] md:h-[calc(100svh_-_var(--announcement-h,0px))] md:overflow-hidden pointer-events-none w-full col-start-1 row-start-1 col-span-2 row-span-1 flex flex-1 pt-16 pb-16 px-6 md:pb-0 md:px-0 md:pt-0 md:items-center justify-center z-40 md:pr-0 dark:text-white ">
      <TextDistortFilter>
         <div className="pointer-events-auto md:bg-black w-full md:w-[670px] h-auto md:h-[470px] border p-4 md:grid md:grid-cols-2 md:grid-rows-1">
           <div className="flex-1">
