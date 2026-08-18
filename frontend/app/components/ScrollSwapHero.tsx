@@ -1,7 +1,20 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState, type CSSProperties } from "react"
 import { HeroVignette } from "./Vignette"
+
+// Same mask the HeroVignette applies to its photo, so the sheen is clipped to
+// the notched frame instead of sweeping past its corners.
+const sheenMask: CSSProperties = {
+  maskImage: "url(/vignette-mask.svg)",
+  WebkitMaskImage: "url(/vignette-mask.svg)",
+  maskSize: "100% 100%",
+  WebkitMaskSize: "100% 100%",
+  maskRepeat: "no-repeat",
+  WebkitMaskRepeat: "no-repeat",
+  maskPosition: "center",
+  WebkitMaskPosition: "center",
+}
 
 export interface SwapImage {
   src: string
@@ -34,7 +47,21 @@ export default function ScrollSwapHero({
   className?: string
 }) {
   const [active, setActive] = useState(0)
+  // Increments on every image change so the sheen overlay remounts and its
+  // one-shot animation replays. 0 = never swapped, so nothing plays on load.
+  const [sweep, setSweep] = useState(0)
+  // Scrolling down sweeps the light left-to-right; scrolling back mirrors it.
+  const [sweepBack, setSweepBack] = useState(false)
+  const prevActive = useRef(0)
   const count = images.length
+
+  useEffect(() => {
+    if (prevActive.current !== active) {
+      setSweepBack(active < prevActive.current)
+      prevActive.current = active
+      setSweep((s) => s + 1)
+    }
+  }, [active])
 
   useEffect(() => {
     const el = document.getElementById(scrollContainerId)
@@ -76,6 +103,18 @@ export default function ScrollSwapHero({
           />
         </div>
       ))}
+      {/* One-shot specular sweep over the crossfade — purely additive, so if
+          it ever fails the plain fade above still carries the swap. */}
+      {sweep > 0 && (
+        <div
+          key={sweep}
+          aria-hidden
+          className="pointer-events-none absolute inset-0 overflow-hidden"
+          style={sheenMask}
+        >
+          <div className={`hero-sheen ${sweepBack ? "hero-sheen--reverse" : ""}`} />
+        </div>
+      )}
     </div>
   )
 }

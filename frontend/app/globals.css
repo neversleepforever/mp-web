@@ -178,3 +178,36 @@ body.dark {
   /* transform: translateY(40px); */
   filter: blur(12px);
 }
+/* Specular sweep for the scroll-driven hero swaps (ScrollSwapHero only): a
+   skewed band of light crosses the frame once while the crossfade runs
+   underneath, like a reflection moving over gloss. The band is 45% of the
+   frame wide, so the translate range has to overshoot both edges. */
+.hero-sheen {
+  position: absolute;
+  top: -10%;
+  bottom: -10%;
+  left: 0;
+  width: 45%;
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.06) 30%,
+    rgba(255, 255, 255, 0.38) 50%,
+    rgba(255, 255, 255, 0.06) 70%,
+    transparent 100%
+  );
+  transform: translateX(-140%) skewX(-14deg);
+  animation: hero-sheen 900ms ease-in-out forwards;
+}
+
+@keyframes hero-sheen {
+  to {
+    transform: translateX(340%) skewX(-14deg);
+  }
+}
+
+/* Scrolling back up mirrors the sweep: the same keyframes played backwards,
+   right-to-left. */
+.hero-sheen--reverse {
+  animation-direction: reverse;
+}
