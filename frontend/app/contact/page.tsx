@@ -173,7 +173,11 @@ export default async function ContactPage() {
 
       <div className="hidden overflow-hidden md:block md:absolute inset-y-0 left-0 w-1/2 bg-[url('/images/scantexture.jpg')] bg-cover bg-center opacity-70" />
  
-      <section className="min-h-[calc(100svh_-_var(--announcement-h,0px))] md:h-[calc(100svh_-_var(--announcement-h,0px))] md:overflow-hidden pointer-events-none w-full col-start-1 row-start-1 col-span-2 row-span-1 flex flex-1 pt-16 pb-16 px-6 md:pb-0 md:px-0 md:pt-0 md:items-center justify-center z-40 md:pr-0 dark:text-white ">
+      {/* Scrolls when the viewport is too short for the boxes (iPad landscape,
+          short desktop windows). Content is top-aligned like the other pages —
+          centring floated the boxes ~250px down on tall iPad portraits, and
+          centred overflow clips its top unreachably anyway. */}
+      <section className="min-h-[calc(100svh_-_var(--announcement-h,0px))] md:h-[calc(100svh_-_var(--announcement-h,0px))] md:overflow-y-auto scrollbar-hide pointer-events-none md:pointer-events-auto w-full col-start-1 row-start-1 col-span-2 row-span-1 flex flex-1 pt-16 pb-16 px-6 md:px-0 md:pt-[72px] md:pb-12 justify-center z-30 md:pr-0 dark:text-white ">
      <TextDistortFilter>
         <div className="pointer-events-auto md:bg-black w-full md:w-[670px] h-auto md:h-[470px] border p-4 md:grid md:grid-cols-2 md:grid-rows-1">
           <div className="flex-1">

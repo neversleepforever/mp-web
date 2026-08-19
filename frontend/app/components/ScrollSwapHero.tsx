@@ -88,7 +88,10 @@ export default function ScrollSwapHero({
     // some arithmetic, with React batching the no-change sets.
     const measure = () => {
       const max = el.scrollHeight - el.clientHeight
-      const ratio = max > 0 ? el.scrollTop / max : 0
+      // Clamp: rubber-band overscroll reports scrollTop below 0 (and past max),
+      // which floored to active = -1 — no such image, so the first hero played
+      // its rewind over nothing and wiped back in when the bounce settled.
+      const ratio = max > 0 ? Math.min(1, Math.max(0, el.scrollTop / max)) : 0
       setActive(Math.min(count - 1, Math.floor(ratio * count)))
     }
 
@@ -136,7 +139,12 @@ export default function ScrollSwapHero({
         <div
           key={i}
           style={layerClip(i)}
-          className={`${i === 0 ? "h-full w-full" : "absolute inset-0"} ${
+          // Every layer absolute: the in-flow first layer used h-full, which
+          // iOS WebKit resolves wrongly against an aspect-ratio parent (it
+          // rendered 659px in a 645px box on iPad, making swaps visibly jump
+          // size). absolute inset-0 is exact in every engine; the wrapper's
+          // aspect-ratio alone sets the size.
+          className={`absolute inset-0 ${
             mode === "fade"
               ? `transition-opacity duration-700 ease-in-out ${
                   active === i ? "opacity-100" : "opacity-0"

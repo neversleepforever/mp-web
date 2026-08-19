@@ -73,7 +73,7 @@ export default async function BookingPage() {
               uidPrefix="booking-hero-desktop"
               mode="wipe"
               variant="rose"
-              className="aspect-[480/910] w-full max-w-[340px] h-auto lg:h-[77dvh] lg:w-auto lg:max-w-none"
+              className="aspect-[480/910] w-full max-w-[340px] lg:max-w-[calc(77dvh_*_480_/_910)]"
             />
           ) : (
             <HeroVignette
@@ -82,7 +82,7 @@ export default async function BookingPage() {
               blurDataURL={heroAsset?.metadata?.lqip}
               uid="booking-hero-desktop"
               variant="rose"
-              className="aspect-[480/910] w-full max-w-[340px] h-auto lg:h-[77dvh] lg:w-auto lg:max-w-none"
+              className="aspect-[480/910] w-full max-w-[340px] lg:max-w-[calc(77dvh_*_480_/_910)]"
             />
           )}
         </div>
