@@ -73,6 +73,16 @@ export default function Gallery({
   // the wrappers and listeners switch cleanly if the window crosses it.
   const [isXg, setIsXg] = useState(false)
   const zoneRef = useRef<HTMLDivElement>(null)
+
+  // The cycle zone makes the document ~10k px tall, which shrinks the window
+  // scrollbar to a sliver that jumps on every wrap teleport. It means nothing
+  // in an endless cycle, so the locked-viewer pages hide it.
+  useEffect(() => {
+    if (!deskLock) return
+    document.documentElement.classList.add("viewer-scrollbar-hide")
+    return () =>
+      document.documentElement.classList.remove("viewer-scrollbar-hide")
+  }, [deskLock])
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 1133px)")
     const update = () => setIsXg(mq.matches)

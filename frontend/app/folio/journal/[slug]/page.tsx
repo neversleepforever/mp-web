@@ -88,7 +88,10 @@ export default async function JournalPage({
         </TextDistortFilter>
       </div>
       <div className="my-12 md:my-16 p-6 md:p-0 pt-0 xl:p-0 xl:-my-0 xl:grid xl:grid-cols-2 xl:h-screen overscroll-none">
-        <div className="overflow-y-scroll md:px-20 lg:pb-16 xl:min-h-screen xl:pt-54 xl:py-24 lg:px-30 lg:overscroll-none scrollbar-hide">
+        {/* xl:pt-16 matches the title's resting height on the gallery/video
+            pages (their my-16 page margin), instead of the old pt-54 that
+            floated the text 150px lower than every other project page. */}
+        <div className="overflow-y-scroll md:px-20 lg:pb-16 xl:min-h-screen xl:pt-16 xl:py-24 lg:px-30 lg:overscroll-none scrollbar-hide">
           <TextDistortFilter>
           <header className="mb-6">
             <h1 className="heading-1 text-justify">
@@ -124,7 +127,10 @@ export default async function JournalPage({
 
         
           {journal.images?.length ? (
-            <div className="w-screen overscroll-none overflow-hidden lg:ml-0 lg:mr-0 lg:w-full lg:px-30 xl:pl-30 xl:pt-20 xl:pb-20 xl:pr-7.5 lg:flex lg:flex-col lg:justify-center xl:max-h-screen">
+            // -ml-6 pulls the w-screen viewer back over the page's mobile
+            // padding (p-6) so it truly spans the viewport — without it the
+            // whole gallery sits 24px right of centre and clips on the right.
+            <div className="w-screen -ml-6 md:ml-0 overscroll-none overflow-hidden lg:ml-0 lg:mr-0 lg:w-full lg:px-30 xl:pl-30 xl:pt-20 xl:pb-20 xl:pr-7.5 lg:flex lg:flex-col lg:justify-center xl:max-h-screen">
               <Gallery images={journal.images} title={journal.title} />
             </div>
            ) : null}

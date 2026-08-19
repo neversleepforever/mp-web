@@ -248,4 +248,17 @@ body.dark {
   }
 }
 
+/* Locked-viewer pages hide the window scrollbar (Gallery adds the class from
+   its deskLock mount): the cycle zone makes the document ~10k px tall, so the
+   thumb is a sliver that visibly jumps on every wrap teleport — it carries no
+   meaning in an endless cycle. */
+html.viewer-scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+html.viewer-scrollbar-hide::-webkit-scrollbar {
+  display: none;
+  width: 0;
+}
+
 /* deploy marker: locked gallery viewer v1 — 2026-08-19 */
