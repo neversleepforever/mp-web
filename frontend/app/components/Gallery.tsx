@@ -73,6 +73,10 @@ export default function Gallery({
   // the wrappers and listeners switch cleanly if the window crosses it.
   const [isXg, setIsXg] = useState(false)
   const zoneRef = useRef<HTMLDivElement>(null)
+  // The pin wrapper. Pinning must ALSO be applied imperatively at engage and
+  // release: React state lands a frame later, and a paint in that gap shows
+  // the zone's empty middle (a white flash) — see engageLock.
+  const pinRef = useRef<HTMLDivElement>(null)
 
   // The cycle zone makes the document ~10k px tall, which shrinks the window
   // scrollbar to a sliver that jumps on every wrap teleport. It means nothing
@@ -214,7 +218,16 @@ export default function Gallery({
       ...base,
       clipPath: isActive || isPrev ? "inset(0% 0% 0% 0%)" : "inset(0% 0% 100% 0%)",
       WebkitClipPath: isActive || isPrev ? "inset(0% 0% 0% 0%)" : "inset(0% 0% 100% 0%)",
-      animation: isActive && wipeCount > 0 ? "hero-wipe-down 700ms ease-in-out" : undefined,
+      // `visible` gates the wipe: on a fresh arrival the incoming photo can
+      // still be downloading, and wiping in an invisible slide reads as a
+      // blink — the stage clears for the wipe's duration, then the photo pops
+      // in late. Withheld until loaded, the animation starts the moment the
+      // flag flips (the style change re-triggers it), so the reveal is always
+      // an actual wipe.
+      animation:
+        isActive && wipeCount > 0 && visible
+          ? "hero-wipe-down 700ms ease-in-out"
+          : undefined,
       zIndex: isActive ? 2 : isPrev ? 1 : 0,
     }
   }
@@ -353,8 +366,13 @@ export default function Gallery({
     releasingRef.current = true
     setTimeout(() => {
       releasingRef.current = false
-    }, 1500)
-    setDeskLocked(false)
+    }, 2500)
+    // Deliberately NOT unpinning here: mid-zone, the viewer's flow position is
+    // far above the viewport, so dropping position:fixed now makes it vanish
+    // in a single frame — the "jump". It stays pinned through the glide; the
+    // scroll listener unpins at the exact frame the zone top re-enters view,
+    // where the pinned and in-flow positions coincide, and from there the
+    // viewer scrolls away naturally as the text arrives.
     window.scrollTo({ top: 0, behavior: "smooth" })
   }
 
@@ -365,21 +383,60 @@ export default function Gallery({
 
     const engageLock = () => {
       lockLatchRef.current = true
-      const before = zone.getBoundingClientRect().top
+      // Pin FIRST, synchronously: the text collapse and the cycle-park below
+      // move the wrapper's flow position ~3000px above the viewport, and the
+      // React-rendered fixed style only lands on the next render. A paint in
+      // that gap showed the zone's empty middle — a white flash on every
+      // lock-in. With the inline style set here, no such frame can exist
+      // (React then renders the identical style, so nothing changes).
+      const pin = pinRef.current
+      if (pin) {
+        pin.style.position = "fixed"
+        pin.style.top = "0px"
+        pin.style.left = "0px"
+        pin.style.right = "0px"
+        pin.style.height = "100vh"
+        pin.style.zIndex = "10"
+      }
       document.body.classList.add("gallery-locked")
-      const after = zone.getBoundingClientRect().top
-      // Keep the viewer where it is, then park the position one full cycle in
-      // (index unchanged mod N) so there's wrap room in both directions.
-      window.scrollTo(0, window.scrollY + (after - before) + cyclePx)
+      // Park EXACTLY one cycle in (slide 0, wrap room in both directions),
+      // discarding the flick's overshoot past the engage point. Preserving the
+      // overshoot let a slide transition land on this same frame — and amid
+      // the pin + text collapse + scroll teleport the browser skips the wipe's
+      // first frames, so the next image flashed in unmasked before the mask
+      // caught up. Decoupled, the first transition happens a scroll-beat
+      // later on a calm frame.
+      const zoneDocTop = zone.getBoundingClientRect().top + window.scrollY
+      window.scrollTo(0, zoneDocTop + cyclePx)
       setDeskLocked(true)
     }
 
     const onScroll = () => {
       const r = zone.getBoundingClientRect()
       if (r.height === 0) return
-      if (releasingRef.current && window.scrollY <= 1) releasingRef.current = false
-      if (!lockLatchRef.current && !releasingRef.current && r.top <= 0)
-        engageLock()
+      // Info's glide home: hold the current slide (no rewind-flash through the
+      // wipes), keep the viewer pinned until the zone top re-enters view (the
+      // seamless handoff point), and stand down once the top is reached.
+      if (releasingRef.current) {
+        if (r.top >= 0) {
+          // Unpin imperatively for the same reason engage pins imperatively:
+          // waiting for the React render leaves a frame where the zone top has
+          // passed the viewport top but the viewer is still fixed — a nudge.
+          const pin = pinRef.current
+          if (pin) {
+            pin.style.position = ""
+            pin.style.top = ""
+            pin.style.left = ""
+            pin.style.right = ""
+            pin.style.zIndex = ""
+            pin.style.height = "100vh"
+          }
+          setDeskLocked(false)
+        }
+        if (window.scrollY <= 1) releasingRef.current = false
+        return
+      }
+      if (!lockLatchRef.current && r.top <= 0) engageLock()
       // Endless cycling: teleport a whole cycle before either band edge can be
       // reached. Invisible — pinned viewer, same index mod N.
       if (lockLatchRef.current) {
@@ -414,6 +471,28 @@ export default function Gallery({
       setDeskLocked(false)
     }
   }, [scrollDrive, slideCount, pathname])
+
+  // Keep the active thumbnail centred in the vertical rail as the locked
+  // viewer advances — past a screenful of thumbs the current one drifted out
+  // of view and there was no way to trace where you were. Scrolls only the
+  // rail, never via scrollIntoView: that would also scroll the window, and in
+  // this mode the window's scroll position IS the slide index.
+  useEffect(() => {
+    if (!scrollDrive) return
+    const container = containerRef.current
+    const thumb = thumbnailRefs.current[selectedIndex]
+    if (!container || !thumb) return
+    const delta =
+      thumb.getBoundingClientRect().top - container.getBoundingClientRect().top
+    container.scrollTo({
+      top:
+        container.scrollTop +
+        delta -
+        container.clientHeight / 2 +
+        thumb.clientHeight / 2,
+      behavior: "smooth",
+    })
+  }, [selectedIndex, scrollDrive])
 
   // Mobile/tablet thumbnail scroll selection. On deskLock pages the
   // scroll-driven viewer owns the index from the xg breakpoint (1133), so this
@@ -558,6 +637,7 @@ export default function Gallery({
         }
       >
       <div
+        ref={pinRef}
         style={
           scrollDrive
             ? deskLocked
@@ -651,7 +731,12 @@ export default function Gallery({
 
         <div
           ref={containerRef}
-          className="flex overflow-x-auto overflow-visible snap-x pl-[50vw] pr-[50vw] scrollbar-hide snap-x snap-proximity lg:w-[59px] lg:h-full lg:overflow-y-auto lg:flex-col lg:px-0 lg:pb-0 lg:mx-0 lg:pt-0 lg:justify-center xl:justify-start"
+          // lg:snap-y: manual drags on the vertical rail settle on a thumb,
+          // like the horizontal filmstrip. xg:justify-start (not center): a
+          // centred flex container with overflowing content clips its top
+          // items UNREACHABLY — on landscape iPads the first thumbs could
+          // never be scrolled to.
+          className="flex overflow-x-auto overflow-visible snap-x pl-[50vw] pr-[50vw] scrollbar-hide snap-x snap-proximity lg:snap-y lg:w-[59px] lg:h-full lg:overflow-y-auto lg:flex-col lg:px-0 lg:pb-0 lg:mx-0 lg:pt-0 lg:justify-center xg:justify-start"
         >
           {hasLead && (
             <button
