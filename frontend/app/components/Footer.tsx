@@ -70,7 +70,7 @@ export default function Footer() {
             <TextDistortFilter>
               <TransitionLink
                 href={fullGalleryHref ?? "#"}
-                className="hidden lg:block uppercase hover:underline text-[14px] text-black mix-blend-difference"
+                className="hidden xl:block uppercase hover:underline text-[14px] text-black mix-blend-difference"
               >
                 View Full Shoot
               </TransitionLink>

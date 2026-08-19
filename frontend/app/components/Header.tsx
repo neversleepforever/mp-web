@@ -18,6 +18,10 @@ export default function Header() {
   ]
   
   const hideNav = pathname.endsWith("/full")
+  // Folio project pages (galleries/journals/videos) show the inline viewer
+  // below xl — the viewer gets the full-bleed treatment, so the nav steps out
+  // the same way it does on /full. At xl the cover-page layout keeps it.
+  const isFolioProject = pathname.startsWith("/folio/")
 
   if (hideNav) return null
 
@@ -27,7 +31,9 @@ export default function Header() {
       // Sits below the announcement bar when it's shown; the bar publishes its
       // height as --announcement-h and 0px otherwise.
       style={{ top: "var(--announcement-h, 0px)" }}
-      className="fixed left-0 right-0 z-40 py-4 px-7 md:pt-4 dark:text-white bg-transparent"
+      className={`fixed left-0 right-0 z-40 py-4 px-7 md:pt-4 dark:text-white bg-transparent ${
+        isFolioProject ? "max-xl:hidden" : ""
+      }`}
     >
       <div className="flex w-full">
       

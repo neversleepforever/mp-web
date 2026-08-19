@@ -134,7 +134,7 @@ export default async function VideoPage({
        {/* Mobile: trailer and stills as one carousel, the video leading. Desktop
            keeps the trailer as a cover with a "View Stills" link instead. */}
        {video.muxVideo?.asset?.playbackId && hasStills && (
-         <div className="lg:hidden w-full">
+         <div className="xl:hidden w-full">
            <Gallery
              images={video.images as GalleryImage[]}
              title={video.title}
@@ -144,7 +144,7 @@ export default async function VideoPage({
        )}
 
        {video.muxVideo?.asset?.playbackId ? (
-  <div className={`w-full xl:h-[100vh] md:px-20 lg:px-30 xl:p-30 flex-col items-center justify-center ${hasStills ? "hidden lg:flex" : "flex"}`}>
+  <div className={`w-full xl:h-[100vh] md:px-20 lg:px-30 xl:p-30 flex-col items-center justify-center ${hasStills ? "hidden xl:flex" : "flex"}`}>
     <MuxPlayer
       playbackId={video.muxVideo.asset.playbackId}
       streamType="on-demand"
@@ -170,7 +170,7 @@ export default async function VideoPage({
           and above it, since the footer is a full-width fixed bar at z-40 that
           would otherwise swallow the click. */}
       {hasStills && (
-        <div className="hidden lg:block fixed bottom-0 right-0 py-4 px-7 z-50">
+        <div className="hidden xl:block fixed bottom-0 right-0 py-4 px-7 z-50">
           <TextDistortFilter>
             <Link
               href={stillsHref}

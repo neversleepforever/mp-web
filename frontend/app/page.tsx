@@ -62,14 +62,14 @@ export default async function FolioIndexPage() {
       className="
         h-[calc(100dvh_-_var(--announcement-h,0px))] px-6 pt-12 pb-16
         overflow-y-auto overflow-x-hidden scrollbar-hide
-        md:overflow-x-auto md:overflow-y-hidden md:py-16
-        xl:overflow-x-hidden xl:overflow-y-auto xl:pb-0
+        md:py-16
+        xl:pb-0
       "
     >
       <div
         className="
           grid gap-3 grid-cols-1 auto-rows-max scrollbar-hide
-          md:grid-cols-none md:grid-rows-2 md:auto-cols-max md:grid-flow-col md:snap-x md:snap-mandatory md:h-full
+          sm:grid-cols-2 lg:grid-cols-3
           xl:grid-rows-none xl:grid-flow-row xl:grid-cols-5 xl:grid-rows-[repeat(2,_minmax(0,_1fr))] xl:grid-flow-row xl:overflow-y-auto xl:pb-16
         "
       >
@@ -86,12 +86,12 @@ export default async function FolioIndexPage() {
               className="flex flex-col h-full"
             >
               {previewImage ? (
-                <div className="relative w-full aspect-[4/5] md:h-[421px] md:w-[300px] xl:w-auto xl:h-auto overflow-hidden">
+                <div className="relative w-full aspect-[4/5] xl:w-auto xl:h-auto overflow-hidden">
                   <FadeInImage
                     src={previewImage}
                     alt={alt}
                     fill
-                    sizes="(min-width: 1280px) 380px, (min-width: 768px) 300px, 100vw"
+                    sizes="(min-width: 1280px) 380px, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                     placeholder={asset?.metadata?.lqip ? "blur" : "empty"}
                     blurDataURL={asset?.metadata?.lqip}
                     className="object-cover object-center "
@@ -124,7 +124,6 @@ export default async function FolioIndexPage() {
             </TransitionLink>
           )
         })}
-        <div className="hidden md:block w-6 xl:hidden" />
       </div>
     </div>
   )
