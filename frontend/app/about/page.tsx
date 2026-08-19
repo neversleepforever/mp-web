@@ -119,6 +119,7 @@ export default async function AboutPage() {
               scrollContainerId="about-content-scroll"
               uidPrefix="hero-desktop"
               mode="wipe"
+              variant="rose"
               className="aspect-[480/910] w-full max-w-[340px] lg:max-w-[calc(77dvh_*_480_/_910)]"
             />
           ) : (
@@ -127,6 +128,7 @@ export default async function AboutPage() {
               alt={heroAlt}
               blurDataURL={heroAsset?.metadata?.lqip}
               uid="hero-desktop"
+              variant="rose"
               className="aspect-[480/910] w-full max-w-[340px] lg:max-w-[calc(77dvh_*_480_/_910)]"
             />
           )}
@@ -153,6 +155,7 @@ export default async function AboutPage() {
                   blurDataURL={heroAsset?.metadata?.lqip}
                   uid="hero-mobile"
                   strokeWidth={4.75}
+                  variant="rose"
                   className="md:hidden aspect-[480/910] w-full max-w-[360px] mx-auto mt-6"
                 />
                 <PortableText value={restBlocks} components={portableComponents} />
