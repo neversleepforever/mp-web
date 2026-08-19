@@ -15,6 +15,14 @@ export default function Footer() {
   const isFolioPage = pathname?.startsWith("/folio")
   const isGalleryPage = pathname?.startsWith("/folio/gallery/")
   const isFullGalleryPage = pathname?.endsWith("/full")
+  // Folio project pages at the xg breakpoint (landscape tablets + desktop)
+  // replace Back with a standing "Submit" link top-left (galleries, videos,
+  // journals alike); below xg Back stays.
+  const isViewerPage =
+    (isGalleryPage ||
+      pathname?.startsWith("/folio/video/") ||
+      pathname?.startsWith("/folio/journal/")) &&
+    !isFullGalleryPage
 
   // Fixed per page rather than measured against whatever sits behind it.
   // Watching the artwork meant the mark changed colour mid-swipe as one photo
@@ -39,7 +47,7 @@ export default function Footer() {
             <TextDistortFilter>
               <TransitionLink
                 href={backHref ?? "/"}
-                className="uppercase hover:underline text-[14px] text-black mix-blend-difference"
+                className={`uppercase hover:underline text-[14px] text-black mix-blend-difference ${isViewerPage ? "xg:hidden" : ""}`}
               >
                 Back
               </TransitionLink>
@@ -70,7 +78,7 @@ export default function Footer() {
             <TextDistortFilter>
               <TransitionLink
                 href={fullGalleryHref ?? "#"}
-                className="hidden xl:block uppercase hover:underline text-[14px] text-black mix-blend-difference"
+                className="hidden uppercase hover:underline text-[14px] text-black mix-blend-difference"
               >
                 View Full Shoot
               </TransitionLink>

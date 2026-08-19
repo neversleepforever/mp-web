@@ -32,7 +32,7 @@ export default function Header() {
       // height as --announcement-h and 0px otherwise.
       style={{ top: "var(--announcement-h, 0px)" }}
       className={`fixed left-0 right-0 z-40 py-4 px-7 md:pt-4 dark:text-white bg-transparent ${
-        isFolioProject ? "max-xl:hidden" : ""
+        isFolioProject ? "hidden" : ""
       }`}
     >
       <div className="flex w-full">

@@ -7,6 +7,7 @@ import MuxPlayer from "@mux/mux-player-react"
 import type MuxPlayerElement from "@mux/mux-player"
 import { urlFor } from "@/sanity/lib/imageBuilder"
 import TextDistortFilter from "./TextFilter"
+import { TransitionLink } from "./TransitionLink"
 
 export interface GalleryImage {
   asset: {
@@ -31,6 +32,12 @@ type Props = {
   /** Optional Mux video shown as the first slide, ahead of the images. Omitted
    *  everywhere except the video pages, so galleries and journals are unaffected. */
   leadVideo?: { playbackId: string }
+  /** Desktop scroll-lock (≥1280): once the viewer fills the screen the wheel
+   *  flips slides instead of scrolling the page; wheel-up on the first slide
+   *  releases back into the text above. A "Submit" link (top-left) shows only
+   *  while locked. Passed only by the inline gallery/video pages — journals and
+   *  /full pages never lock. */
+  deskLock?: boolean
 }
 
 export default function Gallery({
@@ -39,6 +46,7 @@ export default function Gallery({
   enableKeyboard = true,
   showControls = false,
   leadVideo,
+  deskLock = false,
 }: Props) {
   const [loaded, setLoaded] = useState<boolean[]>(() =>
     new Array(images.length).fill(false)
@@ -52,6 +60,35 @@ export default function Gallery({
   const thumbnailRefs = useRef<(HTMLButtonElement | null)[]>([])
   const mainImageRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<MuxPlayerElement | null>(null)
+  const rootRef = useRef<HTMLDivElement>(null)
+
+  // Whether the desktop viewer is "locked" (sticky and filling the frame) —
+  // drives the Submit/Info links. Updated from the scroll listener.
+  const [deskLocked, setDeskLocked] = useState(false)
+  const selectedIndexRef = useRef(selectedIndex)
+  selectedIndexRef.current = selectedIndex
+
+  // The scroll-driven mode runs at the xg breakpoint (1133px — landscape
+  // tablets and desktop; portrait iPads top out at 1032). Tracked as state so
+  // the wrappers and listeners switch cleanly if the window crosses it.
+  const [isXg, setIsXg] = useState(false)
+  const zoneRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1133px)")
+    const update = () => setIsXg(mq.matches)
+    update()
+    // Both signals: the matchMedia change event can fail to fire on some
+    // resize paths, and a stale isXg would leave the lock latched (body class
+    // and all) on a viewport where Submit/Info can't render. The resize
+    // listener guarantees the crossing is always seen; scrollDrive flipping
+    // false runs the scroll effect's cleanup, which unwinds the whole lock.
+    mq.addEventListener("change", update)
+    window.addEventListener("resize", update)
+    return () => {
+      mq.removeEventListener("change", update)
+      window.removeEventListener("resize", update)
+    }
+  }, [])
 
   // With a lead video the slides are [video, ...images], so slide index and
   // image index differ by one. Everything below counts slides; `leadOffset`
@@ -73,11 +110,65 @@ export default function Gallery({
   // flip to false to restore it.
   const WIPE = true
 
-  const goPrev = () =>
-    setSelectedIndex((i) => (i - 1 + slideCount) % slideCount)
+  // Master switch for the desktop locked-viewer experiment. The lock is
+  // SCROLL-DRIVEN (same mechanism as the ScrollSwapHero pages): the viewer is
+  // position:sticky behind a tall scroll zone and the slide index derives from
+  // scroll position. No wheel listeners, no preventDefault — an earlier
+  // wheel-capture version progressively wedged Safari until the page stopped
+  // scrolling entirely. deskLock also styles the stacked desktop stage
+  // (centring, hidden arrows).
+  const DESK_SCROLL_LOCK = true
+  // On-screen readout of every scroll decision (zoneTop / idx / locked) — the
+  // on-device diagnostic that cracked the Safari freeze. Flip on when the
+  // locked viewer misbehaves somewhere the console can't reach.
+  const DESK_LOCK_DEBUG = false
+  const debugRef = useRef<HTMLPreElement>(null)
+  const debugLine = useRef({ n: 0 })
+  const dbg = (s: string) => {
+    if (debugRef.current)
+      debugRef.current.textContent = `#${++debugLine.current.n} ${s}`
+  }
 
-  const goNext = () =>
-    setSelectedIndex((i) => (i + 1) % slideCount)
+  // Scroll distance that advances one slide. The locked viewer cycles
+  // endlessly: the slide index is modulo, the zone is three full cycles long,
+  // and the scroll handler teleports the position by ±one cycle whenever it
+  // nears a band edge — invisible, because the viewer is pinned and the index
+  // is unchanged mod N. The browser's real scroll ends are never reached.
+  const SLIDE_PX = 300
+  const scrollDrive = deskLock && DESK_SCROLL_LOCK && isXg
+  const scrollDriveRef = useRef(false)
+  scrollDriveRef.current = scrollDrive
+  const cyclePx = slideCount * SLIDE_PX
+  const zoneScrollHeight = cyclePx * 3
+
+  /** Jump the page to the scroll position that renders `slide` — keeps clicks
+   *  and keyboard consistent with the scroll listener that owns the index.
+   *  While latched, lands in the middle wrap band (index unchanged mod N). */
+  const scrollToSlide = (slide: number) => {
+    const zone = zoneRef.current
+    if (!zone) return
+    const top = zone.getBoundingClientRect().top + window.scrollY
+    const bandOffset = lockLatchRef.current ? cyclePx : 0
+    window.scrollTo({ top: top + bandOffset + slide * SLIDE_PX })
+  }
+
+  // In scroll-drive mode navigation moves the page — the scroll listener owns
+  // the index. Once latched, one slide is one SLIDE_PX of scroll, and the
+  // teleport band makes stepping wrap endlessly. Everywhere else it steps the
+  // index directly, wrapping as before.
+  const goPrev = () => {
+    if (scrollDriveRef.current) {
+      if (lockLatchRef.current) window.scrollBy(0, -SLIDE_PX)
+      else scrollToSlide(Math.max(0, selectedIndexRef.current - 1))
+    } else setSelectedIndex((i) => (i - 1 + slideCount) % slideCount)
+  }
+
+  const goNext = () => {
+    if (scrollDriveRef.current) {
+      if (lockLatchRef.current) window.scrollBy(0, SLIDE_PX)
+      else scrollToSlide(Math.min(slideCount - 1, selectedIndexRef.current + 1))
+    } else setSelectedIndex((i) => (i + 1) % slideCount)
+  }
 
   // Wipe bookkeeping: which slide is being covered/uncovered, which way the
   // edge travels (shortest circular direction, so wrap-around still reads as
@@ -164,8 +255,10 @@ export default function Gallery({
     return () => window.removeEventListener("keydown", handleKeyDown)
   }, [enableKeyboard, images.length])
 
-  // Desktop wheel navigation
+  // Desktop wheel navigation (hover-to-flip). Superseded by the deskLock
+  // handler below when that mode is on — running both would double-step.
   useEffect(() => {
+    if (deskLock && DESK_SCROLL_LOCK) return
     const mediaQuery = window.matchMedia("(min-width: 1280px)")
     if (!mediaQuery.matches) return
 
@@ -213,14 +306,115 @@ export default function Gallery({
     // functional updates, so the listener never needs to be re-subscribed. If it
     // were, every navigation would reset the debounce lock and a single trackpad
     // flick would whip through several images.
-  }, [images.length])
+  }, [images.length, deskLock])
 
-  // Mobile/tablet thumbnail scroll selection
+  // Desktop locked viewer, scroll-driven (the ScrollSwapHero mechanism): the
+  // pinned viewer rides a tall zone and the slide index is a pure function of
+  // how far into the zone the page has scrolled. Scrolling stays 100% native —
+  // a passive listener can't fight Safari (the wheel-capture version this
+  // replaces progressively wedged it until scrolling died).
+  //
+  // The lock is one-way. On engage the body gets `gallery-locked`, which
+  // display:nones the page's text column (.gallery-lock-hide) — the zone
+  // becomes the whole document, so there is nothing above the viewer to scroll
+  // back to; the browser stops at a native wall. Scroll position is
+  // compensated across both collapse and restore so the viewer never jumps.
+  // Only Info releases (releaseLock below); Submit leaves the page entirely.
+  const lockLatchRef = useRef(false)
+  // True while Info's glide back to the top is in flight — the scroll events it
+  // fires cross the engage threshold and would instantly re-latch the lock.
+  // Cleared on arrival (scrollY ~0) or by timeout if Safari cancels the glide.
+  const releasingRef = useRef(false)
+
+  const releaseLock = () => {
+    const zone = zoneRef.current
+    if (zone && document.body.classList.contains("gallery-locked")) {
+      // Shed whole cycles first (index is unchanged mod N), so the glide home
+      // rewinds through at most one cycle's worth of slides.
+      const s = -zone.getBoundingClientRect().top
+      const excess = Math.floor(s / cyclePx) * cyclePx
+      if (excess > 0) window.scrollTo(0, window.scrollY - excess)
+      const before = zone.getBoundingClientRect().top
+      document.body.classList.remove("gallery-locked")
+      const after = zone.getBoundingClientRect().top
+      window.scrollTo(0, window.scrollY + (after - before))
+    }
+    lockLatchRef.current = false
+    releasingRef.current = true
+    setTimeout(() => {
+      releasingRef.current = false
+    }, 1500)
+    setDeskLocked(false)
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }
+
+  useEffect(() => {
+    if (!scrollDrive) return
+    const zone = zoneRef.current
+    if (!zone) return
+
+    const engageLock = () => {
+      lockLatchRef.current = true
+      const before = zone.getBoundingClientRect().top
+      document.body.classList.add("gallery-locked")
+      const after = zone.getBoundingClientRect().top
+      // Keep the viewer where it is, then park the position one full cycle in
+      // (index unchanged mod N) so there's wrap room in both directions.
+      window.scrollTo(0, window.scrollY + (after - before) + cyclePx)
+      setDeskLocked(true)
+    }
+
+    const onScroll = () => {
+      const r = zone.getBoundingClientRect()
+      if (r.height === 0) return
+      if (releasingRef.current && window.scrollY <= 1) releasingRef.current = false
+      if (!lockLatchRef.current && !releasingRef.current && r.top <= 0)
+        engageLock()
+      // Endless cycling: teleport a whole cycle before either band edge can be
+      // reached. Invisible — pinned viewer, same index mod N.
+      if (lockLatchRef.current) {
+        const s = -zone.getBoundingClientRect().top
+        if (s < cyclePx * 0.5) window.scrollTo(0, window.scrollY + cyclePx)
+        else if (s > cyclePx * 2.5) window.scrollTo(0, window.scrollY - cyclePx)
+      }
+      const rNow = zone.getBoundingClientRect()
+      const stepped = Math.round(-rNow.top / SLIDE_PX)
+      // Modulo only once latched (endless cycling); before the lock the zone
+      // hasn't been entered and the index pins to the first slide.
+      const idx = lockLatchRef.current
+        ? ((stepped % slideCount) + slideCount) % slideCount
+        : Math.min(slideCount - 1, Math.max(0, stepped))
+      setSelectedIndex(idx)
+      dbg(
+        `SCROLL zoneTop=${Math.round(rNow.top)} idx=${idx} locked=${lockLatchRef.current} sY=${Math.round(window.scrollY)}`
+      )
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true })
+    onScroll()
+    return () => {
+      window.removeEventListener("scroll", onScroll)
+      // Never leave the lock behind us (route changes, rotating/resizing below
+      // the xg breakpoint, unmount while locked): restore the text, drop the
+      // latch, and clear the locked state so Submit/Info gating can't go
+      // stale. Below xg the lock must never exist in any form.
+      document.body.classList.remove("gallery-locked")
+      lockLatchRef.current = false
+      releasingRef.current = false
+      setDeskLocked(false)
+    }
+  }, [scrollDrive, slideCount, pathname])
+
+  // Mobile/tablet thumbnail scroll selection. On deskLock pages the
+  // scroll-driven viewer owns the index from the xg breakpoint (1133), so this
+  // must stand down there; elsewhere (/full, journals) it stands down at xl.
   useEffect(() => {
     const container = containerRef.current
     if (!container) return
 
-    const mediaQuery = window.matchMedia("(min-width: 1280px)")
+    const mediaQuery = window.matchMedia(
+      deskLock ? "(min-width: 1133px)" : "(min-width: 1280px)"
+    )
     if (mediaQuery.matches) return
 
     const handleScroll = () => {
@@ -304,10 +498,68 @@ export default function Gallery({
 
   return (
     <>
-      <div className="relative w-full h-[calc(100vh-4rem)] flex flex-col lg:flex-row bar-hide lg:gap-7.5 xl:pt-6 xl:h-[calc(100vh-4rem)]">
+      {deskLock && DESK_LOCK_DEBUG && (
+        <pre
+          ref={debugRef}
+          className="hidden xl:block fixed top-1/2 left-2 z-[999] bg-black text-white text-[11px] p-2 pointer-events-none max-w-[95vw] whitespace-pre-wrap"
+        >
+          debug: waiting for wheel…
+        </pre>
+      )}
+      {/* "Submit" — the way back to the folio grid. A standing link (same
+          treatment on every folio project page, incl. journals and no-stills
+          videos): top-left where the nav's first link would sit, clear of the
+          announcement bar. */}
+      {deskLock && (
+        <div
+          style={{ top: "var(--announcement-h, 0px)" }}
+          className="fixed left-0 py-4 px-7 z-50 hidden xg:block"
+        >
+          <TextDistortFilter>
+            <TransitionLink
+              href="/"
+              className="uppercase hover:line-through text-[14px] text-black mix-blend-difference font-nav"
+            >
+              Submit
+            </TransitionLink>
+          </TextDistortFilter>
+        </div>
+      )}
+      {/* deskLock trues up the centring: the rail (59px) + gap (30px) pull the
+          stage left, so pad the same 89px on the left; and the 64px the page
+          leaves below the viewer is matched with 64px on top, so the contained
+          image centres on the viewport on both axes. */}
+      {/* Scroll-drive wrappers: the outer zone allocates the scroll distance
+          (one SLIDE_PX per slide step, plus the page wrapper's 4rem bottom
+          margin as a tail). The inner box pins with position:fixed while the
+          zone is engaged — NOT sticky: BaseLayout wraps every page in
+          overflow-hidden ancestors, which silently break sticky (it pins to
+          them, not the viewport). Fixed ignores ancestors; the zone keeps its
+          explicit height, so nothing jumps when the box leaves the flow. The
+          scroll listener owns the engaged flag, so pin-on and pin-off happen
+          exactly at the frame where the flow position equals the fixed one.
+          Both wrappers are inert plain divs outside scroll-drive mode. */}
+      <div
+        ref={zoneRef}
+        style={
+          scrollDrive
+            ? { height: `calc(100vh + ${zoneScrollHeight}px + 4rem)` }
+            : undefined
+        }
+      >
+      <div
+        style={
+          scrollDrive
+            ? deskLocked
+              ? { position: "fixed", top: 0, left: 0, right: 0, height: "100vh", zIndex: 10 }
+              : { height: "100vh" }
+            : undefined
+        }
+      >
+      <div ref={rootRef} className={`relative w-full h-[calc(100vh-4rem)] flex flex-col lg:flex-row bar-hide lg:gap-7.5 xl:h-[calc(100vh-4rem)] ${deskLock ? "xg:pt-16" : "xl:pt-6"}`}>
         <div
           ref={mainImageRef}
-          className="flex-1 flex justify-center items-end lg:items-center overflow-hidden scrollbar-hide pt-12 p-6 md:px-20 lg:p-0"
+          className={`flex-1 flex justify-center items-end lg:items-center overflow-hidden scrollbar-hide pt-12 p-6 md:px-20 lg:p-0 ${deskLock ? "xg:pl-[89px]" : ""}`}
         >
           <figure className="relative w-full h-full overflow-hidden">
             {hasLead && (() => {
@@ -329,7 +581,14 @@ export default function Gallery({
                     playbackId={leadVideo!.playbackId}
                     streamType="on-demand"
                     autoPlay={false}
-                    className="w-full max-h-full object-contain"
+                    // xl:h-full: with only a max-height, a wide stage lets the
+                    // player's internal controller keep the video's natural
+                    // aspect height and overflow the box — shoving the control
+                    // bar below the viewport. An explicit height letterboxes
+                    // the video inside the controller and keeps the chrome
+                    // visible. Left alone below xl, where slides are narrow
+                    // enough that natural height always fits.
+                    className="w-full max-h-full xg:h-full object-contain"
                   />
                 </div>
               )
@@ -390,6 +649,8 @@ export default function Gallery({
                 thumbnailRefs.current[0] = el
               }}
               onClick={() => {
+                // Scroll-drive: the page position owns the index, so move it.
+                if (scrollDrive) scrollToSlide(0)
                 setSelectedByTap(true)
                 setScrollLocked(true)
                 setSelectedIndex(0)
@@ -421,6 +682,8 @@ export default function Gallery({
                   thumbnailRefs.current[i + leadOffset] = el
                 }}
                 onClick={() => {
+                  // Scroll-drive: the page position owns the index, so move it.
+                  if (scrollDrive) scrollToSlide(i + leadOffset)
                   setSelectedByTap(true)
                   setScrollLocked(true)
                   setSelectedIndex(i + leadOffset)
@@ -450,27 +713,52 @@ export default function Gallery({
           )}
         </div>
       </div>
+      </div>
+      </div>
 
       {!hideArrows && (
-        <div className="hidden xl:fixed xl:bottom-0 xl:left-0 xl:right-0 xl:h-16 xl:flex xl:flex-row xl:justify-between xl:z-50 xl:items-center xl:px-8 xl:font-nav xl:pointer-events-none">
-          <TextDistortFilter>
-            <button
-              type="button"
-              onClick={goNext}
-              className="pointer-events-auto text-[14px] cursor-pointer uppercase hover:underline"
-            >
-              Down
-            </button>
-          </TextDistortFilter>
-          <TextDistortFilter>
-            <button
-              type="button"
-              onClick={goPrev}
-              className="pointer-events-auto text-[14px] cursor-pointer uppercase hover:underline"
-            >
-              Up
-            </button>
-          </TextDistortFilter>
+        <div
+          className={`fixed bottom-0 left-0 right-0 h-16 flex-row justify-between z-50 items-center px-8 font-nav pointer-events-none transition-opacity duration-300 ${
+            deskLock ? "hidden xg:flex" : "hidden xl:flex"
+          } ${deskLock && !deskLocked ? "opacity-0" : ""}`}
+        >
+          {deskLock ? (
+            /* Locked mode drops Down/Up (scrolling does that job) and puts
+               "Info" where Down sat: the ONLY way out of the lock — it
+               restores the text column and glides back up to it. */
+            <TextDistortFilter>
+              <button
+                type="button"
+                onClick={releaseLock}
+                className={`text-[14px] cursor-pointer uppercase hover:underline ${
+                  deskLocked ? "pointer-events-auto" : ""
+                }`}
+              >
+                Info
+              </button>
+            </TextDistortFilter>
+          ) : (
+            <>
+              <TextDistortFilter>
+                <button
+                  type="button"
+                  onClick={goNext}
+                  className="pointer-events-auto text-[14px] cursor-pointer uppercase hover:underline"
+                >
+                  Down
+                </button>
+              </TextDistortFilter>
+              <TextDistortFilter>
+                <button
+                  type="button"
+                  onClick={goPrev}
+                  className="pointer-events-auto text-[14px] cursor-pointer uppercase hover:underline"
+                >
+                  Up
+                </button>
+              </TextDistortFilter>
+            </>
+          )}
         </div>
       )}
     </>

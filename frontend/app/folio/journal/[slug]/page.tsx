@@ -6,6 +6,7 @@ import { journalSlugsQuery, journalQuery } from "@/sanity/lib/queries"
 import { resolveOpenGraphImage } from "@/sanity/lib/utils"
 import Gallery, { GalleryImage } from "../../../components/Gallery"
 import TextDistortFilter from "@/app/components/TextFilter"
+import Link from "next/link"
 
 export interface Journal {
   _id: string
@@ -69,7 +70,23 @@ export default async function JournalPage({
   if (!journal?._id) return notFound()
 
   return (
-    <>    
+    <>
+      {/* Same standing "Submit" as the gallery/video pages: the way back to
+          the folio grid at desktop, where the nav and footer Back are hidden
+          on folio project pages. */}
+      <div
+        style={{ top: "var(--announcement-h, 0px)" }}
+        className="hidden xg:block fixed left-0 py-4 px-7 z-50"
+      >
+        <TextDistortFilter>
+          <Link
+            href="/"
+            className="uppercase hover:line-through text-[14px] text-black mix-blend-difference font-nav"
+          >
+            Submit
+          </Link>
+        </TextDistortFilter>
+      </div>
       <div className="my-12 md:my-16 p-6 md:p-0 pt-0 xl:p-0 xl:-my-0 xl:grid xl:grid-cols-2 xl:h-screen overscroll-none">
         <div className="overflow-y-scroll md:px-20 lg:pb-16 xl:min-h-screen xl:pt-54 xl:py-24 lg:px-30 lg:overscroll-none scrollbar-hide">
           <TextDistortFilter>

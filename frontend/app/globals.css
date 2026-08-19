@@ -67,6 +67,12 @@
 }
 
 @theme {
+  /* "xg" — the locked-viewer breakpoint: landscape tablets and up. Landscape
+     iPads are 1133/1194/1366pt wide while portrait tops out at 1032, so
+     1133px cleanly means "tablet landscape or desktop" (13" landscape was
+     already covered by xl). Sits between lg (1024) and xl (1280). */
+  --breakpoint-xg: 70.8125rem;
+
   --shadow-layer: 0 35px 60px -15px rgba(0, 0, 0, 0.3);
 
   --color-framework: #000;
@@ -228,5 +234,16 @@ body.dark {
   to {
     -webkit-clip-path: inset(0% 0% 100% 0%);
     clip-path: inset(0% 0% 100% 0%);
+  }
+}
+
+/* Locked gallery viewer (desktop + landscape tablets, the xg breakpoint):
+   while the body carries gallery-locked, the folio text column is removed from
+   the document, so the viewer's scroll zone IS the page — the browser
+   physically cannot scroll back up to the text. Only the Info button (which
+   lifts the class and restores the text) releases. */
+@media (min-width: 1133px) {
+  body.gallery-locked .gallery-lock-hide {
+    display: none;
   }
 }

@@ -98,8 +98,8 @@ export default async function VideoPage({
 
   return (
     <>
-      <div className="my-12 md:my-16 p-6 md:p-0 pt-0 xl:p-0 xl:-my-0 xl:grid xl:grid-cols-2 xl:h-screen">
-  <div className="md:px-20 lg:px-30 pb-8 xl:min-h-screen xl:pt-54 xl:py-24 xl:overflow-y-scroll scrollbar-hide">
+      <div className="my-12 md:my-16 p-6 md:p-0 pt-0">
+  <div className="gallery-lock-hide md:px-20 lg:px-30 pb-8 scrollbar-hide">
           <TextDistortFilter>
             <header className="pb-6">
               <h1 className="heading-1 text-justify">
@@ -134,17 +134,18 @@ export default async function VideoPage({
        {/* Mobile: trailer and stills as one carousel, the video leading. Desktop
            keeps the trailer as a cover with a "View Stills" link instead. */}
        {video.muxVideo?.asset?.playbackId && hasStills && (
-         <div className="xl:hidden w-full">
+         <div className="w-full">
            <Gallery
              images={video.images as GalleryImage[]}
              title={video.title}
              leadVideo={{ playbackId: video.muxVideo.asset.playbackId }}
+             deskLock
            />
          </div>
        )}
 
        {video.muxVideo?.asset?.playbackId ? (
-  <div className={`w-full xl:h-[100vh] md:px-20 lg:px-30 xl:p-30 flex-col items-center justify-center ${hasStills ? "hidden xl:flex" : "flex"}`}>
+  <div className={`w-full xl:h-[100vh] md:px-20 lg:px-30 xl:p-30 flex-col items-center justify-center ${hasStills ? "hidden" : "flex"}`}>
     <MuxPlayer
       playbackId={video.muxVideo.asset.playbackId}
       streamType="on-demand"
@@ -165,12 +166,31 @@ export default async function VideoPage({
   <p className="text-gray-500 italic">No video available</p>
 )}
       </div>
+      {/* No stills → no Gallery, so nothing renders the locked viewer's
+          "Submit" — but at desktop the nav and the footer's Back are both
+          hidden on folio project pages, which would leave no way out. Give
+          these pages a standing Submit in the same top-left spot. */}
+      {!hasStills && (
+        <div
+          style={{ top: "var(--announcement-h, 0px)" }}
+          className="hidden xg:block fixed left-0 py-4 px-7 z-50"
+        >
+          <TextDistortFilter>
+            <Link
+              href="/"
+              className="uppercase hover:line-through text-[14px] text-black mix-blend-difference font-nav"
+            >
+              Submit
+            </Link>
+          </TextDistortFilter>
+        </div>
+      )}
       {/* The only link to the stills, at every size. Sits where the galleries put
           "View Full Shoot" and matches the footer's padding so the two line up —
           and above it, since the footer is a full-width fixed bar at z-40 that
           would otherwise swallow the click. */}
       {hasStills && (
-        <div className="hidden xl:block fixed bottom-0 right-0 py-4 px-7 z-50">
+        <div className="hidden fixed bottom-0 right-0 py-4 px-7 z-50">
           <TextDistortFilter>
             <Link
               href={stillsHref}
