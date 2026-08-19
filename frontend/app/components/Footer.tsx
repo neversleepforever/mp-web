@@ -46,20 +46,25 @@ export default function Footer() {
             </TextDistortFilter>
           )}
         </div>
-        <div className=" h-[30px] flex-shrink-0 flex justify-center">
-          <TransitionLink href={"/"}>
-            <Image
-              src="/images/logo/mistress-maggie-peach-1-line-black.svg"
-              alt="Logo"
-              width={180}
-              height={24}
-              // Source SVG is black; inverted to white on the dark pages.
-              // Inline because Tailwind's `invert` resolves to invert(0) here.
-              className="object-contain lg:hidden"
-              style={{filter: isDarkPage ? "invert(1)" : undefined}}
-            />
-          </TransitionLink>
-        </div>
+        {/* Hidden on folio project pages (galleries, journals, videos, stills —
+            everything under /folio/ now that the grid lives at /): the wordmark
+            sat over the thumbnail rail there. */}
+        {!isFolioPage && (
+          <div className=" h-[30px] flex-shrink-0 flex justify-center">
+            <TransitionLink href={"/"}>
+              <Image
+                src="/images/logo/mistress-maggie-peach-1-line-black.svg"
+                alt="Logo"
+                width={180}
+                height={24}
+                // Source SVG is black; inverted to white on the dark pages.
+                // Inline because Tailwind's `invert` resolves to invert(0) here.
+                className="object-contain lg:hidden"
+                style={{filter: isDarkPage ? "invert(1)" : undefined}}
+              />
+            </TransitionLink>
+          </div>
+        )}
         <div className="flex-1 flex justify-end">
           {isGalleryPage && !isFullGalleryPage && (
             <TextDistortFilter>
