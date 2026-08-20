@@ -177,7 +177,7 @@ export default async function ContactPage() {
           short desktop windows). Content is top-aligned like the other pages —
           centring floated the boxes ~250px down on tall iPad portraits, and
           centred overflow clips its top unreachably anyway. */}
-      <section className="min-h-[calc(100svh_-_var(--announcement-h,0px))] md:h-[calc(100svh_-_var(--announcement-h,0px))] md:overflow-y-auto scrollbar-hide pointer-events-none md:pointer-events-auto w-full col-start-1 row-start-1 col-span-2 row-span-1 flex flex-1 pt-16 pb-16 px-6 md:px-0 md:pt-[72px] md:pb-12 justify-center z-30 md:pr-0 dark:text-white ">
+      <section className="min-h-[calc(100svh_-_var(--announcement-h,0px))] md:h-[calc(100svh_-_var(--announcement-h,0px))] md:overflow-y-auto scrollbar-hide pointer-events-none md:pointer-events-auto w-full col-start-1 row-start-1 col-span-2 row-span-1 flex flex-1 pt-[56px] pb-16 px-6 md:px-0 md:pt-[72px] md:pb-12 justify-center z-30 md:pr-0 dark:text-white ">
      <TextDistortFilter>
         <div className="pointer-events-auto md:bg-black w-full md:w-[670px] h-auto md:h-[470px] border p-4 md:grid md:grid-cols-2 md:grid-rows-1">
           <div className="flex-1">

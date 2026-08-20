@@ -344,7 +344,7 @@ export default async function PoliciesPage() {
           from the design; the boxed stack is capped at the design's 668px. */}
       <div
         id="policies-content-scroll"
-        className="scrollbar-hide bg-[#FFF7E1] md:col-start-2 pt-12 pb-16 px-6 md:pt-[100px] md:pb-16 md:px-10 h-[calc(100dvh_-_var(--announcement-h,0px))] overflow-y-scroll xl:px-16"
+        className="scrollbar-hide bg-[#FFF7E1] md:col-start-2 pt-[56px] pb-16 px-6 md:pt-[100px] md:pb-16 md:px-10 h-[calc(100dvh_-_var(--announcement-h,0px))] overflow-y-scroll xl:px-16"
       >
         <div className="max-w-[668px] mx-auto">
           <HeaderBar label="Policies" />

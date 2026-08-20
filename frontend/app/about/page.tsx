@@ -136,7 +136,7 @@ export default async function AboutPage() {
 
         {/* Mobile background is the fence alone over black — the grey
             scantexture layer is parked for now. Desktop keeps its own image. */}
-        <div id="about-content-scroll" className="scrollbar-hide bg-black md:bg-[url('/images/scantexture-dark.jpg')] bg-cover bg-center md:col-start-2 pt-12 pb-16 px-6 md:pt-16 h-[calc(100dvh_-_var(--announcement-h,0px))] overflow-y-scroll xl:px-26 ">
+        <div id="about-content-scroll" className="scrollbar-hide bg-black md:bg-[url('/images/scantexture-dark.jpg')] bg-cover bg-center md:col-start-2 pt-[56px] pb-16 px-6 md:pt-16 h-[calc(100dvh_-_var(--announcement-h,0px))] overflow-y-scroll xl:px-26 ">
           <div className="relative p-6 bg-black">
             {/* Distorted border, kept as its own overlay so the filter doesn't
                 smear the mobile hero inside the box */}
