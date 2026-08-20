@@ -209,25 +209,35 @@ export default function Gallery({
     // finishes decoding after its wipe already played, it fades in instead of
     // popping — the same courtesy the slide+fade version extended.
     const base = { opacity: visible ? 1 : 0, transition: "opacity 400ms ease" }
+    const SHOWN = "inset(0% 0% 0% 0%)"
+    const HIDDEN = "inset(0% 0% 100% 0%)"
+    // Animating slides REST in their start state and let the animation (with
+    // `forwards` fill) carry and hold them at the end state. Resting at the
+    // end state flashed it for a frame whenever the browser began the
+    // animation late — the incoming image popped fully visible before its
+    // wipe. Inverted, a late start just leaves the outgoing image up one
+    // extra frame, which is imperceptible.
+    // Off-stage slides are visibility:hidden ON TOP of being clipped: Safari
+    // can flash a freshly-decoded image unclipped for one frame as it first
+    // paints into a clip-masked layer (the "next image" micro-flicker at
+    // lock-in). An unpainted layer has nothing to flash. visibility isn't in
+    // the transition list, so it flips instantly on activation.
     if (wipeBack && wipeCount > 0) {
       if (isPrev)
-        return { ...base, clipPath: "inset(0% 0% 100% 0%)", WebkitClipPath: "inset(0% 0% 100% 0%)", animation: "hero-wipe-out 700ms ease-in-out", zIndex: 2 }
-      return { ...base, clipPath: isActive ? "inset(0% 0% 0% 0%)" : "inset(0% 0% 100% 0%)", WebkitClipPath: isActive ? "inset(0% 0% 0% 0%)" : "inset(0% 0% 100% 0%)", zIndex: isActive ? 1 : 0 }
+        return { ...base, visibility: "visible" as const, clipPath: SHOWN, WebkitClipPath: SHOWN, animation: "hero-wipe-out 700ms ease-in-out forwards", zIndex: 2 }
+      return { ...base, visibility: isActive ? ("visible" as const) : ("hidden" as const), clipPath: isActive ? SHOWN : HIDDEN, WebkitClipPath: isActive ? SHOWN : HIDDEN, zIndex: isActive ? 1 : 0 }
     }
+    // `visible` gates the wipe: on a fresh arrival the incoming photo can
+    // still be downloading, and wiping in an invisible slide reads as a
+    // blink. Withheld until loaded, the animation starts the moment the flag
+    // flips, so the reveal is always an actual wipe.
+    const wiping = isActive && wipeCount > 0 && visible
     return {
       ...base,
-      clipPath: isActive || isPrev ? "inset(0% 0% 0% 0%)" : "inset(0% 0% 100% 0%)",
-      WebkitClipPath: isActive || isPrev ? "inset(0% 0% 0% 0%)" : "inset(0% 0% 100% 0%)",
-      // `visible` gates the wipe: on a fresh arrival the incoming photo can
-      // still be downloading, and wiping in an invisible slide reads as a
-      // blink — the stage clears for the wipe's duration, then the photo pops
-      // in late. Withheld until loaded, the animation starts the moment the
-      // flag flips (the style change re-triggers it), so the reveal is always
-      // an actual wipe.
-      animation:
-        isActive && wipeCount > 0 && visible
-          ? "hero-wipe-down 700ms ease-in-out"
-          : undefined,
+      visibility: isActive || isPrev ? ("visible" as const) : ("hidden" as const),
+      clipPath: wiping ? HIDDEN : isActive || isPrev ? SHOWN : HIDDEN,
+      WebkitClipPath: wiping ? HIDDEN : isActive || isPrev ? SHOWN : HIDDEN,
+      animation: wiping ? "hero-wipe-down 700ms ease-in-out forwards" : undefined,
       zIndex: isActive ? 2 : isPrev ? 1 : 0,
     }
   }
@@ -344,6 +354,9 @@ export default function Gallery({
   // compensated across both collapse and restore so the viewer never jumps.
   // Only Info releases (releaseLock below); Submit leaves the page entirely.
   const lockLatchRef = useRef(false)
+  // When the lock engaged — the entry settle holds slide 0 briefly after.
+  const engageAtRef = useRef(0)
+  const ENGAGE_HOLD_MS = 350
   // True while Info's glide back to the top is in flight — the scroll events it
   // fires cross the engage threshold and would instantly re-latch the lock.
   // Cleared on arrival (scrollY ~0) or by timeout if Safari cancels the glide.
@@ -383,6 +396,7 @@ export default function Gallery({
 
     const engageLock = () => {
       lockLatchRef.current = true
+      engageAtRef.current = performance.now()
       // Pin FIRST, synchronously: the text collapse and the cycle-park below
       // move the wrapper's flow position ~3000px above the viewport, and the
       // React-rendered fixed style only lands on the next render. A paint in
@@ -448,9 +462,19 @@ export default function Gallery({
       const stepped = Math.round(-rNow.top / SLIDE_PX)
       // Modulo only once latched (endless cycling); before the lock the zone
       // hasn't been entered and the index pins to the first slide.
-      const idx = lockLatchRef.current
+      let idx = lockLatchRef.current
         ? ((stepped % slideCount) + slideCount) % slideCount
         : Math.min(slideCount - 1, Math.max(0, stepped))
+      // Entry settle: a fast flick reaches the first slide-step one or two
+      // frames after engage, while the browser is still digesting the pin +
+      // text collapse + scroll teleport — activating a slide's layer in that
+      // churn is where Safari flashes it unclipped. Hold the first slide for
+      // a beat; scroll takes over on a calm frame.
+      if (
+        lockLatchRef.current &&
+        performance.now() - engageAtRef.current < ENGAGE_HOLD_MS
+      )
+        idx = 0
       setSelectedIndex(idx)
       dbg(
         `SCROLL zoneTop=${Math.round(rNow.top)} idx=${idx} locked=${lockLatchRef.current} sY=${Math.round(window.scrollY)}`
