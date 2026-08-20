@@ -583,3 +583,65 @@ export const bookingsQuery = defineQuery(`
     }
   }
 `)
+
+export const policiesQuery = defineQuery(`
+  *[_type == "policies"][0]{
+      image{
+        alt,
+        asset->{
+          _id,
+          url,
+          metadata{
+            lqip,
+            dimensions { width, height }
+          }
+        }
+      },
+      imageSecondary{
+        alt,
+        asset->{
+          _id,
+          url,
+          metadata{
+            lqip,
+            dimensions { width, height }
+          }
+        }
+      },
+      imageTertiary{
+        alt,
+        asset->{
+          _id,
+          url,
+          metadata{
+            lqip,
+            dimensions { width, height }
+          }
+        }
+      },
+      sections[]{
+        _type,
+        _key,
+        _type == "policySection" => {
+          title,
+          body
+        },
+        _type == "image" => {
+          alt,
+          asset->{
+            _id,
+            url,
+            metadata{
+              lqip,
+              dimensions { width, height }
+            }
+          }
+        }
+      },
+      faqs[]{
+        _key,
+        question,
+        answer
+      }
+  }
+`)

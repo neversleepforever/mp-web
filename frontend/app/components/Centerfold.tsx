@@ -22,18 +22,27 @@ export default function Centerfold() {
     pathname?.startsWith("/bookings") ||
     pathname?.startsWith("/contact")
 
+  // Policies sits between the two: cream paper is too light for the dark
+  // pages' crease (it read as a grey smear across the centre) but the design
+  // wants more fold than the folio whisper. A medium gutter of its own.
+  const isPolicies = !!pathname?.startsWith("/policies")
+
   // Folio detail pages (gallery landing, video, journal) are bright/white — they get the same
   // fold gutter but MUCH lighter (a soft page-fold shadow, not the strong dark crease the dark
   // pages need). The /folio/gallery/[slug]/full viewer is excluded — its full-bleed project
   // images shouldn't be cut by a crease.
   const isFolio =
     !!pathname?.startsWith("/folio/") && !pathname.endsWith("/full")
-  const showGutter = isGutter || isFolio
+  const showGutter = isGutter || isFolio || isPolicies
 
-  const gutterDesktop = isFolio
+  const gutterDesktop = isPolicies
+    ? "linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.12) 42%, rgba(0,0,0,0.22) 50%, rgba(0,0,0,0.12) 58%, rgba(0,0,0,0) 100%)"
+    : isFolio
     ? "linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.07) 42%, rgba(0,0,0,0.14) 50%, rgba(0,0,0,0.07) 58%, rgba(0,0,0,0) 100%)"
     : "linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.65) 50%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0) 100%)"
-  const gutterMobile = isFolio
+  const gutterMobile = isPolicies
+    ? "linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.1) 42%, rgba(0,0,0,0.18) 50%, rgba(0,0,0,0.1) 58%, rgba(0,0,0,0) 100%)"
+    : isFolio
     ? "linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.06) 42%, rgba(0,0,0,0.12) 50%, rgba(0,0,0,0.06) 58%, rgba(0,0,0,0) 100%)"
     : "linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.22) 42%, rgba(0,0,0,0.38) 50%, rgba(0,0,0,0.22) 58%, rgba(0,0,0,0) 100%)"
 

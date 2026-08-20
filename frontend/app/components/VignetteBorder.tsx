@@ -128,8 +128,12 @@ export function VignetteBorderContentPortrait({ className = "" }: Props) {
   )
 }
 
-/** Landscape frame — solid light stroke, always 2px. */
-export function VignetteBorderLandscape({ className = "" }: Props) {
+/** Landscape frame — solid stroke, always 2px. Light by default (the frames sit
+ *  on dark grounds); pages on light paper (Policies) pass black. */
+export function VignetteBorderLandscape({
+  className = "",
+  stroke = "#D9D9D9",
+}: Props & { stroke?: string }) {
   return (
     <svg
       viewBox="0 0 612.48 406.431"
@@ -141,7 +145,7 @@ export function VignetteBorderLandscape({ className = "" }: Props) {
     >
       <path
         d="M569.981 2C569.983 12.735 574.248 23.0301 581.839 30.6211C589.431 38.2131 599.728 42.4784 610.465 42.4785C610.47 42.4785 610.475 42.4775 610.48 42.4775V364.231C599.843 364.304 589.658 368.559 582.131 376.086C574.605 383.612 570.351 393.795 570.277 404.431H42.5166C42.5095 393.704 38.2447 383.418 30.6592 375.832C23.0671 368.24 12.77 363.975 2.0332 363.975C2.0222 363.975 2.011 363.975 2 363.975V42.4814C12.7279 42.475 23.0153 38.2122 30.6016 30.626C38.1936 23.034 42.4589 12.7367 42.459 2H569.981Z"
-        stroke="#D9D9D9"
+        stroke={stroke}
         strokeWidth={2}
         strokeLinejoin="bevel"
         vectorEffect="non-scaling-stroke"

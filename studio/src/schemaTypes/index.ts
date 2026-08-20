@@ -5,6 +5,7 @@ import {gallery} from './documents/gallery'
 import {journal} from './documents/journal'
 import {video} from './documents/video'
 import {services} from "./singletons/services"
+import {policies} from "./singletons/policies"
 import {contact} from "./singletons/contact"
 import { about } from './singletons/about'
 import { home } from './singletons/home'
@@ -22,6 +23,7 @@ export const schemaTypes = [
   // Singletons
   settings,
   services,
+  policies,
   contact,
   about,
   home,

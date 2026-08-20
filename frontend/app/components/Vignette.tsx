@@ -80,6 +80,19 @@ export function ContentVignette({
   height,
   className = "",
   sizes = CONTENT_SIZES,
+  // The house treatment suits the site's darker photos; bright images blow out
+  // under contrast-200 (the Policies spread washed to near-white), so callers
+  // can soften it.
+  filterClassName = "md:grayscale md:contrast-200",
+  // Landscape frame stroke — light by default (frames sit on dark grounds);
+  // pages on light paper (Policies) pass black.
+  borderStroke,
+  // The mask artwork carries ~2 viewBox units of margin on every side, which
+  // reads as a pale seam between the photo and whatever the frame abuts.
+  // Invisible on dark grounds; on light paper (Policies) it shows, so bleed
+  // scales the mask up a touch to push those margins outside the box — the
+  // photo meets the edges and the corner notches stay (a hair shallower).
+  bleed = false,
 }: {
   src: string
   alt: string
@@ -88,24 +101,40 @@ export function ContentVignette({
   height?: number
   className?: string
   sizes?: string
+  filterClassName?: string
+  borderStroke?: string
+  bleed?: boolean
 }) {
   const isPortrait = width != null && height != null ? height > width : false
   const maskUrl = isPortrait ? "/vignette-cp-mask.svg" : "/vignette-h-mask.svg"
-  const Border = isPortrait ? VignetteBorderContentPortrait : VignetteBorderLandscape
   const aspect = isPortrait ? "aspect-[612/889]" : "aspect-[612/406]"
+  const mask: CSSProperties = bleed
+    ? {
+        ...maskStyle(maskUrl),
+        maskSize: "104% 104%",
+        WebkitMaskSize: "104% 104%",
+      }
+    : maskStyle(maskUrl)
   return (
     <div className={`relative w-full ${aspect} ${className}`}>
-      <div className="absolute inset-0" style={maskStyle(maskUrl)}>
+      <div className="absolute inset-0" style={mask}>
         <FadeInImage
           src={src}
           alt={alt}
           fill
           blurDataURL={blurDataURL}
           sizes={sizes}
-          className="object-cover md:grayscale md:contrast-200"
+          className={`object-cover ${filterClassName}`}
         />
       </div>
-      <Border className="pointer-events-none absolute inset-0 h-full w-full select-none" />
+      {isPortrait ? (
+        <VignetteBorderContentPortrait className="pointer-events-none absolute inset-0 h-full w-full select-none" />
+      ) : (
+        <VignetteBorderLandscape
+          stroke={borderStroke}
+          className="pointer-events-none absolute inset-0 h-full w-full select-none"
+        />
+      )}
     </div>
   )
 }

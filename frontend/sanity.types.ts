@@ -566,6 +566,95 @@ export type Contact = {
   }>
 }
 
+export type Policies = {
+  _id: string
+  _type: 'policies'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  image?: {
+    asset?: {
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+    }
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    _type: 'image'
+  }
+  imageSecondary?: {
+    asset?: {
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+    }
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    _type: 'image'
+  }
+  imageTertiary?: {
+    asset?: {
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+    }
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    _type: 'image'
+  }
+  sections?: Array<
+    | {
+        title?: string
+        body?: Array<{
+          children?: Array<{
+            marks?: Array<string>
+            text?: string
+            _type: 'span'
+            _key: string
+          }>
+          style?: 'normal'
+          listItem?: 'bullet'
+          markDefs?: Array<{
+            href?: string
+            _type: 'link'
+            _key: string
+          }>
+          level?: number
+          _type: 'block'
+          _key: string
+        }>
+        _type: 'policySection'
+        _key: string
+      }
+    | {
+        asset?: {
+          _ref: string
+          _type: 'reference'
+          _weak?: boolean
+          [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+        }
+        media?: unknown
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        alt?: string
+        _type: 'image'
+        _key: string
+      }
+  >
+  faqs?: Array<{
+    question?: string
+    answer?: string
+    _type: 'faqItem'
+    _key: string
+  }>
+}
+
 export type Services = {
   _id: string
   _type: 'services'
@@ -1230,6 +1319,7 @@ export type AllSanitySchemaTypes =
   | Home
   | About
   | Contact
+  | Policies
   | Services
   | Settings
   | Page
@@ -2004,6 +2094,98 @@ export type BookingsQueryResult = {
     } | null
   } | null
 } | null
+// Variable: policiesQuery
+// Query: *[_type == "policies"][0]{      image{        alt,        asset->{          _id,          url,          metadata{            lqip,            dimensions { width, height }          }        }      },      imageSecondary{        alt,        asset->{          _id,          url,          metadata{            lqip,            dimensions { width, height }          }        }      },      imageTertiary{        alt,        asset->{          _id,          url,          metadata{            lqip,            dimensions { width, height }          }        }      },      sections[]{        _type,        _key,        _type == "policySection" => {          title,          body        },        _type == "image" => {          alt,          asset->{            _id,            url,            metadata{              lqip,              dimensions { width, height }            }          }        }      },      faqs[]{        _key,        question,        answer      }  }
+export type PoliciesQueryResult = {
+  image: {
+    alt: null
+    asset: {
+      _id: string
+      url: string | null
+      metadata: {
+        lqip: string | null
+        dimensions: {
+          width: number | null
+          height: number | null
+        } | null
+      } | null
+    } | null
+  } | null
+  imageSecondary: {
+    alt: null
+    asset: {
+      _id: string
+      url: string | null
+      metadata: {
+        lqip: string | null
+        dimensions: {
+          width: number | null
+          height: number | null
+        } | null
+      } | null
+    } | null
+  } | null
+  imageTertiary: {
+    alt: null
+    asset: {
+      _id: string
+      url: string | null
+      metadata: {
+        lqip: string | null
+        dimensions: {
+          width: number | null
+          height: number | null
+        } | null
+      } | null
+    } | null
+  } | null
+  sections: Array<
+    | {
+        _type: 'image'
+        _key: string
+        alt: string | null
+        asset: {
+          _id: string
+          url: string | null
+          metadata: {
+            lqip: string | null
+            dimensions: {
+              width: number | null
+              height: number | null
+            } | null
+          } | null
+        } | null
+      }
+    | {
+        _type: 'policySection'
+        _key: string
+        title: string | null
+        body: Array<{
+          children?: Array<{
+            marks?: Array<string>
+            text?: string
+            _type: 'span'
+            _key: string
+          }>
+          style?: 'normal'
+          listItem?: 'bullet'
+          markDefs?: Array<{
+            href?: string
+            _type: 'link'
+            _key: string
+          }>
+          level?: number
+          _type: 'block'
+          _key: string
+        }> | null
+      }
+  > | null
+  faqs: Array<{
+    _key: string
+    question: string | null
+    answer: string | null
+  }> | null
+} | null
 
 // Query TypeMap
 import '@sanity/client'
@@ -2028,5 +2210,6 @@ declare module '@sanity/client' {
     '\n*[_type == "ageCheck"][0] {\n  marqueeText,\n  bodyText,\n  buttonText\n}': AgeCheckQueryResult
     '\n*[_type == "announcement"][0] {\n  enabled,\n  newsletterText,\n  newsletterUrl,\n  bookingText\n}': AnnouncementQueryResult
     '\n  *[_type == "bookings"][0]{\n    _id,\n    image{\n      alt,\n      asset->{\n        _id,\n        url,\n        metadata{\n          lqip,\n          dimensions { width, height }\n        }\n      }\n    },\n    imageSecondary{\n      alt,\n      asset->{\n        _id,\n        url,\n        metadata{\n          lqip,\n          dimensions { width, height }\n        }\n      }\n    }\n  }\n': BookingsQueryResult
+    '\n  *[_type == "policies"][0]{\n      image{\n        alt,\n        asset->{\n          _id,\n          url,\n          metadata{\n            lqip,\n            dimensions { width, height }\n          }\n        }\n      },\n      imageSecondary{\n        alt,\n        asset->{\n          _id,\n          url,\n          metadata{\n            lqip,\n            dimensions { width, height }\n          }\n        }\n      },\n      imageTertiary{\n        alt,\n        asset->{\n          _id,\n          url,\n          metadata{\n            lqip,\n            dimensions { width, height }\n          }\n        }\n      },\n      sections[]{\n        _type,\n        _key,\n        _type == "policySection" => {\n          title,\n          body\n        },\n        _type == "image" => {\n          alt,\n          asset->{\n            _id,\n            url,\n            metadata{\n              lqip,\n              dimensions { width, height }\n            }\n          }\n        }\n      },\n      faqs[]{\n        _key,\n        question,\n        answer\n      }\n  }\n': PoliciesQueryResult
   }
 }
