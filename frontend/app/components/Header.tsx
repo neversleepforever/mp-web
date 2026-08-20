@@ -1,14 +1,13 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import Image from "next/image"
 import TextDistortFilter from "./TextFilter"
 import { TransitionLink } from "./TransitionLink"
 
-// Label on the condensed mobile nav bar; the current page's name is appended
-// ("Menu: Services") when there is one.
+// Label on the condensed mobile nav bar.
 const MOBILE_NAV_LABEL = "Menu"
 
 // Pages whose mobile bar inverts (white bar, black text): the dark-themed
@@ -25,7 +24,7 @@ export default function Header() {
 
   const links = [
     { href: "/about", label: "About" },
-    { href: "/services", label: "Services" },
+    { href: "/services", label: "Sessions" },
     { href: "/", label: "Folio" },
     { href: "/bookings", label: "Booking" },
     { href: "/policies", label: "Policies & FAQs" },
@@ -36,7 +35,7 @@ export default function Header() {
   // uppercased by CSS; the overlay is not).
   const takeoverLinks = [
     { href: "/about", label: "About" },
-    { href: "/services", label: "Services" },
+    { href: "/services", label: "Sessions" },
     { href: "/", label: "Folio" },
     { href: "/bookings", label: "Bookings" },
     { href: "/policies", label: "Policies & FAQs" },
@@ -63,19 +62,7 @@ export default function Header() {
     }
   }, [menuOpen])
 
-  // The page suffix ("Menu: Services") only appears after in-site navigation —
-  // a fresh landing reads plain "Menu".
-  const initialPathRef = useRef(pathname)
-  const [hasNavigated, setHasNavigated] = useState(false)
-  useEffect(() => {
-    if (pathname !== initialPathRef.current) setHasNavigated(true)
-  }, [pathname])
-
-  const currentLabel = takeoverLinks.find((l) => l.href === pathname)?.label
-  const barLabel =
-    hasNavigated && currentLabel
-      ? `${MOBILE_NAV_LABEL}: ${currentLabel}`
-      : MOBILE_NAV_LABEL
+  const barLabel = MOBILE_NAV_LABEL
 
   if (hideNav) return null
 
