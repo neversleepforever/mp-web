@@ -87,12 +87,6 @@ export function ContentVignette({
   // Landscape frame stroke — light by default (frames sit on dark grounds);
   // pages on light paper (Policies) pass black.
   borderStroke,
-  // The mask artwork carries ~2 viewBox units of margin on every side, which
-  // reads as a pale seam between the photo and whatever the frame abuts.
-  // Invisible on dark grounds; on light paper (Policies) it shows, so bleed
-  // scales the mask up a touch to push those margins outside the box — the
-  // photo meets the edges and the corner notches stay (a hair shallower).
-  bleed = false,
 }: {
   src: string
   alt: string
@@ -103,18 +97,16 @@ export function ContentVignette({
   sizes?: string
   filterClassName?: string
   borderStroke?: string
-  bleed?: boolean
 }) {
   const isPortrait = width != null && height != null ? height > width : false
+  // The stock mask/border pair only — they're drawn to match each other, so
+  // the photo's cut corners and the stroked outline align at every size.
+  // (A "bleed" variant that altered the mask to kill its ~2px margin seam
+  // desynced the pair under responsive scaling; the seam hides inside the
+  // stroke anyway.)
   const maskUrl = isPortrait ? "/vignette-cp-mask.svg" : "/vignette-h-mask.svg"
   const aspect = isPortrait ? "aspect-[612/889]" : "aspect-[612/406]"
-  const mask: CSSProperties = bleed
-    ? {
-        ...maskStyle(maskUrl),
-        maskSize: "104% 104%",
-        WebkitMaskSize: "104% 104%",
-      }
-    : maskStyle(maskUrl)
+  const mask: CSSProperties = maskStyle(maskUrl)
   return (
     <div className={`relative w-full ${aspect} ${className}`}>
       <div className="absolute inset-0" style={mask}>

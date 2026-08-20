@@ -351,7 +351,10 @@ export default async function PoliciesPage() {
           {/* Mobile hero — the desktop swap hero lives in the hidden left
               column, so below md the hero joins the boxed stack itself: first
               bordered box under the POLICIES bar, per the mobile design. */}
-          <div className="md:hidden border-b-2 border-l-2 border-r-2 border-black border-solid px-[30px] py-[24px] flex justify-center">
+          {/* Plain block + mx-auto, NOT flex: Safari's flex cross-axis stretch
+              fights aspect-ratio items (distortion + baseline gaps). This is
+              About's mobile-hero pattern verbatim. */}
+          <div className="md:hidden border-b-2 border-l-2 border-r-2 border-black border-solid px-[30px] py-[24px]">
             <HeroVignette
               src={heroSrc}
               alt={heroAlt}
@@ -359,7 +362,7 @@ export default async function PoliciesPage() {
               uid="policies-hero-mobile"
               variant="rose"
               strokeWidth={4.75}
-              className="aspect-[480/910] w-full"
+              className="aspect-[480/910] w-full max-w-[360px] mx-auto"
             />
           </div>
           {cmsSections ? (
@@ -378,7 +381,7 @@ export default async function PoliciesPage() {
                     height={item.asset.metadata?.dimensions?.height ?? 842}
                     filterClassName="md:grayscale"
                     borderStroke="#000"
-                    bleed
+                    className="-my-px"
                   />
                 ) : null
               ) : (
@@ -406,7 +409,7 @@ export default async function PoliciesPage() {
                 height={842}
                 filterClassName="md:grayscale"
                 borderStroke="#000"
-                bleed
+                className="-my-px"
               />
 
               {POLICIES_B.map((section, i) => (
@@ -420,7 +423,7 @@ export default async function PoliciesPage() {
                 height={842}
                 filterClassName="md:grayscale"
                 borderStroke="#000"
-                bleed
+                className="-my-px"
               />
             </>
           )}

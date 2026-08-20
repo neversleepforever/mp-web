@@ -157,9 +157,18 @@ const FAQS = [
   },
 ]
 
-const token = process.env.SANITY_WRITE_TOKEN
+// Token from the environment, or prompted interactively — pasting a long
+// token inline on the command line is easy to mangle (a wrapped line makes the
+// shell execute token fragments as commands).
+let token = process.env.SANITY_WRITE_TOKEN
 if (!token) {
-  console.error('Set SANITY_WRITE_TOKEN — see the header of this file.')
+  const readline = await import('node:readline/promises')
+  const rl = readline.createInterface({input: process.stdin, output: process.stdout})
+  token = (await rl.question('Paste your Sanity write token (Editor permissions): ')).trim()
+  rl.close()
+}
+if (!token) {
+  console.error('No token provided — see the header of this file.')
   process.exit(1)
 }
 
