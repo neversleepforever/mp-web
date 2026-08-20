@@ -178,7 +178,11 @@ export default async function ContactPage() {
           centring floated the boxes ~250px down on tall iPad portraits, and
           centred overflow clips its top unreachably anyway. */}
       <section className="min-h-[calc(100svh_-_var(--announcement-h,0px))] md:h-[calc(100svh_-_var(--announcement-h,0px))] md:overflow-y-auto scrollbar-hide pointer-events-none md:pointer-events-auto w-full col-start-1 row-start-1 col-span-2 row-span-1 flex flex-1 pt-[56px] pb-16 px-6 md:px-0 md:pt-[72px] md:pb-12 justify-center z-30 md:pr-0 dark:text-white ">
-     <TextDistortFilter>
+     {/* w-full below md: with no width the filter wrapper shrink-wraps its
+         content (~360px), which reads fine on phones (viewport clamps it) but
+         floats narrow on iPad mini portrait where there's room. md+ keeps the
+         fixed 670px box shrink-wrapped and centred as before. */}
+     <TextDistortFilter className="w-full md:w-auto">
         <div className="pointer-events-auto md:bg-black w-full md:w-[670px] h-auto md:h-[470px] border p-4 md:grid md:grid-cols-2 md:grid-rows-1">
           <div className="flex-1">
             <h1 className="heading-1 mb-8">{contact.heading ?? "Contact"}</h1>
@@ -194,7 +198,9 @@ export default async function ContactPage() {
               blurDataURL={illustration?.metadata?.lqip}
               width={illustrationDims.width}
               height={illustrationDims.height}
-              className="md:hidden mb-8"
+              // Same cap as the other mobile heroes — full-width in the newly
+              // full-width contact box, it ballooned on iPad mini portrait.
+              className="md:hidden mb-8 max-w-[360px] mx-auto"
             />
 
             {contact.socials1?.length ? (
