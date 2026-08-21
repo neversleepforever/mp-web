@@ -47,9 +47,9 @@ export default function Footer() {
             <TextDistortFilter>
               <TransitionLink
                 href={backHref ?? "/"}
-                className={`uppercase hover:underline text-[12px] text-black mix-blend-difference ${isViewerPage ? "xg:hidden" : ""}`}
+                className={`uppercase hover:underline text-[12px] text-black mix-blend-difference font-nav ${isViewerPage ? "xg:hidden" : ""}`}
               >
-                Back
+                Submit
               </TransitionLink>
             </TextDistortFilter>
           )}

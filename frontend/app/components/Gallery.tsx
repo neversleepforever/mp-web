@@ -38,6 +38,9 @@ type Props = {
    *  while locked. Passed only by the inline gallery/video pages — journals and
    *  /full pages never lock. */
   deskLock?: boolean
+  /** Next folio entry for the "Don't Stop" CTA (bottom-right, opposite Info,
+   *  fading in and out with the lock). Omitted → no CTA. */
+  nextHref?: string
 }
 
 export default function Gallery({
@@ -47,6 +50,7 @@ export default function Gallery({
   showControls = false,
   leadVideo,
   deskLock = false,
+  nextHref,
 }: Props) {
   const [loaded, setLoaded] = useState<boolean[]>(() =>
     new Array(images.length).fill(false)
@@ -450,7 +454,12 @@ export default function Gallery({
         if (window.scrollY <= 1) releasingRef.current = false
         return
       }
-      if (!lockLatchRef.current && r.top <= 0) engageLock()
+      // `priming` guards the mount-time call below: arriving from another
+      // project page (Don't Stop) the effect runs BEFORE Next resets the
+      // scroll position, so this read the OLD page's deep offset and locked
+      // instantly — text column gone before it was ever seen. Real scroll
+      // events (including Next's reset itself) engage as before.
+      if (!lockLatchRef.current && r.top <= 0 && !priming) engageLock()
       // Endless cycling: teleport a whole cycle before either band edge can be
       // reached. Invisible — pinned viewer, same index mod N.
       if (lockLatchRef.current) {
@@ -481,8 +490,10 @@ export default function Gallery({
       )
     }
 
+    let priming = true
     window.addEventListener("scroll", onScroll, { passive: true })
     onScroll()
+    priming = false
     return () => {
       window.removeEventListener("scroll", onScroll)
       // Never leave the lock behind us (route changes, rotating/resizing below
@@ -606,8 +617,9 @@ export default function Gallery({
     })
   }, [images])
 
-  if (!images?.length) return null
-  const selected = images[selectedIndex]
+  // A lead video with no stills is still a viewer (the no-thumbnail video
+  // pages lock on it at xg); only bail when there is nothing to show at all.
+  if (!images?.length && !hasLead) return null
 
   return (
     <>
@@ -845,17 +857,34 @@ export default function Gallery({
             /* Locked mode drops Down/Up (scrolling does that job) and puts
                "Info" where Down sat: the ONLY way out of the lock — it
                restores the text column and glides back up to it. */
-            <TextDistortFilter>
-              <button
-                type="button"
-                onClick={releaseLock}
-                className={`text-[12px] cursor-pointer uppercase hover:underline ${
-                  deskLocked ? "pointer-events-auto" : ""
-                }`}
-              >
-                Info
-              </button>
-            </TextDistortFilter>
+            <>
+              <TextDistortFilter>
+                <button
+                  type="button"
+                  onClick={releaseLock}
+                  className={`text-[12px] cursor-pointer uppercase hover:underline ${
+                    deskLocked ? "pointer-events-auto" : ""
+                  }`}
+                >
+                  Info
+                </button>
+              </TextDistortFilter>
+              {/* "Don't Stop" — on to the next folio entry. justify-between
+                  puts it bottom-right, opposite Info; it shares the bar's fade
+                  so it only reads (and clicks) while locked. */}
+              {nextHref && (
+                <TextDistortFilter>
+                  <TransitionLink
+                    href={nextHref}
+                    className={`text-[12px] uppercase hover:underline ${
+                      deskLocked ? "pointer-events-auto" : ""
+                    }`}
+                  >
+                    {"Don't Stop"}
+                  </TransitionLink>
+                </TextDistortFilter>
+              )}
+            </>
           ) : (
             <>
               <TextDistortFilter>

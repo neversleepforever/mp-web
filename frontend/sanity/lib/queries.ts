@@ -645,3 +645,12 @@ export const policiesQuery = defineQuery(`
       }
   }
 `)
+
+// Slim companion to allFoliosQuery, same ordering: just enough to find the
+// entry that follows the current one for the "Don't Stop" CTA.
+export const folioOrderQuery = `
+  *[_type in ["gallery", "journal", "video"] && defined(slug.current)] | order(coalesce(date, _updatedAt) desc) {
+    _type,
+    "slug": slug.current
+  }
+`

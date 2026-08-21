@@ -7,6 +7,8 @@ import { resolveOpenGraphImage } from "@/sanity/lib/utils"
 import Gallery, { GalleryImage } from "../../../components/Gallery"
 import TextDistortFilter from "@/app/components/TextFilter"
 import Link from "next/link"
+import { getNextFolioHref } from "@/app/folio/nextFolio"
+import DontStopCta from "@/app/components/DontStopCta"
 
 export interface Journal {
   _id: string
@@ -69,6 +71,8 @@ export default async function JournalPage({
   const journal = data as Journal | null
   if (!journal?._id) return notFound()
 
+  const nextHref = await getNextFolioHref("journal", slug)
+
   return (
     <>
       {/* Same standing "Submit" as the gallery/video pages: the way back to
@@ -87,6 +91,22 @@ export default async function JournalPage({
           </Link>
         </TextDistortFilter>
       </div>
+      {/* Standing "Don't Stop" — journals never lock, so unlike the
+          gallery/video pages (where the locked viewer's corner bar renders it)
+          this one always shows at xg. Same bar geometry as Info (h-16 px-8). */}
+      {nextHref && (
+        <div className="hidden xg:flex fixed bottom-0 right-0 h-16 items-center px-8 z-50">
+          <TextDistortFilter>
+            <Link
+              href={nextHref}
+              className="uppercase hover:underline text-[12px] text-black mix-blend-difference font-nav"
+            >
+              {"Don't Stop"}
+            </Link>
+          </TextDistortFilter>
+        </div>
+      )}
+      {nextHref && <DontStopCta href={nextHref} />}
       <div className="my-12 md:my-16 p-6 md:p-0 pt-0 xl:p-0 xl:-my-0 xl:grid xl:grid-cols-2 xl:h-screen overscroll-none">
         {/* xl:pt-16 matches the title's resting height on the gallery/video
             pages (their my-16 page margin), instead of the old pt-54 that

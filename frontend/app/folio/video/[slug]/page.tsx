@@ -9,6 +9,8 @@ import Link from "next/link"
 import MuxPlayer from "@mux/mux-player-react"
 import TextDistortFilter from "@/app/components/TextFilter"
 import Gallery, { GalleryImage } from "@/app/components/Gallery"
+import { getNextFolioHref } from "@/app/folio/nextFolio"
+import DontStopCta from "@/app/components/DontStopCta"
 
 export interface Video {
   _id: string
@@ -95,6 +97,7 @@ export default async function VideoPage({
   // gallery is worse than no link.
   const hasStills = Boolean(video.images?.length)
   const stillsHref = `/folio/video/${video.slug}/full`
+  const nextHref = await getNextFolioHref("video", slug)
 
   return (
     <>
@@ -133,6 +136,22 @@ export default async function VideoPage({
 
        {/* Mobile: trailer and stills as one carousel, the video leading. Desktop
            keeps the trailer as a cover with a "View Stills" link instead. */}
+       {/* No stills: the trailer alone becomes the locked viewer at xg, so
+           these pages lock, get Submit/Info/Don't Stop, and behave like every
+           other project page. Below xg the plain player further down renders
+           instead. */}
+       {video.muxVideo?.asset?.playbackId && !hasStills && (
+         <div className="w-full hidden xg:block">
+           <Gallery
+             images={[]}
+             title={video.title}
+             leadVideo={{ playbackId: video.muxVideo.asset.playbackId }}
+             deskLock
+             nextHref={nextHref ?? undefined}
+           />
+         </div>
+       )}
+
        {video.muxVideo?.asset?.playbackId && hasStills && (
          <div className="w-full">
            <Gallery
@@ -140,12 +159,13 @@ export default async function VideoPage({
              title={video.title}
              leadVideo={{ playbackId: video.muxVideo.asset.playbackId }}
              deskLock
+             nextHref={nextHref ?? undefined}
            />
          </div>
        )}
 
        {video.muxVideo?.asset?.playbackId ? (
-  <div className={`w-full xl:h-[100vh] md:px-20 lg:px-30 xl:p-30 flex-col items-center justify-center ${hasStills ? "hidden" : "flex"}`}>
+  <div className={`w-full xl:h-[100vh] md:px-20 lg:px-30 xl:p-30 flex-col items-center justify-center ${hasStills ? "hidden" : "flex xg:hidden"}`}>
     <MuxPlayer
       playbackId={video.muxVideo.asset.playbackId}
       streamType="on-demand"
@@ -166,25 +186,6 @@ export default async function VideoPage({
   <p className="text-gray-500 italic">No video available</p>
 )}
       </div>
-      {/* No stills → no Gallery, so nothing renders the locked viewer's
-          "Submit" — but at desktop the nav and the footer's Back are both
-          hidden on folio project pages, which would leave no way out. Give
-          these pages a standing Submit in the same top-left spot. */}
-      {!hasStills && (
-        <div
-          style={{ top: "var(--announcement-h, 0px)" }}
-          className="hidden xg:block fixed left-0 py-4 px-7 z-50"
-        >
-          <TextDistortFilter>
-            <Link
-              href="/"
-              className="uppercase hover:line-through text-[12px] text-black mix-blend-difference font-nav"
-            >
-              Submit
-            </Link>
-          </TextDistortFilter>
-        </div>
-      )}
       {/* The only link to the stills, at every size. Sits where the galleries put
           "View Full Shoot" and matches the footer's padding so the two line up —
           and above it, since the footer is a full-width fixed bar at z-40 that
@@ -201,6 +202,7 @@ export default async function VideoPage({
           </TextDistortFilter>
         </div>
       )}
+      {nextHref && <DontStopCta href={nextHref} />}
     </>
   )
 }

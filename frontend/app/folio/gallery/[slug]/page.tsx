@@ -8,6 +8,8 @@ import { urlFor } from "@/sanity/lib/imageBuilder"
 import Link from "next/link"
 import TextDistortFilter from "@/app/components/TextFilter"
 import Gallery, { GalleryImage } from "@/app/components/Gallery"
+import { getNextFolioHref } from "@/app/folio/nextFolio"
+import DontStopCta from "@/app/components/DontStopCta"
 import FadeInImage from "@/app/components/FadeInImage"
 import { TransitionLink } from "@/app/components/TransitionLink"
 
@@ -92,6 +94,8 @@ export default async function FolioPage({
   const folio = data as Folio | null
   if (!folio?._id) return notFound()
 
+  const nextHref = await getNextFolioHref("gallery", slug)
+
   const firstImage = folio.landingImage ? folio.landingImage : folio.images?.[0]
 
   return (
@@ -156,9 +160,10 @@ export default async function FolioPage({
       </div>
               <div className="overscroll-none overflow-x-hidden -ml-6 -mr-6 md:mx-0 xg:overscroll-auto">
           {folio.images?.length ? (
-            <Gallery images={folio.images} title={folio.title} deskLock />
+            <Gallery images={folio.images} title={folio.title} deskLock nextHref={nextHref ?? undefined} />
           ) : null}
         </div>
+        {nextHref && <DontStopCta href={nextHref} />}
       </div>
 
     
