@@ -682,10 +682,10 @@ export default function Gallery({
             : undefined
         }
       >
-      <div ref={rootRef} className={`relative w-full h-[calc(100vh-4rem)] flex flex-col lg:flex-row bar-hide lg:gap-7.5 xl:h-[calc(100vh-4rem)] ${deskLock ? "xg:pt-16" : "xl:pt-6"}`}>
+      <div ref={rootRef} className={`relative w-full h-[calc(100vh-4rem)] flex flex-col bar-hide xl:h-[calc(100vh-4rem)] ${deskLock ? "xg:flex-row xg:gap-7.5 xg:pt-16" : "lg:flex-row lg:gap-7.5 xl:pt-6"}`}>
         <div
           ref={mainImageRef}
-          className={`flex-1 flex justify-center items-end lg:items-center overflow-hidden scrollbar-hide pt-12 p-6 md:px-20 lg:p-0 ${deskLock ? "xg:pl-[89px]" : ""}`}
+          className={`flex-1 flex justify-center items-end overflow-hidden scrollbar-hide pt-12 p-6 md:px-20 ${deskLock ? "xg:items-center xg:p-0 xg:pl-[89px]" : "lg:items-center lg:p-0"}`}
         >
           <figure className="relative w-full h-full overflow-hidden">
             {hasLead && (() => {
@@ -772,7 +772,7 @@ export default function Gallery({
           // centred flex container with overflowing content clips its top
           // items UNREACHABLY — on landscape iPads the first thumbs could
           // never be scrolled to.
-          className="flex overflow-x-auto overflow-visible snap-x pl-[50vw] pr-[50vw] scrollbar-hide snap-x snap-proximity lg:snap-y lg:w-[59px] lg:h-full lg:overflow-y-auto lg:flex-col lg:px-0 lg:pb-0 lg:mx-0 lg:pt-0 lg:justify-center xg:justify-start"
+          className={`flex overflow-x-auto overflow-visible snap-x pl-[50vw] pr-[50vw] scrollbar-hide snap-proximity ${deskLock ? "xg:snap-y xg:w-[59px] xg:h-full xg:overflow-y-auto xg:flex-col xg:px-0 xg:pb-0 xg:mx-0 xg:pt-0 xg:justify-start" : "lg:snap-y lg:w-[59px] lg:h-full lg:overflow-y-auto lg:flex-col lg:px-0 lg:pb-0 lg:mx-0 lg:pt-0 lg:justify-center xg:justify-start"}`}
         >
           {hasLead && (
             <button
@@ -787,7 +787,7 @@ export default function Gallery({
                 setSelectedIndex(0)
                 setTimeout(() => setScrollLocked(false), 300)
               }}
-              className="relative snap-center snap-always flex-shrink-0 overflow-hidden h-20 w-auto lg:w-full lg:h-auto"
+              className={`relative snap-center flex-shrink-0 overflow-hidden h-20 w-auto ${deskLock ? "xg:w-full xg:h-auto" : "lg:w-full lg:h-auto"}`}
               aria-label="Select video"
             >
               {/* Mux serves a still from the video itself, so the rail shows the
@@ -795,7 +795,7 @@ export default function Gallery({
               <img
                 src={`https://image.mux.com/${leadVideo!.playbackId}/thumbnail.png?width=400`}
                 alt={title ? `${title} video` : "Video"}
-                className="h-full w-auto lg:w-full lg:h-auto object-contain"
+                className={`h-full w-auto object-contain ${deskLock ? "xg:w-full xg:h-auto" : "lg:w-full lg:h-auto"}`}
                 draggable={false}
               />
               {selectedIndex === 0 && (
@@ -820,8 +820,8 @@ export default function Gallery({
                   setSelectedIndex(i + leadOffset)
                   setTimeout(() => setScrollLocked(false), 300)
                 }}
-                className={`relative snap-center snap-always flex-shrink-0 overflow-hidden h-20 w-auto lg:w-full lg:h-auto ${
-                  i + leadOffset === slideCount - 1 ? "lg:mb-12" : ""
+                className={`relative snap-center flex-shrink-0 overflow-hidden h-20 w-auto ${deskLock ? "xg:w-full xg:h-auto" : "lg:w-full lg:h-auto"} ${
+                  i + leadOffset === slideCount - 1 ? (deskLock ? "xg:mb-12" : "lg:mb-12") : ""
                 }`}
                 aria-label={`Select image ${i + 1}`}
               >
@@ -832,7 +832,7 @@ export default function Gallery({
                   height={img.asset.metadata?.dimensions?.height || 400}
                   placeholder="blur"
                   blurDataURL={img.asset.metadata?.lqip}
-                  className="h-full w-auto lg:w-full lg:h-auto object-contain"
+                  className={`h-full w-auto object-contain ${deskLock ? "xg:w-full xg:h-auto" : "lg:w-full lg:h-auto"}`}
                 />
                 {i + leadOffset === selectedIndex && (
                   <TextDistortFilter className="pointer-events-none absolute inset-0 z-10">
