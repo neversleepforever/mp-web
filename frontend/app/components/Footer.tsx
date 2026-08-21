@@ -47,7 +47,7 @@ export default function Footer() {
             <TextDistortFilter>
               <TransitionLink
                 href={backHref ?? "/"}
-                className={`uppercase hover:underline text-[14px] text-black mix-blend-difference ${isViewerPage ? "xg:hidden" : ""}`}
+                className={`uppercase hover:underline text-[12px] text-black mix-blend-difference ${isViewerPage ? "xg:hidden" : ""}`}
               >
                 Back
               </TransitionLink>
@@ -80,7 +80,7 @@ export default function Footer() {
             <TextDistortFilter>
               <TransitionLink
                 href={fullGalleryHref ?? "#"}
-                className="hidden uppercase hover:underline text-[14px] text-black mix-blend-difference"
+                className="hidden uppercase hover:underline text-[12px] text-black mix-blend-difference"
               >
                 View Full Shoot
               </TransitionLink>

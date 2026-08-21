@@ -178,7 +178,7 @@ export default async function VideoPage({
           <TextDistortFilter>
             <Link
               href="/"
-              className="uppercase hover:line-through text-[14px] text-black mix-blend-difference font-nav"
+              className="uppercase hover:line-through text-[12px] text-black mix-blend-difference font-nav"
             >
               Submit
             </Link>
@@ -194,7 +194,7 @@ export default async function VideoPage({
           <TextDistortFilter>
             <Link
               href={stillsHref}
-              className="uppercase hover:underline text-[14px] text-black mix-blend-difference"
+              className="uppercase hover:underline text-[12px] text-black mix-blend-difference"
             >
               View Stills
             </Link>

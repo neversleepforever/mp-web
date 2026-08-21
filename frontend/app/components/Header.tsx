@@ -125,7 +125,7 @@ export default function Header() {
 
         <nav className="w-full hidden md:block">
             <TextDistortFilter>
-          <ul className="flex w-full justify-between text-[12px] tracking-tight font-nav uppercase">
+          <ul className="flex w-full items-center justify-between text-[12px] tracking-tight font-nav uppercase">
               <li key={"/"} className="hidden lg:block">
                 <TransitionLink
                   href={"/"}

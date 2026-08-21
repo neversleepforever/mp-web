@@ -38,7 +38,7 @@ export default function Submit() {
       <TextDistortFilter>
         <TransitionLink
           href={basePath || "/"}
-          className="pointer-events-auto text-[14px] cursor-pointer uppercase hover:underline"
+          className="pointer-events-auto text-[12px] cursor-pointer uppercase hover:underline"
         >
           Submit
         </TransitionLink>

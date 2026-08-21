@@ -631,7 +631,7 @@ export default function Gallery({
           <TextDistortFilter>
             <TransitionLink
               href="/"
-              className="uppercase hover:line-through text-[14px] text-black mix-blend-difference font-nav"
+              className="uppercase hover:line-through text-[12px] text-black mix-blend-difference font-nav"
             >
               Submit
             </TransitionLink>
@@ -849,7 +849,7 @@ export default function Gallery({
               <button
                 type="button"
                 onClick={releaseLock}
-                className={`text-[14px] cursor-pointer uppercase hover:underline ${
+                className={`text-[12px] cursor-pointer uppercase hover:underline ${
                   deskLocked ? "pointer-events-auto" : ""
                 }`}
               >
@@ -862,7 +862,7 @@ export default function Gallery({
                 <button
                   type="button"
                   onClick={goNext}
-                  className="pointer-events-auto text-[14px] cursor-pointer uppercase hover:underline"
+                  className="pointer-events-auto text-[12px] cursor-pointer uppercase hover:underline"
                 >
                   Down
                 </button>
@@ -871,7 +871,7 @@ export default function Gallery({
                 <button
                   type="button"
                   onClick={goPrev}
-                  className="pointer-events-auto text-[14px] cursor-pointer uppercase hover:underline"
+                  className="pointer-events-auto text-[12px] cursor-pointer uppercase hover:underline"
                 >
                   Up
                 </button>

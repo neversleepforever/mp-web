@@ -81,7 +81,7 @@ export default async function JournalPage({
         <TextDistortFilter>
           <Link
             href="/"
-            className="uppercase hover:line-through text-[14px] text-black mix-blend-difference font-nav"
+            className="uppercase hover:line-through text-[12px] text-black mix-blend-difference font-nav"
           >
             Submit
           </Link>
