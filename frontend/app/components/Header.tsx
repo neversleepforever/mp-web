@@ -87,7 +87,11 @@ export default function Header() {
       // Sits below the announcement bar when it's shown; the bar publishes its
       // height as --announcement-h and 0px otherwise.
       style={{ top: "var(--announcement-h, 0px)" }}
-      className={`fixed left-0 right-0 z-40 py-4 px-6 md:px-7 md:pt-4 dark:text-white bg-transparent ${
+      // z-[60]: above the centerfold's fold/staple layers (z-50), which
+      // otherwise paint their exclusion blend across the nav — most visibly on
+      // mobile, where the Menu tab sits dead centre on the fold. Still below
+      // the menu takeover (z-[70]).
+      className={`fixed left-0 right-0 z-[60] py-4 px-6 md:px-7 md:pt-4 dark:text-white bg-transparent ${
         isFolioProject ? "hidden" : ""
       }`}
     >
@@ -101,7 +105,17 @@ export default function Header() {
           onClick={() => setMenuState("open")}
           aria-haspopup="dialog"
           aria-expanded={menuOpen}
-          className={`md:hidden w-full h-[29px] flex items-center justify-center cursor-pointer ${
+          // The vignette's cut corners, scaled for a 29px bar: the fill is
+          // masked to the shape, so it works in either colour.
+          style={{
+            maskImage: "url(/navbar-mask.svg)",
+            WebkitMaskImage: "url(/navbar-mask.svg)",
+            maskSize: "100% 100%",
+            WebkitMaskSize: "100% 100%",
+            maskRepeat: "no-repeat",
+            WebkitMaskRepeat: "no-repeat",
+          }}
+          className={`md:hidden w-[80px] mx-auto h-[29px] flex items-center justify-center cursor-pointer ${
             invertedBar ? "bg-white text-black" : "bg-black text-white"
           }`}
         >
@@ -179,7 +193,7 @@ export default function Header() {
         onAnimationEnd={() => {
           if (menuState === "closing") setMenuState("closed")
         }}
-        className="md:hidden fixed inset-0 z-[70] bg-black flex flex-col items-center py-[35px] text-white font-nav text-[20px]"
+        className="md:hidden fixed inset-0 z-[70] bg-black flex flex-col items-center py-[35px] text-white font-nav text-[14px]"
       >
         {/* Centred independently of Submit so the links sit in the true
             middle of the screen. The links live inside the content-portrait
