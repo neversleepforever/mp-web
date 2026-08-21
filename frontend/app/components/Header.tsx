@@ -135,8 +135,8 @@ export default function Header() {
       </div>
     </header>
 
-    {/* Mobile takeover — the full-screen nav. Links stack from the top,
-        "Submit" holds the bottom and closes it. */}
+    {/* Mobile takeover — the full-screen nav. "Submit" holds the top and
+        closes it; the links sit dead-centre of the viewport. */}
     {menuOpen && (
       <div
         role="dialog"
@@ -163,13 +163,15 @@ export default function Header() {
         }}
         className="md:hidden fixed inset-0 z-[70] bg-black flex flex-col items-center py-[35px] text-white font-nav text-[20px]"
       >
-        <TextDistortFilter className="flex-1 flex flex-col items-center min-h-0 w-full">
+        {/* Centred independently of Submit so the links sit in the true
+            middle of the screen, not the middle of the leftover space. */}
+        <TextDistortFilter className="absolute inset-0 flex items-center justify-center">
           {/* Capture-phase close: TransitionLink owns its own onClick, and a
               tap on the current page's link never changes the pathname — this
               closes the takeover on any link tap regardless. */}
           <nav
             onClickCapture={() => setMenuState("closing")}
-            className="flex-1 flex flex-col gap-[19px] items-center"
+            className="flex flex-col gap-[19px] items-center"
           >
             {takeoverLinks.map(({ href, label }) => (
               <TransitionLink
@@ -181,6 +183,8 @@ export default function Header() {
               </TransitionLink>
             ))}
           </nav>
+        </TextDistortFilter>
+        <TextDistortFilter className="relative">
           <button
             type="button"
             onClick={() => setMenuState("closing")}
