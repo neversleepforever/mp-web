@@ -2,6 +2,7 @@ import React from "react"
 import FadeInImage from "@/app/components/FadeInImage"
 import Rates from "@/app/components/Rates"
 import TextDistortFilter from "@/app/components/TextFilter"
+import MobileWordmark from "@/app/components/MobileWordmark"
 import { HeroVignette, ContentVignette } from "@/app/components/Vignette"
 import ScrollSwapHero from "@/app/components/ScrollSwapHero"
 import { sanityFetch } from "@/sanity/lib/live"
@@ -189,7 +190,12 @@ export default async function ServicesPage() {
               {/* Block, not flex: as a flex item the copy shrink-wrapped to its
                   own content width and sat centred with uneven gaps that looked
                   like a margin. text-center handles the alignment. */}
-              <div className="bg-white text-[12.5px] p-4 text-center">
+              {/* 29px tall with 10px type, matching the age-check bars and the
+                  corner ribbon: 9px padding either side of the 11px line box.
+                  The [&_h4] override keeps the shared heading-4 renderer
+                  (12px) from setting the size here. It still grows when the
+                  copy wraps on narrow screens. */}
+              <div className="bg-white text-[10px] py-[9px] px-4 text-center [&_h4]:text-[10px]">
                 {/* Render Sanity's hard breaks as spaces rather than <br>. Keeping
                     them pinned the copy to its own natural width so the band never
                     filled below lg; hiding them in CSS dropped the space instead
@@ -297,12 +303,29 @@ export default async function ServicesPage() {
             ) : (
               <p>No content added yet.</p>
             )}
+            <MobileWordmark invert className="-mb-6" />
           </div>
         </div>
       </div>
       {/* Fixed overlay — never gate it behind the scroll reveal, or a missed
           observer leaves the corner blank. */}
-      <FadeInImage revealImmediately src="/images/band.png" alt="Adults Only" width={200} height={200} className="fixed box-content bottom-[0px] right-[0px] z-50 overflow-hidden" />
+      {/* Corner ribbon, rebuilt from the old baked-in PNG: its band was 62px
+          thick with the type fixed inside it, so scaling to the age-check
+          bar's 29px would have shrunk the text to ~6px. As markup the band and
+          type match the chrome exactly — 29px tall, 10px uppercase.
+          No clipping container: the band is long enough to run off the right
+          and bottom edges of the screen, so the VIEWPORT cuts its ends. A
+          box with overflow-hidden cut them mid-screen instead, which read as
+          the ribbon being sliced. */}
+      <div
+        aria-label="Adults Only"
+        style={{ right: "-145px", bottom: "40.5px", transform: "rotate(-45deg)" }}
+        className="pointer-events-none fixed z-50 flex h-[29px] w-[400px] items-center justify-center gap-[6px] bg-white font-sans font-bold text-[10px] uppercase text-black"
+      >
+        <span className="h-[3px] w-[3px] rounded-full bg-black" />
+        Adults Only
+        <span className="h-[3px] w-[3px] rounded-full bg-black" />
+      </div>
     </>
   )
 }

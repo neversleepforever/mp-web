@@ -4,6 +4,7 @@ import { aboutQuery } from "@/sanity/lib/queries"
 import { PortableText, type PortableTextBlock } from "next-sanity"
 import Link from "next/link"
 import TextDistortFilter from "@/app/components/TextFilter"
+import MobileWordmark from "@/app/components/MobileWordmark"
 import { ContentVignette } from "@/app/components/Vignette"
 
 // Re-fetch from Sanity at most once per minute so content edits appear without a redeploy
@@ -333,6 +334,7 @@ export default async function ContactPage() {
             </div>
           </div>
         ) : null}
+        <MobileWordmark invert className="-mb-10" />
     </TextDistortFilter>
       </section>
     </div>

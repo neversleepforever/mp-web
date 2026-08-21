@@ -3,6 +3,7 @@ import { allFoliosQuery } from "@/sanity/lib/queries"
 import TextDistortFilter from "@/app/components/TextFilter"
 import { urlFor } from "@/sanity/lib/imageBuilder"
 import FadeInImage from "@/app/components/FadeInImage"
+import MobileWordmark from "@/app/components/MobileWordmark"
 import { TransitionLink } from "@/app/components/TransitionLink"
 
 // The folio grid IS the landing page — it used to live at /folio with `/`
@@ -125,6 +126,7 @@ export default async function FolioIndexPage() {
           )
         })}
       </div>
+      <MobileWordmark className="-mb-10" />
     </div>
   )
 }

@@ -1,4 +1,5 @@
 import TextDistortFilter from "@/app/components/TextFilter"
+import MobileWordmark from "@/app/components/MobileWordmark"
 import { HeroVignette, ContentVignette } from "@/app/components/Vignette"
 import ScrollSwapHero from "@/app/components/ScrollSwapHero"
 import { sanityFetch } from "@/sanity/lib/live"
@@ -164,6 +165,7 @@ export default async function AboutPage() {
               <p>No content added yet.</p>
             )}
           </div>
+          <MobileWordmark invert className="-mb-10" />
         </div>
       </div>
     </>

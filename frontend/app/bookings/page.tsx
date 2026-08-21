@@ -1,5 +1,6 @@
 import { HeroVignette } from "@/app/components/Vignette"
 import ScrollSwapHero from "@/app/components/ScrollSwapHero"
+import MobileWordmark from "@/app/components/MobileWordmark"
 import { sanityFetch } from "@/sanity/lib/live"
 import { bookingsQuery } from "@/sanity/lib/queries"
 import JotformEmbed from "../components/JotFormEmbed"
@@ -91,6 +92,7 @@ export default async function BookingPage() {
         <div id="bookings-content-scroll" className="relative scrollbar-hide bg-[#0b0b0b] bg-cover bg-center md:bg-none md:col-start-2 h-[calc(100dvh_-_var(--announcement-h,0px))] overflow-y-auto pt-0 pb-12 md:px-6 md:pt-4 xl:px-26">
             <div className="relative z-10">
                 <JotformEmbed formId="250685995022262"/>
+                <MobileWordmark invert className="-mb-6" />
             </div>
             </div>
       </div>
