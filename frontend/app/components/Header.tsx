@@ -87,7 +87,10 @@ export default function Header() {
       // otherwise paint their exclusion blend across the nav — most visibly on
       // mobile, where the Menu tab sits dead centre on the fold. Still below
       // the menu takeover (z-[70]).
-      className={`fixed left-0 right-0 z-[60] py-4 px-6 md:px-7 md:pt-4 dark:text-white bg-transparent ${
+      // pt-[13.5px] on mobile: pages start their content 56px down, and the
+      // 29px tab leaves 27px of free space — split evenly above and below it
+      // (py-4 put 16 above and only 11 below). Desktop keeps py-4.
+      className={`fixed left-0 right-0 z-[60] pt-[13.5px] pb-4 px-6 md:px-7 md:pt-4 dark:text-white bg-transparent ${
         isFolioProject ? "hidden" : ""
       }`}
     >
@@ -122,7 +125,7 @@ export default function Header() {
 
         <nav className="w-full hidden md:block">
             <TextDistortFilter>
-          <ul className="flex w-full justify-between text-xs sm:text-base tracking-tight font-nav uppercase">
+          <ul className="flex w-full justify-between text-[12px] tracking-tight font-nav uppercase">
               <li key={"/"} className="hidden lg:block">
                 <TransitionLink
                   href={"/"}
@@ -131,8 +134,9 @@ export default function Header() {
                     <Image
                       src="/images/logo/mistress-maggie-peach-1-line-black.svg"
                       alt="Logo"
-                      width={225}
-                      height={30}
+                      // 160x21 — in proportion with the 12px links.
+                      width={160}
+                      height={21}
                       className="object-contain dark:invert"
                     />
 

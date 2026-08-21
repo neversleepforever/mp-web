@@ -72,8 +72,12 @@ const handleVerify = () => {
       {!verified && (
         <>
         <div className="fixed inset-0 h-full w-full flex items-center justify-center backdrop-blur-lg z-[800]">
-          <TextDistortFilter>
-          <div className="bg-black text-white text-center w-full py-5 px-1 font-display uppercase">
+          {/* w-full on the filter wrapper: as a flex item it otherwise
+              shrink-wraps its content, and the panel's own w-full then
+              resolves against that instead of the viewport — the bar floated
+              mid-screen on wide windows. */}
+          <TextDistortFilter className="w-full">
+          <div className="bg-black text-white text-center w-full py-3 px-1 font-display uppercase">
             
               <div className="grid place-items-center relative">
               {isXL && (
@@ -81,7 +85,7 @@ const handleVerify = () => {
                   gradient={false}
                   speed={75}
                   direction="right"
-                  className="col-start-1 row-start-1 z-[100] font-sans font-extrabold text-[18px]"
+                  className="col-start-1 row-start-1 z-[100] font-sans text-[10px]"
                 >
                   {marqueeText}
                   {marqueeText}
@@ -96,7 +100,7 @@ const handleVerify = () => {
                   {marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}
                 </Marquee>
                    )}
-                <div className="text-xl col-start-1 row-start-1 z-[800] text-center px-8 flex flex-row">
+                <div className="text-[10px] col-start-1 row-start-1 z-[800] text-center px-8 flex flex-row">
                   <div className="bg-black mask-l-from-30% z-[800] w-[30px]" />
                     <h2 className="bg-black"> 
                       {bodyLabel}{" "}
@@ -114,10 +118,10 @@ const handleVerify = () => {
           </div>
         </TextDistortFilter>
         </div>
-        <div className="flex items-center justify-center font-sans font-extrabold text-[18px] uppercase h-[60px] text-white bg-black fixed top-0 left-0 right-0 z-[9999] lg:hidden">
+        <div className="flex items-center justify-center font-sans text-[10px] uppercase h-[29px] text-white bg-black fixed top-0 left-0 right-0 z-[9999] lg:hidden">
           <TextDistortFilter><Marquee direction="right" gradient={false} speed={75}>{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}</Marquee></TextDistortFilter>
         </div>
-        <div className="flex items-center justify-center font-sans font-extrabold text-[18px] uppercase h-[60px] text-white bg-black fixed bottom-0 left-0 right-0 z-[9999] lg:hidden">
+        <div className="flex items-center justify-center font-sans text-[10px] uppercase h-[29px] text-white bg-black fixed bottom-0 left-0 right-0 z-[9999] lg:hidden">
           <TextDistortFilter><Marquee direction="right" gradient={false} speed={75}>{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}{marqueeText}</Marquee></TextDistortFilter>
         </div>
         </>
