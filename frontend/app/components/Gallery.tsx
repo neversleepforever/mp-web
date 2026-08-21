@@ -58,6 +58,12 @@ export default function Gallery({
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [selectedByTap, setSelectedByTap] = useState(false)
   const [scrollLocked, setScrollLocked] = useState(false)
+  // When the rail last scrolled. iOS fires click on a thumb if a touch ends
+  // there after only a small drag — which is exactly what scrubbing a short
+  // strip looks like — and the tap handler's smooth scrollBy then kills the
+  // native gesture dead: the rail "locks" mid-scrub. A click during (or just
+  // after) rail movement is a scrub, not a tap; ignore it.
+  const railScrollAtRef = useRef(0)
 
   const pathname = usePathname()
   const containerRef = useRef<HTMLDivElement>(null)
@@ -542,6 +548,7 @@ export default function Gallery({
     if (mediaQuery.matches) return
 
     const handleScroll = () => {
+      railScrollAtRef.current = Date.now()
       if (scrollLocked) return // 🔒 prevent flash on tap
 
       const containerRect = container.getBoundingClientRect()
@@ -780,6 +787,7 @@ export default function Gallery({
                 thumbnailRefs.current[0] = el
               }}
               onClick={() => {
+                if (Date.now() - railScrollAtRef.current < 150) return
                 // Scroll-drive: the page position owns the index, so move it.
                 if (scrollDrive) scrollToSlide(0)
                 setSelectedByTap(true)
@@ -813,6 +821,7 @@ export default function Gallery({
                   thumbnailRefs.current[i + leadOffset] = el
                 }}
                 onClick={() => {
+                  if (Date.now() - railScrollAtRef.current < 150) return
                   // Scroll-drive: the page position owns the index, so move it.
                   if (scrollDrive) scrollToSlide(i + leadOffset)
                   setSelectedByTap(true)
