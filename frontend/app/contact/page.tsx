@@ -127,6 +127,7 @@ export default async function ContactPage() {
   // scrolls instead — with three boxes it no longer fits a short screen, and
   // overflow-hidden made anything past the fold unreachable.
   return (
+    <>
     <div className="dark:bg-black bg-black grid grid-cols-2 grid-rows-1 w-screen min-h-[calc(100svh_-_var(--announcement-h,0px))] md:h-[calc(100svh_-_var(--announcement-h,0px))] md:overflow-hidden">
       {/* Mirrored About content (md+ only) */}
       {about?.content?.length ? (
@@ -335,5 +336,6 @@ export default async function ContactPage() {
     </TextDistortFilter>
       </section>
     </div>
+    </>
   )
 }

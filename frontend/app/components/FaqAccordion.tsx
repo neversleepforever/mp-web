@@ -62,7 +62,7 @@ export default function FaqAccordion({
           >
             <TextDistortFilter>
               <div className="flex items-center justify-between gap-6 text-black uppercase">
-                <span className="font-display font-extrabold text-[22px] leading-[normal] text-left">
+                <span className="font-display font-extrabold text-[22px] leading-[normal] max-md:leading-6 text-left">
                   {item.question}
                 </span>
                 <span className="font-nav text-[14px] shrink-0 hover:line-through">

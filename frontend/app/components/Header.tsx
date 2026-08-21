@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation"
 import Image from "next/image"
 import TextDistortFilter from "./TextFilter"
 import { TransitionLink } from "./TransitionLink"
+import { VignetteBorderContentPortrait } from "./VignetteBorder"
 
 // Label on the condensed mobile nav bar.
 const MOBILE_NAV_LABEL = "Menu"
@@ -20,6 +21,10 @@ export default function Header() {
     "closed"
   )
   const menuOpen = menuState !== "closed"
+  // Link-tap closes hold the cover a beat (animation-delay) so the destination
+  // settles behind the overlay before the wipe unveils it; Submit closes
+  // immediately.
+  const [closeDelayed, setCloseDelayed] = useState(false)
 
   const links = [
     { href: "/about", label: "About" },
@@ -50,8 +55,19 @@ export default function Header() {
   // Close the takeover whenever navigation lands somewhere new, and hold the
   // page still behind it while it's open.
   useEffect(() => {
-    setMenuState("closed")
+    // A route change while the closing wipe is playing must NOT cut it short —
+    // the wipe is what unveils the newly-navigated page. Only force-close if
+    // the menu is fully open (a navigation that didn't come through it).
+    setMenuState((prev) => (prev === "open" ? "closed" : prev))
   }, [pathname])
+  // animationend is the normal unmount for the closing wipe; this covers a
+  // missed event (frozen tab, interrupted animation) so the overlay can never
+  // hang around invisible-but-blocking.
+  useEffect(() => {
+    if (menuState !== "closing") return
+    const t = setTimeout(() => setMenuState("closed"), 1400)
+    return () => clearTimeout(t)
+  }, [menuState])
   useEffect(() => {
     if (!menuOpen) return
     const prev = document.body.style.overflow
@@ -150,7 +166,9 @@ export default function Header() {
             ? {
                 clipPath: "inset(0% 0% 0% 0%)",
                 WebkitClipPath: "inset(0% 0% 0% 0%)",
-                animation: "hero-wipe-out 700ms ease-in-out forwards",
+                // The rest state (fully shown) holds through any delay, so a
+                // delayed close simply keeps covering until the wipe begins.
+                animation: `hero-wipe-out 700ms ease-in-out ${closeDelayed ? "300ms" : "0ms"} forwards`,
               }
             : {
                 clipPath: "inset(0% 0% 100% 0%)",
@@ -164,30 +182,60 @@ export default function Header() {
         className="md:hidden fixed inset-0 z-[70] bg-black flex flex-col items-center py-[35px] text-white font-nav text-[20px]"
       >
         {/* Centred independently of Submit so the links sit in the true
-            middle of the screen, not the middle of the leftover space. */}
-        <TextDistortFilter className="absolute inset-0 flex items-center justify-center">
-          {/* Capture-phase close: TransitionLink owns its own onClick, and a
-              tap on the current page's link never changes the pathname — this
-              closes the takeover on any link tap regardless. */}
-          <nav
-            onClickCapture={() => setMenuState("closing")}
-            className="flex flex-col gap-[19px] items-center"
-          >
-            {takeoverLinks.map(({ href, label }) => (
-              <TransitionLink
-                key={href}
-                href={href}
-                className={pathname === href ? "line-through" : ""}
+            middle of the screen. The links live inside the content-portrait
+            vignette (thin frame, like the b/w content images): plain black
+            interior, white links on top. */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="relative aspect-[612/889] w-[280px] max-w-[75vw]">
+            <div
+              className="absolute inset-0"
+              style={{
+                maskImage: "url(/vignette-cp-mask.svg)",
+                WebkitMaskImage: "url(/vignette-cp-mask.svg)",
+                maskSize: "100% 100%",
+                WebkitMaskSize: "100% 100%",
+                maskRepeat: "no-repeat",
+                WebkitMaskRepeat: "no-repeat",
+                maskPosition: "center",
+                WebkitMaskPosition: "center",
+              }}
+            >
+              <div className="absolute inset-0 bg-black" />
+            </div>
+            <VignetteBorderContentPortrait className="pointer-events-none absolute inset-0 h-full w-full select-none" />
+            <TextDistortFilter className="absolute inset-0 flex items-center justify-center">
+              {/* Plain Links, NOT TransitionLink: its navigation fades and
+                  blurs the whole body — including this overlay — smearing the
+                  closing wipe. With an instant client-side swap the new page
+                  loads behind the black overlay and the wipe-out unveils it.
+                  Capture-phase close covers same-page taps too. */}
+              <nav
+                onClickCapture={() => {
+                  setCloseDelayed(true)
+                  setMenuState("closing")
+                }}
+                className="flex flex-col gap-[19px] items-center text-white"
               >
-                {label}
-              </TransitionLink>
-            ))}
-          </nav>
-        </TextDistortFilter>
+                {takeoverLinks.map(({ href, label }) => (
+                  <Link
+                    key={href}
+                    href={href}
+                    className={pathname === href ? "line-through" : ""}
+                  >
+                    {label}
+                  </Link>
+                ))}
+              </nav>
+            </TextDistortFilter>
+          </div>
+        </div>
         <TextDistortFilter className="relative">
           <button
             type="button"
-            onClick={() => setMenuState("closing")}
+            onClick={() => {
+              setCloseDelayed(false)
+              setMenuState("closing")
+            }}
             className="cursor-pointer"
           >
             Submit

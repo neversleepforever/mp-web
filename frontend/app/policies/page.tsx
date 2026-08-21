@@ -178,7 +178,7 @@ function PolicyBox({ section, boxTop = false }: { section: PolicySection; boxTop
     >
       <TextDistortFilter>
         <div className="flex flex-col gap-[26px] text-[22px] text-black text-justify">
-          <h3 className="font-display font-extrabold uppercase leading-[normal]">
+          <h3 className="font-display font-extrabold uppercase leading-[normal] max-md:leading-6">
             {section.title}
           </h3>
           <div className="font-sans leading-[normal]">
@@ -248,7 +248,7 @@ function CmsPolicyBox({
     >
       <TextDistortFilter>
         <div className="flex flex-col gap-[26px] text-[22px] text-black text-justify">
-          <h3 className="font-display font-extrabold uppercase leading-[normal]">{title}</h3>
+          <h3 className="font-display font-extrabold uppercase leading-[normal] max-md:leading-6">{title}</h3>
           <div className="font-sans leading-[normal]">
             {body?.length ? (
               <PortableText value={body} components={policyBodyComponents} />
@@ -310,6 +310,7 @@ export default async function PoliciesPage() {
     : FAQS
 
   return (
+    <>
     <div className="md:grid md:grid-cols-2 bg-[#FFF7E1]">
       {/* Hero column — the design's ground: the paper cream with the scan
           texture laid over it in exclusion (the Figma layer structure
@@ -432,5 +433,6 @@ export default async function PoliciesPage() {
         </div>
       </div>
     </div>
+    </>
   )
 }
