@@ -10,9 +10,8 @@ import { TransitionLink } from "./TransitionLink"
 // Label on the condensed mobile nav bar.
 const MOBILE_NAV_LABEL = "Menu"
 
-// Pages whose mobile bar inverts (white bar, black text): the dark-themed
-// pages. Light paper pages (folio grid, policies) keep the black bar.
-const INVERTED_BAR_PAGES = ["/about", "/services", "/bookings", "/contact"]
+// The mobile bar is white with black text everywhere except Policies, whose
+// cream page keeps the design's black bar (it doubles as the page's top rule).
 
 export default function Header() {
   const pathname = usePathname()
@@ -46,7 +45,7 @@ export default function Header() {
   // Folio project pages (galleries/journals/videos) show the inline viewer —
   // the nav steps out entirely; Submit/Back are the way out.
   const isFolioProject = pathname.startsWith("/folio/")
-  const invertedBar = INVERTED_BAR_PAGES.some((p) => pathname.startsWith(p))
+  const invertedBar = !pathname.startsWith("/policies")
 
   // Close the takeover whenever navigation lands somewhere new, and hold the
   // page still behind it while it's open.
@@ -79,8 +78,8 @@ export default function Header() {
       <div className="flex w-full">
 
         {/* Mobile: the six-item row no longer fits, so it condenses into a
-            single full-width bar that opens the takeover. Black-on-light
-            pages / inverted on the dark pages, per the design. */}
+            single full-width bar that opens the takeover. White with black
+            text everywhere except Policies (black, per its design). */}
         <button
           type="button"
           onClick={() => setMenuState("open")}
