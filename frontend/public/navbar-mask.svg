@@ -1,6 +1,0 @@
-<svg preserveAspectRatio="none" width="100%" height="100%" viewBox="0 0 69 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Mobile Menu bar silhouette: the vignette's cut corners at the short bar's
-       proportions (69x25 rendered at 80x29 = uniform 1.16x, so the notches keep
-       their shape). Used as a CSS mask so the fill colour comes from the page. -->
-  <path d="M61.325 0C61.344 2.01532 62.152 3.94365 63.578 5.37012C65.017 6.80879 66.966 7.61862 69 7.62402V17.3486C66.966 17.354 65.017 18.1648 63.578 19.6035C62.145 21.0362 61.336 22.9751 61.324 25H7.69043C7.56158 23.1545 6.7736 21.4103 5.45703 20.0938C4.01351 18.6502 2.05609 17.8389 0.0146484 17.8389C0.00978283 17.8389 0.00486465 17.8389 0 17.8389V7.13379C0.00485629 7.1338 0.00979119 7.13477 0.0146484 7.13477C2.05594 7.13474 4.01355 6.32419 5.45703 4.88086C6.76742 3.57047 7.55406 1.83585 7.68848 0H61.325Z" fill="#000000"/>
-</svg>

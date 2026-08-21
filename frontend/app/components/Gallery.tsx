@@ -761,8 +761,13 @@ export default function Gallery({
                     onLoad={() => handleLoad(i)}
                     // A broken image must not leave the slide permanently blank.
                     onError={() => handleLoad(i)}
+                    // Cover only applies to portrait photos on a PORTRAIT
+                    // viewport — in landscape orientation the stage is a wide
+                    // short band and cover cropped the photo top and bottom.
                     className={`absolute inset-0 w-full h-full lg:object-contain ${
-                      isLandscape ? "object-contain" : "object-cover"
+                      isLandscape
+                        ? "object-contain"
+                        : "object-cover landscape:object-contain"
                     }`}
                     draggable={false}
                   />

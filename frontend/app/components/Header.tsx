@@ -1,12 +1,11 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import Image from "next/image"
 import TextDistortFilter from "./TextFilter"
 import { TransitionLink } from "./TransitionLink"
-import { VignetteBorderContentPortrait } from "./VignetteBorder"
 
 // Label on the condensed mobile nav bar.
 const MOBILE_NAV_LABEL = "Menu"
@@ -22,6 +21,30 @@ export default function Header() {
   // settles behind the overlay before the wipe unveils it; Submit closes
   // immediately.
   const [closeDelayed, setCloseDelayed] = useState(false)
+  // The dropdown link the user tapped. iOS never paints :active here — the
+  // tap starts navigation and the closing wipe in the same beat — so the
+  // invert is driven from JS: the tapped box goes black and STAYS black
+  // while the menu wipes out, reading as the selected state.
+  const [pressedHref, setPressedHref] = useState<string | null>(null)
+  // The Menu bar's silhouette is an inline SVG (a mask can't draw the thin
+  // stroke around the shape), so it needs the bar's real pixel width to draw
+  // corner scoops at a fixed radius with no stretch at any device width.
+  const barRef = useRef<HTMLButtonElement>(null)
+  const [barW, setBarW] = useState(327)
+  useEffect(() => {
+    const el = barRef.current
+    if (!el) return
+    const ro = new ResizeObserver(() => setBarW(el.offsetWidth))
+    ro.observe(el)
+    setBarW(el.offsetWidth)
+    return () => ro.disconnect()
+  }, [])
+  // Figma 6171-6404: 25px bar; corners scooped by concave quarter-circles of
+  // radius 8 centred on each corner; hairline stroke tracing the silhouette.
+  // Path inset by 0.5 so the 1px stroke isn't clipped at the svg edges.
+  const R = 8
+  const barPath = (w: number) =>
+    `M ${R} 0.5 H ${w - R} A ${R} ${R} 0 0 0 ${w - 0.5} ${R} V ${25 - R} A ${R} ${R} 0 0 0 ${w - R} 24.5 H ${R} A ${R} ${R} 0 0 0 0.5 ${25 - R} V ${R} A ${R} ${R} 0 0 0 ${R} 0.5 Z`
 
   const links = [
     { href: "/about", label: "About" },
@@ -90,9 +113,9 @@ export default function Header() {
       // pt-[13.5px] on mobile: pages start their content 56px down, and the
       // 29px tab leaves 27px of free space — split evenly above and below it
       // (py-4 put 16 above and only 11 below). Desktop keeps py-4.
-      className={`fixed left-0 right-0 z-[60] pt-[13.5px] pb-4 px-6 md:px-7 md:pt-4 dark:text-white bg-transparent ${
-        isFolioProject ? "hidden" : ""
-      }`}
+      className={`fixed left-0 right-0 pt-[13.5px] pb-4 px-6 md:px-7 md:pt-4 dark:text-white bg-transparent ${
+        menuOpen ? "z-[80]" : "z-[60]"
+      } ${isFolioProject ? "hidden" : ""}`}
     >
       <div className="flex w-full">
 
@@ -100,25 +123,39 @@ export default function Header() {
             small tab (the vignette's cut-corner silhouette, via a CSS mask)
             that opens the takeover. White with black text on every page. */}
         <button
+          ref={barRef}
           type="button"
-          onClick={() => setMenuState("open")}
+          onClick={() => {
+            if (menuOpen) {
+              setCloseDelayed(false)
+              setMenuState("closing")
+            } else {
+              setPressedHref(null)
+              setMenuState("open")
+            }
+          }}
           aria-haspopup="dialog"
           aria-expanded={menuOpen}
-          // The vignette's cut corners, scaled for a 29px bar: the fill is
-          // masked to the shape, so it works in either colour.
-          style={{
-            maskImage: "url(/navbar-mask.svg)",
-            WebkitMaskImage: "url(/navbar-mask.svg)",
-            maskSize: "100% 100%",
-            WebkitMaskSize: "100% 100%",
-            maskRepeat: "no-repeat",
-            WebkitMaskRepeat: "no-repeat",
-          }}
-          className="md:hidden w-[80px] mx-auto h-[29px] flex items-center justify-center cursor-pointer bg-white text-black"
+          // mx-px: per the design, the bar is 1px shorter than the dropdown
+          // containers on each side.
+          className="group md:hidden relative w-full mx-px h-[25px] flex items-center justify-center cursor-pointer text-black hover:text-white active:text-white"
         >
-          <TextDistortFilter>
-            <span className="font-nav text-[14px] leading-none">
-              {barLabel}
+          <svg
+            aria-hidden
+            className="absolute inset-0 h-full w-full"
+            viewBox={`0 0 ${barW} 25`}
+            preserveAspectRatio="none"
+          >
+            {/* Rollover/press reverses the bar: black fill, white stroke+label. */}
+            <path
+              d={barPath(barW)}
+              strokeWidth="1"
+              className="fill-white stroke-black transition-colors group-hover:fill-black group-hover:stroke-white group-active:fill-black group-active:stroke-white"
+            />
+          </svg>
+          <TextDistortFilter className="relative z-10">
+            <span className="font-nav text-[12px] leading-none transition-colors">
+              {menuOpen ? "Submit" : barLabel}
             </span>
           </TextDistortFilter>
         </button>
@@ -163,97 +200,91 @@ export default function Header() {
       </div>
     </header>
 
-    {/* Mobile takeover — the full-screen nav. "Submit" holds the top and
-        closes it; the links sit dead-centre of the viewport. */}
+    {/* Mobile menu (Figma 6172-6586): no longer a full-page cover. The page
+        stays put behind a blur overlay; a dropdown of six boxed links wipes in
+        under the bar, whose label reads "Submit" and closes it. */}
     {menuOpen && (
-      <div
-        role="dialog"
-        aria-modal="true"
-        // The gallery scan-wipe, and its hardening (see the locked-viewer
-        // flicker playbook): rest in the START state, let the animation with
-        // `forwards` fill carry and hold the end state — a late-starting
-        // animation then can't flash the finished frame.
-        style={
-          menuState === "closing"
-            ? {
-                clipPath: "inset(0% 0% 0% 0%)",
-                WebkitClipPath: "inset(0% 0% 0% 0%)",
-                // The rest state (fully shown) holds through any delay, so a
-                // delayed close simply keeps covering until the wipe begins.
-                animation: `hero-wipe-out 700ms ease-in-out ${closeDelayed ? "300ms" : "0ms"} forwards`,
-              }
-            : {
-                clipPath: "inset(0% 0% 100% 0%)",
-                WebkitClipPath: "inset(0% 0% 100% 0%)",
-                animation: "hero-wipe-down 700ms ease-in-out forwards",
-              }
-        }
-        onAnimationEnd={() => {
-          if (menuState === "closing") setMenuState("closed")
-        }}
-        className="md:hidden fixed inset-0 z-[70] bg-black flex flex-col items-center py-[35px] text-white font-nav text-[14px]"
-      >
-        {/* Centred independently of Submit so the links sit in the true
-            middle of the screen. The links live inside the content-portrait
-            vignette (thin frame, like the b/w content images): plain black
-            interior, white links on top. */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="relative aspect-[612/889] w-[280px] max-w-[75vw]">
-            <div
-              className="absolute inset-0"
-              style={{
-                maskImage: "url(/vignette-cp-mask.svg)",
-                WebkitMaskImage: "url(/vignette-cp-mask.svg)",
-                maskSize: "100% 100%",
-                WebkitMaskSize: "100% 100%",
-                maskRepeat: "no-repeat",
-                WebkitMaskRepeat: "no-repeat",
-                maskPosition: "center",
-                WebkitMaskPosition: "center",
+      <>
+        {/* Backdrop: blurs and dims everything behind the nav (the header sits
+            above at z-[80] while open, so the bar and dropdown stay crisp).
+            Tapping it closes, same as Submit. */}
+        <div
+          aria-hidden
+          onClick={() => {
+            setCloseDelayed(false)
+            setMenuState("closing")
+          }}
+          className="md:hidden fixed inset-0 z-[70] bg-black/20 backdrop-blur-md"
+        />
+        <div
+          role="dialog"
+          aria-modal="true"
+          // The gallery scan-wipe, with its hardening (see the locked-viewer
+          // flicker playbook): rest in the START state, let the animation with
+          // `forwards` fill carry and hold the end state — a late-starting
+          // animation then can't flash the finished frame.
+          style={
+            menuState === "closing"
+              ? {
+                  // Under the bar: 13.5px header top + 25px bar + 12px gap,
+                  // plus the announcement bar when shown.
+                  top: "calc(var(--announcement-h, 0px) + 50.5px)",
+                  clipPath: "inset(0% 0% 0% 0%)",
+                  WebkitClipPath: "inset(0% 0% 0% 0%)",
+                  // The rest state (fully shown) holds through any delay, so a
+                  // delayed close keeps covering until the wipe begins.
+                  animation: `hero-wipe-out 300ms ease-in-out ${closeDelayed ? "300ms" : "0ms"} forwards`,
+                }
+              : {
+                  top: "calc(var(--announcement-h, 0px) + 50.5px)",
+                  clipPath: "inset(0% 0% 100% 0%)",
+                  WebkitClipPath: "inset(0% 0% 100% 0%)",
+                  animation: "hero-wipe-down 300ms ease-in-out forwards",
+                }
+          }
+          onAnimationEnd={() => {
+            if (menuState === "closing") setMenuState("closed")
+          }}
+          className="md:hidden fixed left-6 right-6 z-[80] font-nav text-[12px] text-black"
+        >
+          <TextDistortFilter>
+            {/* Plain Links, NOT TransitionLink: its navigation fades and blurs
+                the whole body — including this dropdown — smearing the closing
+                wipe. Capture-phase close covers same-page taps too. */}
+            <nav
+              onClickCapture={() => {
+                setCloseDelayed(true)
+                setMenuState("closing")
               }}
+              className="flex flex-col"
             >
-              <div className="absolute inset-0 bg-black" />
-            </div>
-            <VignetteBorderContentPortrait className="pointer-events-none absolute inset-0 h-full w-full select-none" />
-            <TextDistortFilter className="absolute inset-0 flex items-center justify-center">
-              {/* Plain Links, NOT TransitionLink: its navigation fades and
-                  blurs the whole body — including this overlay — smearing the
-                  closing wipe. With an instant client-side swap the new page
-                  loads behind the black overlay and the wipe-out unveils it.
-                  Capture-phase close covers same-page taps too. */}
-              <nav
-                onClickCapture={() => {
-                  setCloseDelayed(true)
-                  setMenuState("closing")
-                }}
-                className="flex flex-col gap-[19px] items-center text-white"
-              >
-                {takeoverLinks.map(({ href, label }) => (
-                  <Link
-                    key={href}
-                    href={href}
-                    className={pathname === href ? "line-through" : ""}
-                  >
-                    {label}
-                  </Link>
-                ))}
-              </nav>
-            </TextDistortFilter>
-          </div>
+              {takeoverLinks.map(({ href, label }, i) => (
+                <Link
+                  key={href}
+                  href={href}
+                  onPointerDown={() => setPressedHref(href)}
+                  // -mt-px collapses the meeting borders into a single line
+                  // (every box except the first, per the design).
+                  // Reverse as on the bar: black box, white text — on hover
+                  // for pointers, and held from the tap (pressedHref) through
+                  // the closing wipe on touch, since iOS never paints :active
+                  // when the tap also starts navigation. The border stays
+                  // black so collapsed border lines don't flicker.
+                  className={`flex h-[25px] w-full items-center justify-center border border-black transition-colors ${
+                    pressedHref === href
+                      ? "bg-black text-white"
+                      : "bg-white hover:bg-black hover:text-white active:bg-black active:text-white"
+                  } ${i > 0 ? "-mt-px" : ""} ${
+                    pathname === href ? "line-through" : ""
+                  }`}
+                >
+                  {label}
+                </Link>
+              ))}
+            </nav>
+          </TextDistortFilter>
         </div>
-        <TextDistortFilter className="relative">
-          <button
-            type="button"
-            onClick={() => {
-              setCloseDelayed(false)
-              setMenuState("closing")
-            }}
-            className="cursor-pointer"
-          >
-            Submit
-          </button>
-        </TextDistortFilter>
-      </div>
+      </>
     )}
 </>
   )

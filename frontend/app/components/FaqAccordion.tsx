@@ -35,25 +35,23 @@ export default function FaqAccordion({
       {/* The section's black title bar lives here (not the page) so the
           master toggle shares the rows' state. Same padding as the rows, so
           Open All sits flush with the per-row toggle column. */}
-      <div className="bg-black px-[30px] py-[24px] flex items-center justify-between gap-6">
-        <TextDistortFilter>
+      <TextDistortFilter>
+        <div className="bg-black px-[30px] py-[24px] flex items-center justify-between gap-6">
           <h2 className="font-display font-extrabold text-[40px] leading-[37px] text-white uppercase text-justify">
             {heading}
           </h2>
-        </TextDistortFilter>
-        <button type="button" onClick={toggleAll} className="cursor-pointer shrink-0">
-          <TextDistortFilter>
+          <button type="button" onClick={toggleAll} className="cursor-pointer shrink-0">
             <span className="font-nav text-[14px] text-white uppercase hover:line-through">
               {allOpen ? "Close All" : "Open All"}
             </span>
-          </TextDistortFilter>
-        </button>
-      </div>
+          </button>
+        </div>
+      </TextDistortFilter>
       {items.map((item, i) => (
-        <div
-          key={i}
-          className="border-b-2 border-l-2 border-r-2 border-black border-solid px-[30px] py-[24px]"
-        >
+        <div key={i} className="relative px-[30px] py-[24px]">
+          <TextDistortFilter className="pointer-events-none absolute inset-0">
+            <div className="h-full w-full border-b-2 border-l-2 border-r-2 border-black border-solid" />
+          </TextDistortFilter>
           <button
             type="button"
             onClick={() => toggle(i)}

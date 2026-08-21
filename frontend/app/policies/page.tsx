@@ -159,13 +159,13 @@ const FAQS: FaqItem[] = [
 /** Black title bar opening a boxed group (POLICIES / FAQs). */
 function HeaderBar({ label }: { label: string }) {
   return (
-    <div className="bg-black px-[30px] py-[24px]">
-      <TextDistortFilter>
+    <TextDistortFilter>
+      <div className="bg-black px-[30px] py-[24px]">
         <h2 className="font-display font-extrabold text-[40px] leading-[37px] text-white uppercase text-justify">
           {label}
         </h2>
-      </TextDistortFilter>
-    </div>
+      </div>
+    </TextDistortFilter>
   )
 }
 
@@ -174,10 +174,10 @@ function HeaderBar({ label }: { label: string }) {
  *  bottom border from. */
 function PolicyBox({ section, boxTop = false }: { section: PolicySection; boxTop?: boolean }) {
   return (
-    <section
-      className={`${boxTop ? "border-2" : "border-b-2 border-l-2 border-r-2"} border-black border-solid px-[30px] py-[24px]`}
-    >
-      <TextDistortFilter>
+    <TextDistortFilter>
+      <section
+        className={`${boxTop ? "border-2" : "border-b-2 border-l-2 border-r-2"} border-black border-solid px-[30px] py-[24px]`}
+      >
         <div className="flex flex-col gap-[26px] text-[22px] text-black text-justify">
           <h3 className="font-display font-extrabold uppercase leading-[normal] max-md:leading-6">
             {section.title}
@@ -197,8 +197,8 @@ function PolicyBox({ section, boxTop = false }: { section: PolicySection; boxTop
             })}
           </div>
         </div>
-      </TextDistortFilter>
-    </section>
+      </section>
+    </TextDistortFilter>
   )
 }
 
@@ -244,10 +244,10 @@ function CmsPolicyBox({
   boxTop?: boolean
 }) {
   return (
-    <section
-      className={`${boxTop ? "border-2" : "border-b-2 border-l-2 border-r-2"} border-black border-solid px-[30px] py-[24px]`}
-    >
-      <TextDistortFilter>
+    <TextDistortFilter>
+      <section
+        className={`${boxTop ? "border-2" : "border-b-2 border-l-2 border-r-2"} border-black border-solid px-[30px] py-[24px]`}
+      >
         <div className="flex flex-col gap-[26px] text-[22px] text-black text-justify">
           <h3 className="font-display font-extrabold uppercase leading-[normal] max-md:leading-6">{title}</h3>
           <div className="font-sans leading-[normal]">
@@ -256,8 +256,8 @@ function CmsPolicyBox({
             ) : null}
           </div>
         </div>
-      </TextDistortFilter>
-    </section>
+      </section>
+    </TextDistortFilter>
   )
 }
 
@@ -356,7 +356,10 @@ export default async function PoliciesPage() {
           {/* Plain block + mx-auto, NOT flex: Safari's flex cross-axis stretch
               fights aspect-ratio items (distortion + baseline gaps). This is
               About's mobile-hero pattern verbatim. */}
-          <div className="md:hidden border-b-2 border-l-2 border-r-2 border-black border-solid px-[30px] py-[24px]">
+          <div className="md:hidden relative px-[30px] py-[24px]">
+            <TextDistortFilter className="pointer-events-none absolute inset-0">
+              <div className="h-full w-full border-b-2 border-l-2 border-r-2 border-black border-solid" />
+            </TextDistortFilter>
             <HeroVignette
               src={heroSrc}
               alt={heroAlt}
