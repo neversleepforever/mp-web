@@ -11,9 +11,6 @@ import { VignetteBorderContentPortrait } from "./VignetteBorder"
 // Label on the condensed mobile nav bar.
 const MOBILE_NAV_LABEL = "Menu"
 
-// The mobile bar is white with black text everywhere except Policies, whose
-// cream page keeps the design's black bar (it doubles as the page's top rule).
-
 export default function Header() {
   const pathname = usePathname()
   // closed → open (wipe down) → closing (wipe up, then unmount).
@@ -50,7 +47,6 @@ export default function Header() {
   // Folio project pages (galleries/journals/videos) show the inline viewer —
   // the nav steps out entirely; Submit/Back are the way out.
   const isFolioProject = pathname.startsWith("/folio/")
-  const invertedBar = !pathname.startsWith("/policies")
 
   // Close the takeover whenever navigation lands somewhere new, and hold the
   // page still behind it while it's open.
@@ -98,8 +94,8 @@ export default function Header() {
       <div className="flex w-full">
 
         {/* Mobile: the six-item row no longer fits, so it condenses into a
-            single full-width bar that opens the takeover. White with black
-            text everywhere except Policies (black, per its design). */}
+            small tab (the vignette's cut-corner silhouette, via a CSS mask)
+            that opens the takeover. White with black text on every page. */}
         <button
           type="button"
           onClick={() => setMenuState("open")}
@@ -115,9 +111,7 @@ export default function Header() {
             maskRepeat: "no-repeat",
             WebkitMaskRepeat: "no-repeat",
           }}
-          className={`md:hidden w-[80px] mx-auto h-[29px] flex items-center justify-center cursor-pointer ${
-            invertedBar ? "bg-white text-black" : "bg-black text-white"
-          }`}
+          className="md:hidden w-[80px] mx-auto h-[29px] flex items-center justify-center cursor-pointer bg-white text-black"
         >
           <TextDistortFilter>
             <span className="font-nav text-[14px] leading-none">

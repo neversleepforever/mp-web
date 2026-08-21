@@ -57,8 +57,10 @@ export default function Footer() {
         {/* Hidden on folio project pages (galleries, journals, videos, stills —
             everything under /folio/ now that the grid lives at /): the wordmark
             sat over the thumbnail rail there. */}
+        {/* Hidden below md as well: on phones the wordmark crowded the
+            content at the bottom of the screen. */}
         {!isFolioPage && (
-          <div className=" h-[30px] flex-shrink-0 flex justify-center">
+          <div className="h-[30px] flex-shrink-0 flex justify-center max-md:hidden">
             <TransitionLink href={"/"}>
               <Image
                 src="/images/logo/mistress-maggie-peach-1-line-black.svg"
