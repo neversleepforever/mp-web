@@ -319,10 +319,17 @@ export default async function ServicesPage() {
           and bottom edges of the screen, so the VIEWPORT cuts its ends. A
           box with overflow-hidden cut them mid-screen instead, which read as
           the ribbon being sliced. */}
+      {/* Geometry is corner-relative, not offset-tuned: the band centres ON
+          the corner (translate 50%,50%), rotates, then slides 55px inward
+          along the diagonal. Its ends sit 300px from the corner in both
+          directions — outside the screen at ANY viewport size. The old
+          right/bottom offsets were tuned for desktop: on phones the far end
+          landed inside the viewport, and Chrome's collapsing URL bar moved
+          the anchor and re-exposed it as the band "extending". */}
       <div
         aria-label="Adults Only"
-        style={{ right: "-145px", bottom: "40.5px", transform: "rotate(-45deg)" }}
-        className="pointer-events-none fixed z-50 flex h-[29px] w-[400px] items-center justify-center gap-[6px] bg-white font-sans font-bold text-[10px] uppercase text-black"
+        style={{ transform: "translate(50%, 50%) rotate(-45deg) translateY(-55px)" }}
+        className="pointer-events-none fixed bottom-0 right-0 z-50 flex h-[29px] w-[600px] items-center justify-center gap-[6px] bg-white font-sans font-bold text-[10px] uppercase text-black"
       >
         <span className="h-[3px] w-[3px] rounded-full bg-black" />
         Adults Only
