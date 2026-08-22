@@ -179,7 +179,10 @@ export default async function ContactPage() {
           short desktop windows). Content is top-aligned like the other pages —
           centring floated the boxes ~250px down on tall iPad portraits, and
           centred overflow clips its top unreachably anyway. */}
-      <section className="min-h-[calc(100svh_-_var(--announcement-h,0px))] md:h-[calc(100svh_-_var(--announcement-h,0px))] md:overflow-y-auto scrollbar-hide pointer-events-none md:pointer-events-auto w-full col-start-1 row-start-1 col-span-2 row-span-1 flex flex-1 pt-[56px] pb-16 px-6 md:px-0 md:pt-[72px] md:pb-12 justify-center z-30 md:pr-0 dark:text-white ">
+      {/* 3xl only: centre the stack vertically on large monitors — "safe" so
+          a short window falls back to top-aligned instead of clipping the top
+          unreachably (the iPad bug the top-alignment originally fixed). */}
+      <section className="min-h-[calc(100svh_-_var(--announcement-h,0px))] md:h-[calc(100svh_-_var(--announcement-h,0px))] md:overflow-y-auto scrollbar-hide pointer-events-none md:pointer-events-auto w-full col-start-1 row-start-1 col-span-2 row-span-1 flex flex-1 pt-[56px] pb-16 px-6 md:px-0 md:pt-[72px] md:pb-12 justify-center z-30 md:pr-0 dark:text-white 3xl:[align-items:safe_center] ">
      {/* w-full below md: with no width the filter wrapper shrink-wraps its
          content (~360px), which reads fine on phones (viewport clamps it) but
          floats narrow on iPad mini portrait where there's room. md+ keeps the

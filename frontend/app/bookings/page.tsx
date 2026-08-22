@@ -89,12 +89,14 @@ export default async function BookingPage() {
         </div>
         {/* Mobile background is the fence alone over near-black — the grey
             scantexture layer is parked, matching About and Services. */}
-        <div id="bookings-content-scroll" className="relative scrollbar-hide bg-[#0b0b0b] bg-cover bg-center md:bg-none md:col-start-2 h-[calc(100dvh_-_var(--announcement-h,0px))] overflow-y-auto pt-0 pb-12 md:px-6 md:pt-4 xl:px-26">
+        <div id="bookings-content-scroll" className="relative scrollbar-hide bg-[#0b0b0b] bg-cover bg-center md:bg-none md:col-start-2 h-[calc(100dvh_-_var(--announcement-h,0px))] overflow-y-auto pt-0 pb-12 md:px-6 md:pt-4 xl:px-16">
             {/* -12px, measured not eyeballed: the Jotform document's first
                 painted element sits 68px into the iframe, the bar bottom is at
                 38.5px, and the site-standard gap (Services) is 17.5px —
                 68 - 38.5 - 17.5 = 12px of excess. */}
-            <div className="relative z-10 -mt-[12px]">
+            {/* Same measure as the Policies stack (64px gutters + 668px cap)
+                so the iframe matches the other right-column containers. */}
+            <div className="relative z-10 -mt-[12px] md:max-w-[668px] mx-auto">
                 <JotformEmbed formId="250685995022262"/>
                 <MobileWordmark invert className="-mb-6" />
             </div>

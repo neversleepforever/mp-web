@@ -72,6 +72,7 @@ export default async function FolioIndexPage() {
           grid gap-3 grid-cols-1 auto-rows-max scrollbar-hide
           sm:grid-cols-2 lg:grid-cols-3
           xl:grid-rows-none xl:grid-flow-row xl:grid-cols-5 xl:grid-rows-[repeat(2,_minmax(0,_1fr))] xl:grid-flow-row xl:overflow-y-auto xl:pb-16
+          3xl:grid-cols-8
         "
       >
         {folios.map((folio) => {

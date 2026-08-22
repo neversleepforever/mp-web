@@ -296,8 +296,10 @@ export default async function ServicesPage() {
           aria-hidden
           className="md:hidden fixed inset-0 z-0 bg-black bg-cover bg-center"
         />
-        <div id="services-content-scroll" className="relative z-10 scrollbar-hide md:bg-[url('/images/scantexture.jpg')] bg-cover bg-center md:col-start-2 pt-8 pb-12 px-6 md:py-12 md:pl-4 md:pr-6 md:h-[calc(100dvh_-_var(--announcement-h,0px))] md:overflow-y-scroll xl:px-26">
-          <div>
+        <div id="services-content-scroll" className="relative z-10 scrollbar-hide md:bg-[url('/images/scantexture.jpg')] bg-cover bg-center md:col-start-2 pt-8 pb-12 px-6 md:py-12 md:pl-4 md:pr-6 md:h-[calc(100dvh_-_var(--announcement-h,0px))] md:overflow-y-scroll xl:px-16">
+          {/* Same measure as the Policies stack (64px gutters + 668px cap) so
+              the right-column container is one width across the site. */}
+          <div className="md:max-w-[668px] mx-auto">
             {content.length ? (
               <PortableText value={content} components={mainComponents} />
             ) : (

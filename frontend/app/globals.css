@@ -72,6 +72,8 @@
      1133px cleanly means "tablet landscape or desktop" (13" landscape was
      already covered by xl). Sits between lg (1024) and xl (1280). */
   --breakpoint-xg: 70.8125rem;
+  /* 3xl (1920px): true large-desktop monitors — laptops top out at 1728. */
+  --breakpoint-3xl: 120rem;
 
   --shadow-layer: 0 35px 60px -15px rgba(0, 0, 0, 0.3);
 
