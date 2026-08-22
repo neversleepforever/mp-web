@@ -500,6 +500,16 @@ export default function Gallery({
     window.addEventListener("scroll", onScroll, { passive: true })
     onScroll()
     priming = false
+    // Arriving from another project page (Don't Stop), Next's scroll-to-top
+    // is unreliable — and when this page is SHORTER than the old scroll
+    // offset, the browser clamps the position, which fires a real scroll
+    // event deep inside the zone. Depending on timing that either engaged
+    // the lock instantly (text skipped) or stranded the page mid-zone with
+    // the viewer half out of view. Own the entry position instead: a fresh
+    // mount that finds the zone above the viewport starts at the top.
+    if (!lockLatchRef.current && zone.getBoundingClientRect().top < 0) {
+      window.scrollTo(0, 0)
+    }
     return () => {
       window.removeEventListener("scroll", onScroll)
       // Never leave the lock behind us (route changes, rotating/resizing below

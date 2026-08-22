@@ -319,7 +319,10 @@ export default async function PoliciesPage() {
       <div className="relative hidden md:flex items-center justify-center overflow-hidden bg-[#FFF7E1] md:h-[calc(100dvh_-_var(--announcement-h,0px))] md:p-8">
         <div
           aria-hidden
-          className="absolute inset-0 bg-[url('/images/policies-texture.jpg')] bg-cover bg-center mix-blend-exclusion"
+          // Sessions' scan texture (3027x3999) — the dedicated policies
+          // texture was 989x1280, which bg-cover stretched 2x+ on large
+          // retina displays and read as pixelation.
+          className="absolute inset-0 bg-[url('/images/scantexture.jpg')] bg-cover bg-center mix-blend-exclusion"
         />
         {swapImages.length > 1 ? (
           <ScrollSwapHero

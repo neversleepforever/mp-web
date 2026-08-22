@@ -20,8 +20,6 @@ const sheenMask: CSSProperties = {
 // same vertical axis the gallery carousel already moves on. The edge follows
 // the scroll: down-scroll sweeps down, back-scroll sweeps up (keyframes in
 // globals.css).
-const SHOWN = "inset(0% 0% 0% 0%)"
-const HIDDEN = "inset(0% 0% 100% 0%)"
 
 export interface SwapImage {
   src: string
@@ -105,27 +103,57 @@ export default function ScrollSwapHero({
    *  reverse — the outgoing layer rolls back up the way it came, uncovering
    *  the earlier image sitting fully shown beneath it. Keyframes fix start
    *  states, and nothing animates before the first swap, so page load is
-   *  still. */
-  const layerClip = (i: number): CSSProperties => {
-    if (mode !== "wipe") return {}
+   *  still.
+   *
+   *  Mechanism: a transform "curtain", not clip-path. Each layer is an
+   *  overflow-hidden window whose content counter-translates — with identical
+   *  duration and easing the offsets cancel, so the image holds still while
+   *  the window edge sweeps, visually identical to the clip wipe but fully
+   *  compositor-driven. Clip-path animation repainted the masked vignette and
+   *  the border SVG every frame on the main thread, which dropped frames on
+   *  large displays (and will-change: transform is barred here — desktop
+   *  Safari won't animate clip-path on such layers). Hidden rest state:
+   *  window up 100%, content down 100% — no overlap, nothing shows. */
+  const DUR = "1200ms ease-in-out"
+  const layerStyles = (i: number): { window: CSSProperties; content: CSSProperties } => {
+    if (mode !== "wipe") return { window: {}, content: {} }
     const isActive = i === active
     const isPrev = i === prevLayer && !isActive
 
     if (wipeUp && sweep > 0) {
       if (isPrev)
         return {
-          clipPath: HIDDEN,
-          animation: "hero-wipe-out 1200ms ease-in-out",
-          zIndex: 2,
+          window: {
+            transform: "translateY(-100%)",
+            animation: `hero-curtain-window-out ${DUR}`,
+            zIndex: 2,
+          },
+          content: {
+            transform: "translateY(100%)",
+            animation: `hero-curtain-content-out ${DUR}`,
+          },
         }
-      return { clipPath: isActive ? SHOWN : HIDDEN, zIndex: isActive ? 1 : 0 }
+      return {
+        window: {
+          transform: isActive ? "translateY(0%)" : "translateY(-100%)",
+          zIndex: isActive ? 1 : 0,
+        },
+        content: { transform: isActive ? "translateY(0%)" : "translateY(100%)" },
+      }
     }
 
     return {
-      clipPath: isActive || isPrev ? SHOWN : HIDDEN,
-      animation:
-        isActive && sweep > 0 ? "hero-wipe-down 1200ms ease-in-out" : undefined,
-      zIndex: isActive ? 2 : isPrev ? 1 : 0,
+      window: {
+        transform: isActive || isPrev ? "translateY(0%)" : "translateY(-100%)",
+        animation:
+          isActive && sweep > 0 ? `hero-curtain-window-in ${DUR}` : undefined,
+        zIndex: isActive ? 2 : isPrev ? 1 : 0,
+      },
+      content: {
+        transform: isActive || isPrev ? "translateY(0%)" : "translateY(100%)",
+        animation:
+          isActive && sweep > 0 ? `hero-curtain-content-in ${DUR}` : undefined,
+      },
     }
   }
 
@@ -135,33 +163,38 @@ export default function ScrollSwapHero({
   // relative and collapse to zero height.
   return (
     <div className={`relative ${className}`}>
-      {images.map((img, i) => (
-        <div
-          key={i}
-          style={layerClip(i)}
-          // Every layer absolute: the in-flow first layer used h-full, which
-          // iOS WebKit resolves wrongly against an aspect-ratio parent (it
-          // rendered 659px in a 645px box on iPad, making swaps visibly jump
-          // size). absolute inset-0 is exact in every engine; the wrapper's
-          // aspect-ratio alone sets the size.
-          className={`absolute inset-0 ${
-            mode === "fade"
-              ? `transition-opacity duration-700 ease-in-out ${
-                  active === i ? "opacity-100" : "opacity-0"
-                }`
-              : ""
-          }`}
-        >
-          <HeroVignette
-            src={img.src}
-            alt={img.alt}
-            blurDataURL={img.blurDataURL}
-            uid={`${uidPrefix}-${i}`}
-            variant={variant}
-            className="h-full w-full"
-          />
-        </div>
-      ))}
+      {images.map((img, i) => {
+        const styles = layerStyles(i)
+        return (
+          <div
+            key={i}
+            style={styles.window}
+            // Every layer absolute: the in-flow first layer used h-full, which
+            // iOS WebKit resolves wrongly against an aspect-ratio parent (it
+            // rendered 659px in a 645px box on iPad, making swaps visibly jump
+            // size). absolute inset-0 is exact in every engine; the wrapper's
+            // aspect-ratio alone sets the size.
+            className={`absolute inset-0 overflow-hidden ${
+              mode === "fade"
+                ? `transition-opacity duration-700 ease-in-out ${
+                    active === i ? "opacity-100" : "opacity-0"
+                  }`
+                : ""
+            }`}
+          >
+            <div style={styles.content} className="absolute inset-0">
+              <HeroVignette
+                src={img.src}
+                alt={img.alt}
+                blurDataURL={img.blurDataURL}
+                uid={`${uidPrefix}-${i}`}
+                variant={variant}
+                className="h-full w-full"
+              />
+            </div>
+          </div>
+        )
+      })}
       {/* One-shot specular sweep over the crossfade — fade mode only: in wipe
           mode the travelling edge is the effect, and the sheen on top of it
           read as too much. Purely additive either way. */}

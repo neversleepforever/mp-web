@@ -239,6 +239,30 @@ body.dark {
   }
 }
 
+/* Curtain equivalents of the hero wipes, for the scroll-swap heroes only:
+   the overflow window translates while its content counter-translates, so the
+   travelling reveal edge matches the clip wipe exactly (same duration and
+   easing on both layers — the eased offsets cancel and the image holds still)
+   but runs entirely on the compositor. Animating clip-path repainted the
+   masked vignette + border SVG every frame on the main thread, which dropped
+   frames on large displays. */
+@keyframes hero-curtain-window-in {
+  from { transform: translateY(-100%); }
+  to   { transform: translateY(0%); }
+}
+@keyframes hero-curtain-content-in {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0%); }
+}
+@keyframes hero-curtain-window-out {
+  from { transform: translateY(0%); }
+  to   { transform: translateY(-100%); }
+}
+@keyframes hero-curtain-content-out {
+  from { transform: translateY(0%); }
+  to   { transform: translateY(100%); }
+}
+
 /* Locked gallery viewer (desktop + landscape tablets, the xg breakpoint):
    while the body carries gallery-locked, the folio text column is removed from
    the document, so the viewer's scroll zone IS the page — the browser

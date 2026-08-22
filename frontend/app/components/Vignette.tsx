@@ -24,7 +24,10 @@ const maskStyle = (url: string): CSSProperties => ({
 // phone. These describe the real rendered widths so the browser picks sanely.
 // Hero caps around 340-400px wide; content photos fill their column.
 const HERO_SIZES = "(min-width: 768px) 400px, 100vw"
-const CONTENT_SIZES = "(min-width: 1280px) 40vw, (min-width: 768px) 50vw, 100vw"
+// 668px from xl up: the right-column stacks are capped there now, so 40vw
+// over-fetched on large screens (1536px files at 1920 retina vs the 1336
+// actually needed) — bigger files stream longer and read as missing content.
+const CONTENT_SIZES = "(min-width: 1280px) 668px, (min-width: 768px) 50vw, 100vw"
 
 /** Portrait hero photo scaled inside the vignette mask, with the peach gradient
  *  border. `uid` must be unique per instance (drives the border's gradient/filter
