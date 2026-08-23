@@ -150,7 +150,7 @@ export default async function JournalPage({
             // -ml-6 pulls the w-screen viewer back over the page's mobile
             // padding (p-6) so it truly spans the viewport — without it the
             // whole gallery sits 24px right of centre and clips on the right.
-            <div className="w-screen -ml-6 md:ml-0 overscroll-none overflow-hidden lg:ml-0 lg:mr-0 lg:w-full lg:px-30 xl:pl-30 xl:pt-20 xl:pb-20 xl:pr-7.5 lg:flex lg:flex-col lg:justify-center xl:max-h-screen">
+            <div className="w-screen -ml-6 md:ml-0 overflow-hidden lg:ml-0 lg:mr-0 lg:w-full lg:px-30 xl:pl-30 xl:pt-20 xl:pb-20 xl:pr-7.5 lg:flex lg:flex-col lg:justify-center xl:max-h-screen">
               <Gallery images={journal.images} title={journal.title} />
             </div>
            ) : null}

@@ -389,7 +389,7 @@ export default async function PoliciesPage() {
                     height={item.asset.metadata?.dimensions?.height ?? 842}
                     filterClassName="md:grayscale"
                     borderStroke="#000"
-                    className="-my-px"
+                    className="-my-[2px]"
                   />
                 ) : null
               ) : (
@@ -417,7 +417,7 @@ export default async function PoliciesPage() {
                 height={842}
                 filterClassName="md:grayscale"
                 borderStroke="#000"
-                className="-my-px"
+                className="-my-[2px]"
               />
 
               {POLICIES_B.map((section, i) => (
@@ -431,7 +431,7 @@ export default async function PoliciesPage() {
                 height={842}
                 filterClassName="md:grayscale"
                 borderStroke="#000"
-                className="-my-px"
+                className="-my-[2px]"
               />
             </>
           )}

@@ -158,7 +158,13 @@ export default async function FolioPage({
           </TransitionLink>
         )}
       </div>
-              <div className="overscroll-none overflow-x-hidden -ml-6 -mr-6 md:mx-0 xg:overscroll-auto">
+              {/* No overscroll-none here: overflow-x-hidden computes the Y
+                  axis to auto, making this a vertical scroll container with
+                  nothing to scroll — and overscroll-none on such a container
+                  makes Chrome consume scroll gestures over the viewer instead
+                  of chaining them to the page (the same trap that froze
+                  Safari at xg, hence the old xg:overscroll-auto override). */}
+              <div className="overflow-x-hidden -ml-6 -mr-6 md:mx-0">
           {folio.images?.length ? (
             <Gallery images={folio.images} title={folio.title} deskLock nextHref={nextHref ?? undefined} />
           ) : null}

@@ -436,6 +436,16 @@ export default function Gallery({
     }
 
     const onScroll = () => {
+      // Belt for missed resize events (Chrome DevTools emulation toggles and
+      // some window-resize paths never fire resize/matchMedia change): if the
+      // viewport has left xg while the lock machinery is live, flip the state
+      // here — the effect cleanup then unwinds the class, the pin, and the
+      // zone. Without this the mobile layout could arrive with the desktop
+      // lock still latched on top of it.
+      if (!window.matchMedia("(min-width: 1133px)").matches) {
+        setIsXg(false)
+        return
+      }
       const r = zone.getBoundingClientRect()
       if (r.height === 0) return
       // Info's glide home: hold the current slide (no rewind-flash through the

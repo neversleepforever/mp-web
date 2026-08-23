@@ -123,7 +123,10 @@ export function ContentVignette({
         />
       </div>
       {isPortrait ? (
-        <VignetteBorderContentPortrait className="pointer-events-none absolute inset-0 h-full w-full select-none" />
+        <VignetteBorderContentPortrait
+          stroke={borderStroke}
+          className="pointer-events-none absolute inset-0 h-full w-full select-none"
+        />
       ) : (
         <VignetteBorderLandscape
           stroke={borderStroke}
