@@ -66,8 +66,19 @@ export default function ScrollSwapHero({
   // Scrolling down sweeps the edge downward; scrolling back sweeps it up —
   // the same direction-following the gallery carousel uses.
   const [wipeUp, setWipeUp] = useState(false)
+  // The stacked layers all sit in the viewport, so without gating EVERY hero
+  // file downloads at page load — three full-size images competing with the
+  // rest of the page (Services). The visible first layer preloads (priority);
+  // the hidden ones mount once the column first scrolls, or on idle, whichever
+  // comes first — well before the earliest possible swap completes.
+  const [warm, setWarm] = useState(false)
   const prevActive = useRef(0)
   const count = images.length
+
+  useEffect(() => {
+    const t = setTimeout(() => setWarm(true), 2500)
+    return () => clearTimeout(t)
+  }, [])
 
   useEffect(() => {
     if (prevActive.current !== active) {
@@ -94,8 +105,14 @@ export default function ScrollSwapHero({
     }
 
     measure()
-    el.addEventListener("scroll", measure, { passive: true })
-    return () => el.removeEventListener("scroll", measure)
+    const onScroll = () => {
+      // Only a real scroll warms the hidden layers — browsers fire a scroll
+      // event at position 0 during load/restoration, which defeated the gate.
+      if (el.scrollTop > 0) setWarm(true)
+      measure()
+    }
+    el.addEventListener("scroll", onScroll, { passive: true })
+    return () => el.removeEventListener("scroll", onScroll)
   }, [scrollContainerId, count])
 
   /** Per-layer presentation in wipe mode. Scrolling down: the incoming layer
@@ -183,14 +200,17 @@ export default function ScrollSwapHero({
             }`}
           >
             <div style={styles.content} className="absolute inset-0">
-              <HeroVignette
-                src={img.src}
-                alt={img.alt}
-                blurDataURL={img.blurDataURL}
-                uid={`${uidPrefix}-${i}`}
-                variant={variant}
-                className="h-full w-full"
-              />
+              {(i === 0 || warm) && (
+                <HeroVignette
+                  src={img.src}
+                  alt={img.alt}
+                  blurDataURL={img.blurDataURL}
+                  uid={`${uidPrefix}-${i}`}
+                  variant={variant}
+                  priority={i === 0}
+                  className="h-full w-full"
+                />
+              )}
             </div>
           </div>
         )

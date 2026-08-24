@@ -41,6 +41,7 @@ export function HeroVignette({
   strokeWidth,
   variant,
   sizes = HERO_SIZES,
+  priority = false,
 }: {
   src: string
   alt: string
@@ -50,6 +51,8 @@ export function HeroVignette({
   strokeWidth?: number
   variant?: PortraitGradient
   sizes?: string
+  /** Preload — for the hero that is visible at page load (LCP). */
+  priority?: boolean
 }) {
   return (
     <div className={`relative ${className}`}>
@@ -60,6 +63,8 @@ export function HeroVignette({
           blurDataURL={blurDataURL}
           fill
           sizes={sizes}
+          priority={priority}
+          revealImmediately={priority}
           className="object-cover object-top"
         />
       </div>
