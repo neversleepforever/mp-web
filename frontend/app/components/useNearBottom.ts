@@ -11,7 +11,7 @@ import { useEffect, useState } from "react"
  *  than the viewport are "at the bottom" from the start. Re-checked per scroll
  *  event rather than via resize/matchMedia listeners alone — those events are
  *  not guaranteed on every viewport change (see chrome-browser-quirks). */
-export default function useNearBottom(margin = 160): boolean {
+export default function useNearBottom(margin = 40): boolean {
   const [near, setNear] = useState(false)
 
   useEffect(() => {
