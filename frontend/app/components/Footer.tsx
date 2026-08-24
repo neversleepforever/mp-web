@@ -5,12 +5,17 @@ import Image from "next/image"
 import { usePathname } from "next/navigation"
 import TextDistortFilter from "./TextFilter"
 import { TransitionLink } from "./TransitionLink"
+import useNearBottom from "./useNearBottom"
 
 /** Dark end to end, so the wordmark is white. Everywhere else it stays black. */
 const DARK_PAGES = ["/about", "/services", "/bookings", "/contact"]
 
 export default function Footer() {
   const pathname = usePathname()
+  // Mobile folio project pages hide the Submit CTA until the page is scrolled
+  // near its end (thumbnails in view), fading it in — same rhythm as the
+  // Don't Stop CTA opposite it. Other pages are unaffected (guarded below).
+  const nearBottom = useNearBottom()
 
   const isFolioPage = pathname?.startsWith("/folio")
   const isGalleryPage = pathname?.startsWith("/folio/gallery/")
@@ -47,7 +52,13 @@ export default function Footer() {
             <TextDistortFilter>
               <TransitionLink
                 href={backHref ?? "/"}
-                className={`uppercase hover:underline text-[12px] text-black mix-blend-difference font-nav ${isViewerPage ? "xg:hidden" : ""}`}
+                className={`uppercase hover:underline text-[12px] text-black mix-blend-difference font-nav ${
+                  isViewerPage
+                    ? `xg:hidden transition-opacity duration-500 ${
+                        nearBottom ? "opacity-100" : "opacity-0 pointer-events-none"
+                      }`
+                    : ""
+                }`}
               >
                 Submit
               </TransitionLink>
