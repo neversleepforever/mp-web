@@ -214,6 +214,15 @@ body.dark {
   }
 }
 
+/* The age gate's ENTER: a hard on/off blink, terminal-cursor cadence. */
+@keyframes gate-blink {
+  0%, 59% { opacity: 1; }
+  60%, 100% { opacity: 0; }
+}
+.animate-gate-blink {
+  animation: gate-blink 1.1s step-end infinite;
+}
+
 /* Level-edge wipes for the hero swap's "wipe" mode — a scan pass down or up
    the frame, direction following the scroll. */
 @keyframes hero-wipe-down {

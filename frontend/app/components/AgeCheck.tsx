@@ -22,6 +22,12 @@ export default function AgeCheck({
   const bodyLabel    = content?.bodyText    ?? "The following content is for 18+ adults only —"
   const buttonLabel  = content?.buttonText  ?? "Proceed"
   const [verified, setVerified] = useState(false)
+  // One flag drives the whole bar's reverse (white bar, black type): hover
+  // on desktop, held from pointerdown on touch — iOS never paints :active
+  // when the tap also dismisses the gate (same fix as the menu links).
+  // State-driven plain classes rather than CSS group-hover: a pseudo-class
+  // version glitched into a black band mid-bar.
+  const [gateHot, setGateHot] = useState(false)
   const [loaded, setLoaded] = useState(false)
   const [isXL, setIsXL] = useState(false);
   const THIRTY_DAYS = 1000 * 60 * 60 * 24 * 30;
@@ -77,7 +83,17 @@ const handleVerify = () => {
               resolves against that instead of the viewport — the bar floated
               mid-screen on wide windows. */}
           <TextDistortFilter className="w-full">
-          <div className="bg-black text-white text-center w-full py-3 px-1 font-display uppercase">
+          {/* The whole bar is clickable to enter and reverses as one piece
+              while hot; ENTER blinks as the resting affordance. */}
+          <div
+            onClick={handleVerify}
+            onPointerEnter={() => setGateHot(true)}
+            onPointerLeave={() => setGateHot(false)}
+            onPointerDown={() => setGateHot(true)}
+            className={`text-center w-full py-3 px-1 font-display uppercase cursor-pointer transition-colors ${
+              gateHot ? "bg-white text-black" : "bg-black text-white"
+            }`}
+          >
             
               <div className="grid place-items-center relative">
               {isXL && (
@@ -101,17 +117,19 @@ const handleVerify = () => {
                 </Marquee>
                    )}
                 <div className="text-[10px] col-start-1 row-start-1 z-[800] text-center px-8 flex flex-row">
-                  <div className="bg-black mask-l-from-30% z-[800] w-[30px]" />
-                    <h2 className="bg-black"> 
+                  <div className={`transition-colors mask-l-from-30% z-[800] w-[30px] ${gateHot ? "bg-white" : "bg-black"}`} />
+                    <h2 className={`transition-colors ${gateHot ? "bg-white" : "bg-black"}`}> 
                       {bodyLabel}{" "}
                       <button
                         onClick={handleVerify}
-                        className="uppercase underline decoration-1 hover:decoration-2 transition-all cursor-pointer"
+                        className={`uppercase underline decoration-1 hover:decoration-2 transition-all cursor-pointer ${
+                          gateHot ? "" : "animate-gate-blink"
+                        }`}
                       >
                         {buttonLabel}
                       </button>
                     </h2>
-                  <div className="bg-black mask-r-from-30% z-[800] w-[30px]" />
+                  <div className={`transition-colors mask-r-from-30% z-[800] w-[30px] ${gateHot ? "bg-white" : "bg-black"}`} />
                 </div>
               </div>
   
