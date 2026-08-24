@@ -84,6 +84,7 @@ const portableTextComponents: PortableTextComponents = {
   },
 }
 
+
 export default async function ServicesPage() {
   const { data } = await sanityFetch({
     query: servicesQuery,
@@ -195,7 +196,10 @@ export default async function ServicesPage() {
                   The [&_h4] override keeps the shared heading-4 renderer
                   (12px) from setting the size here. It still grows when the
                   copy wraps on narrow screens. */}
-              <div className="bg-white text-[10px] py-[9px] px-4 text-center [&_h4]:text-[10px]">
+              {/* Reverses on rollover/press: black bar, white type. The h4
+                  carries an explicit text-black, so the invert reaches it via
+                  the [&_h4] variant. */}
+              <div className="bg-white text-[10px] py-[9px] px-4 text-center [&_h4]:text-[10px] transition-colors [&_h4]:transition-colors hover:bg-black hover:text-white active:bg-black active:text-white [&:hover_h4]:text-white [&:active_h4]:text-white [&:hover_p]:text-white [&:active_p]:text-white">
                 {/* Render Sanity's hard breaks as spaces rather than <br>. Keeping
                     them pinned the copy to its own natural width so the band never
                     filled below lg; hiding them in CSS dropped the space instead
