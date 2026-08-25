@@ -7,6 +7,7 @@ export interface AnnouncementData {
   newsletterText?: string | null
   newsletterUrl?: string | null
   bookingText?: string | null
+  bookingUrl?: string | null
 }
 
 /** Stays dismissed for the rest of the visit, but returns next session. */
@@ -64,7 +65,21 @@ export default function AnnouncementBanner({ data }: { data: AnnouncementData | 
           {data.newsletterText}
         </a>
       )}
-      {data?.bookingText && <span>{data.bookingText}</span>}
+      {data?.bookingText &&
+        (data.bookingUrl ? (
+          <a
+            href={data.bookingUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            // Same treatment as the newsletter link (see its comment for why
+            // line-through simply replaces the underline).
+            className="underline decoration-1 hover:line-through"
+          >
+            {data.bookingText}
+          </a>
+        ) : (
+          <span>{data.bookingText}</span>
+        ))}
       <button
         type="button"
         onClick={close}

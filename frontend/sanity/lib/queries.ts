@@ -553,7 +553,8 @@ export const announcementQuery = defineQuery(`
   enabled,
   newsletterText,
   newsletterUrl,
-  bookingText
+  bookingText,
+  bookingUrl
 }`)
 
 export const bookingsQuery = defineQuery(`

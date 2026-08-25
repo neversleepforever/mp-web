@@ -34,6 +34,15 @@ export const announcement = defineType({
       description: 'Plain text beside the link, e.g. "Now Booking in Mexico City".',
       initialValue: "Now Booking in Mexico City",
     }),
+    defineField({
+      name: "bookingUrl",
+      title: "Announcement text link",
+      type: "url",
+      description:
+        "Optional. When set, the announcement text becomes a link. Include https://",
+      validation: (rule) =>
+        rule.uri({ scheme: ["http", "https", "mailto"] }),
+    }),
   ],
   preview: {
     select: { enabled: "enabled", subtitle: "bookingText" },

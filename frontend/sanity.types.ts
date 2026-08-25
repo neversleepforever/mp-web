@@ -321,6 +321,7 @@ export type Announcement = {
   newsletterText?: string
   newsletterUrl?: string
   bookingText?: string
+  bookingUrl?: string
 }
 
 export type Bookings = {
@@ -2054,12 +2055,13 @@ export type AgeCheckQueryResult = {
   buttonText: string | null
 } | null
 // Variable: announcementQuery
-// Query: *[_type == "announcement"][0] {  enabled,  newsletterText,  newsletterUrl,  bookingText}
+// Query: *[_type == "announcement"][0] {  enabled,  newsletterText,  newsletterUrl,  bookingText,  bookingUrl}
 export type AnnouncementQueryResult = {
   enabled: boolean | null
   newsletterText: string | null
   newsletterUrl: string | null
   bookingText: string | null
+  bookingUrl: string | null
 } | null
 // Variable: bookingsQuery
 // Query: *[_type == "bookings"][0]{    _id,    image{      alt,      asset->{        _id,        url,        metadata{          lqip,          dimensions { width, height }        }      }    },    imageSecondary{      alt,      asset->{        _id,        url,        metadata{          lqip,          dimensions { width, height }        }      }    }  }
@@ -2208,7 +2210,7 @@ declare module '@sanity/client' {
     '\n  *[_type == "services"][0]{\n      image{\n        alt,\n        asset->{\n          _id,\n          url,\n          metadata{\n            lqip,\n            dimensions { width, height }\n          }\n        }\n      },\n      imageSecondary{\n        alt,\n        asset->{\n          _id,\n          url,\n          metadata{\n            lqip,\n            dimensions { width, height }\n          }\n        }\n      },\n      imageTertiary{\n        alt,\n        asset->{\n          _id,\n          url,\n          metadata{\n            lqip,\n            dimensions { width, height }\n          }\n        }\n      },\n    bannerEmail,\n    content[]{\n      ...,\n      _type == "image" => {\n        ...,\n        "asset": asset->{\n          _id,\n          url,\n          metadata {\n            lqip,\n            dimensions { width, height }\n          }\n        }\n      },\n\n      _type == "servicesSection" => {\n        ...,\n        body[]{\n          ...,\n          _type == "image" => {\n            ...,\n            "asset": asset->{\n              _id,\n              url,\n              metadata {\n                lqip,\n                dimensions { width, height }\n              }\n            }\n          }\n        }\n      },\n\n      _type == "ratesSection" => {\n        ...,\n        rates[]{\n          ...,\n          _type == "image" => {\n            ...,\n            "asset": asset->{\n              _id,\n              url,\n              metadata {\n                lqip,\n                dimensions { width, height }\n              }\n            }\n          }\n        }\n      },\n\n      _type == "outcallSection" => {\n        ...,\n        body[]{\n          ...,\n          _type == "image" => {\n            ...,\n            "asset": asset->{\n              _id,\n              url,\n              metadata {\n                lqip,\n                dimensions { width, height }\n              }\n            }\n          }\n        }\n      },\n\n      _type == "virtualSection" => {\n        ...,\n        body[]{\n          ...,\n          _type == "image" => {\n            ...,\n            "asset": asset->{\n              _id,\n              url,\n              metadata {\n                lqip,\n                dimensions { width, height }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n': ServicesQueryResult
     '\n  *[_type == "about"][0]{\n    _id,\n      image{\n        alt,\n        asset->{\n          _id,\n          url,\n          metadata{\n            lqip,\n            dimensions { width, height }\n          }\n        }\n      },\n      imageSecondary{\n        alt,\n        asset->{\n          _id,\n          url,\n          metadata{\n            lqip,\n            dimensions { width, height }\n          }\n        }\n      },\n    content[]{\n      ...,\n      _type == "image" => {\n        alt,\n        asset->{\n          _id,\n          url,\n          metadata {\n            lqip,\n            dimensions { width, height }\n          }\n        }\n      }\n    }\n  }\n': AboutQueryResult
     '\n*[_type == "ageCheck"][0] {\n  marqueeText,\n  bodyText,\n  buttonText\n}': AgeCheckQueryResult
-    '\n*[_type == "announcement"][0] {\n  enabled,\n  newsletterText,\n  newsletterUrl,\n  bookingText\n}': AnnouncementQueryResult
+    '\n*[_type == "announcement"][0] {\n  enabled,\n  newsletterText,\n  newsletterUrl,\n  bookingText,\n  bookingUrl\n}': AnnouncementQueryResult
     '\n  *[_type == "bookings"][0]{\n    _id,\n    image{\n      alt,\n      asset->{\n        _id,\n        url,\n        metadata{\n          lqip,\n          dimensions { width, height }\n        }\n      }\n    },\n    imageSecondary{\n      alt,\n      asset->{\n        _id,\n        url,\n        metadata{\n          lqip,\n          dimensions { width, height }\n        }\n      }\n    }\n  }\n': BookingsQueryResult
     '\n  *[_type == "policies"][0]{\n      image{\n        alt,\n        asset->{\n          _id,\n          url,\n          metadata{\n            lqip,\n            dimensions { width, height }\n          }\n        }\n      },\n      imageSecondary{\n        alt,\n        asset->{\n          _id,\n          url,\n          metadata{\n            lqip,\n            dimensions { width, height }\n          }\n        }\n      },\n      imageTertiary{\n        alt,\n        asset->{\n          _id,\n          url,\n          metadata{\n            lqip,\n            dimensions { width, height }\n          }\n        }\n      },\n      sections[]{\n        _type,\n        _key,\n        _type == "policySection" => {\n          title,\n          body\n        },\n        _type == "image" => {\n          alt,\n          asset->{\n            _id,\n            url,\n            metadata{\n              lqip,\n              dimensions { width, height }\n            }\n          }\n        }\n      },\n      faqs[]{\n        _key,\n        question,\n        answer\n      }\n  }\n': PoliciesQueryResult
   }
