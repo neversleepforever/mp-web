@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/next'
 import { SanityLive, sanityFetch } from '@/sanity/lib/live'
 import { announcementQuery } from '@/sanity/lib/queries'
 import AgeCheckServer from './components/AgeCheckServer'
@@ -23,6 +24,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <SanityLive />
           </BaseLayout>
         </AgeCheckServer>
+        <Analytics />
       </body>
     </html>
   )
