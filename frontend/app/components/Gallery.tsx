@@ -44,7 +44,7 @@ type Props = {
 }
 
 export default function Gallery({
-  images,
+  images: imagesProp,
   title,
   enableKeyboard = true,
   showControls = false,
@@ -52,6 +52,10 @@ export default function Gallery({
   deskLock = false,
   nextHref,
 }: Props) {
+  // An image array entry with no asset (an empty slot left in the Studio)
+  // crashed the whole page: the slide map ran urlFor(undefined). Drop such
+  // entries before anything else sees them.
+  const images = imagesProp.filter((img) => Boolean(img?.asset))
   const [loaded, setLoaded] = useState<boolean[]>(() =>
     new Array(images.length).fill(false)
   )
